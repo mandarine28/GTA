@@ -28,17 +28,7 @@ const builds: Record<string, { vehicle: string; weapon: string; tips: string[] }
 
 const LIVE = false // Passer à true au lancement de GTA 6
 
-const LIVE = false // Passer à true au lancement de GTA 6
-
 export default function BuildPage() {
-  if (!LIVE) return (
-    <>
-      <PageHero title="OPTIMISEUR DE BUILD" label="Outils" image="/images/gameplay1.jpg" />
-      <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
-        <ComingSoonNotice />
-      </div>
-    </>
-  )
   if (!LIVE) return (
     <>
       <PageHero title="OPTIMISEUR DE BUILD" label="Outils" image="/images/gameplay1.jpg" />

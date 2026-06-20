@@ -19,17 +19,7 @@ const difficultyColor: Record<string, string> = {
 
 const LIVE = false // Passer à true au lancement de GTA 6
 
-const LIVE = false // Passer à true au lancement de GTA 6
-
 export default function MissionsPage() {
-  if (!LIVE) return (
-    <>
-      <PageHero title="MISSIONS" label="Guides" image="/images/gameplay1.jpg" />
-      <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
-        <ComingSoonNotice />
-      </div>
-    </>
-  )
   if (!LIVE) return (
     <>
       <PageHero title="MISSIONS" label="Guides" image="/images/gameplay1.jpg" />

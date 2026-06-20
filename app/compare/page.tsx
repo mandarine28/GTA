@@ -29,8 +29,15 @@ export default function ComparePage() {
 
       <div className="flex gap-2 mb-8">
         {(['vehicles', 'weapons'] as Mode[]).map((m) => (
-          <button key={m} onClick={() => { setMode(m); setLeftId(''); setRightId('') }}
-            className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${mode === m ? 'bg-yellow-400 text-black' : 'bg-zinc-800 text-gray-300 hover:bg-zinc-700'}`}>
+          <button
+            key={m}
+            onClick={() => { setMode(m); setLeftId(''); setRightId('') }}
+            className="px-4 py-2 rounded-xl text-sm font-semibold transition-all"
+            style={mode === m
+              ? { background: 'var(--accent-gold)', color: '#081E36' }
+              : { background: 'var(--bg-card)', color: 'var(--text-muted)', border: '1px solid var(--border)' }
+            }
+          >
             {m === 'vehicles' ? 'Véhicules' : 'Armes'}
           </button>
         ))}
@@ -39,9 +46,13 @@ export default function ComparePage() {
       <div className="grid grid-cols-2 gap-6 mb-8">
         {[{ id: leftId, setId: setLeftId, label: 'Élément A' }, { id: rightId, setId: setRightId, label: 'Élément B' }].map(({ id, setId, label }) => (
           <div key={label}>
-            <label className="text-gray-400 text-sm mb-2 block">{label}</label>
-            <select value={id} onChange={e => setId(e.target.value)}
-              className="w-full bg-zinc-800 border border-white/10 text-white rounded-xl px-4 py-3 focus:outline-none focus:border-yellow-400">
+            <label className="text-sm mb-2 block" style={{ color: 'var(--text-muted)' }}>{label}</label>
+            <select
+              value={id}
+              onChange={e => setId(e.target.value)}
+              className="w-full rounded-xl px-4 py-3 focus:outline-none"
+              style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', color: '#fff' }}
+            >
               <option value="">Choisir...</option>
               {items.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
             </select>
@@ -50,18 +61,18 @@ export default function ComparePage() {
       </div>
 
       {left && right && (
-        <div className="bg-zinc-900 border border-white/10 rounded-2xl p-6">
+        <div className="rounded-2xl p-6" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
           <div className="grid grid-cols-3 gap-4 mb-6">
             <div className="text-center">
               <p className="text-white font-bold text-lg">{left.name}</p>
-              <p className="text-gray-400 text-sm">{(left as Vehicle).manufacturer || (left as Weapon).category}</p>
+              <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{(left as Vehicle).manufacturer || (left as Weapon).category}</p>
             </div>
             <div className="flex items-center justify-center">
-              <span className="text-yellow-400 font-black text-xl">VS</span>
+              <span className="font-black text-xl" style={{ color: 'var(--accent-gold)' }}>VS</span>
             </div>
             <div className="text-center">
               <p className="text-white font-bold text-lg">{right.name}</p>
-              <p className="text-gray-400 text-sm">{(right as Vehicle).manufacturer || (right as Weapon).category}</p>
+              <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{(right as Vehicle).manufacturer || (right as Weapon).category}</p>
             </div>
           </div>
           <div className="space-y-4">
@@ -71,17 +82,17 @@ export default function ComparePage() {
               const winner = lv > rv ? 'left' : rv > lv ? 'right' : 'tie'
               return (
                 <div key={key}>
-                  <div className="flex justify-between text-xs text-gray-400 mb-2">
-                    <span className={winner === 'left' ? 'text-yellow-400 font-bold' : ''}>{lv}</span>
+                  <div className="flex justify-between text-xs mb-2" style={{ color: 'var(--text-muted)' }}>
+                    <span style={winner === 'left' ? { color: 'var(--accent-gold)', fontWeight: 700 } : {}}>{lv}</span>
                     <span className="capitalize">{key.replace('_', ' ')}</span>
-                    <span className={winner === 'right' ? 'text-yellow-400 font-bold' : ''}>{rv}</span>
+                    <span style={winner === 'right' ? { color: 'var(--accent-gold)', fontWeight: 700 } : {}}>{rv}</span>
                   </div>
                   <div className="flex gap-1 h-2">
-                    <div className="flex-1 bg-zinc-700 rounded-l-full overflow-hidden flex justify-end">
-                      <div className={`h-full rounded-l-full ${winner === 'left' ? 'bg-yellow-400' : 'bg-zinc-500'}`} style={{ width: `${lv}%` }} />
+                    <div className="flex-1 rounded-l-full overflow-hidden flex justify-end" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                      <div className="h-full rounded-l-full" style={{ width: `${lv}%`, background: winner === 'left' ? 'var(--accent-gold)' : 'rgba(255,255,255,0.2)' }} />
                     </div>
-                    <div className="flex-1 bg-zinc-700 rounded-r-full overflow-hidden">
-                      <div className={`h-full rounded-r-full ${winner === 'right' ? 'bg-yellow-400' : 'bg-zinc-500'}`} style={{ width: `${rv}%` }} />
+                    <div className="flex-1 rounded-r-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                      <div className="h-full rounded-r-full" style={{ width: `${rv}%`, background: winner === 'right' ? 'var(--accent-gold)' : 'rgba(255,255,255,0.2)' }} />
                     </div>
                   </div>
                 </div>
@@ -92,7 +103,7 @@ export default function ComparePage() {
       )}
 
       {(!left || !right) && (
-        <div className="text-center text-gray-600 py-16">Sélectionne deux éléments pour comparer</div>
+        <div className="text-center py-16" style={{ color: 'var(--text-muted)' }}>Sélectionne deux éléments pour comparer</div>
       )}
     </div>
     </>

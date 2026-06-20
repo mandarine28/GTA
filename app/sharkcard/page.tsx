@@ -28,17 +28,7 @@ function fmt(n: number) {
 
 const LIVE = false // Passer à true au lancement de GTA 6
 
-const LIVE = false // Passer à true au lancement de GTA 6
-
 export default function SharkcardPage() {
-  if (!LIVE) return (
-    <>
-      <PageHero title="SHARK CARDS" label="Outils" image="/images/gameplay4.jpg" />
-      <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
-        <ComingSoonNotice />
-      </div>
-    </>
-  )
   if (!LIVE) return (
     <>
       <PageHero title="SHARK CARDS" label="Outils" image="/images/gameplay4.jpg" />

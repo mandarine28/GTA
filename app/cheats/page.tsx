@@ -26,17 +26,7 @@ const categories = ['Tout', 'Argent', 'Santé', 'Armes', 'Police', 'Véhicules',
 
 const LIVE = false // Passer à true au lancement de GTA 6
 
-const LIVE = false // Passer à true au lancement de GTA 6
-
 export default function CheatsPage() {
-  if (!LIVE) return (
-    <>
-      <PageHero title="CODES DE TRICHE" label="Guides" image="/images/gameplay4.jpg" />
-      <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
-        <ComingSoonNotice />
-      </div>
-    </>
-  )
   if (!LIVE) return (
     <>
       <PageHero title="CODES DE TRICHE" label="Guides" image="/images/gameplay4.jpg" />

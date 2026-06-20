@@ -18,7 +18,7 @@ export default async function WeaponsPage() {
     <>
       <PageHero title="ARMES GTA VI" label="Base de données" image="/images/gameplay6.jpg" />
       <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-0">
         {weapons.map((weapon) => {
           const color = categoryColor[weapon.category] || '#F0C040'
           return (
@@ -71,6 +71,11 @@ export default async function WeaponsPage() {
           )
         })}
       </div>
+
+      <PageNextSteps steps={[
+        { href: '/database/vehicles', label: 'Base de données', title: 'Véhicules GTA VI', desc: 'Stats et prix complets', image: '/images/gameplay5.jpg' },
+        { href: '/compare', label: 'Outils', title: 'Comparateur', desc: 'Comparez armes et véhicules', image: '/images/gameplay3.jpg' },
+      ]} />
     </div>
     </>
   )

@@ -104,9 +104,9 @@ export default function ConfigPage() {
                 <li key={item.label} className="flex items-center gap-2.5">
                   <span
                     className="font-mono text-xs flex-shrink-0"
-                    style={{ color: '#22c55e' }}
+                    style={{ color: item.active ? '#22c55e' : 'rgba(255,255,255,0.2)' }}
                   >
-                    ✓
+                    {item.active ? '✓' : '—'}
                   </span>
                   <span
                     style={{
@@ -150,6 +150,11 @@ export default function ConfigPage() {
       <p className="text-xs mt-10 text-center" style={{ color: 'var(--text-muted)' }}>
         Prix indicatifs — éditions officielles non encore confirmées par Rockstar Games.
       </p>
+
+      <PageNextSteps steps={[
+        { href: '/acheter', label: 'Boutique', title: 'Précommander GTA VI', desc: 'Amazon, Fnac, Micromania et plus', image: '/images/gameplay5.jpg' },
+        { href: '/game', label: 'Jeu', title: 'Histoire & Personnages', desc: 'Jason, Lucia et le cast', image: '/images/gameplay2.jpg' },
+      ]} />
     </div>
     </>
   )
