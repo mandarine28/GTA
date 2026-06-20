@@ -3,7 +3,7 @@
 /* Pricedown — place the font file at public/fonts/Pricedown.ttf */
 @font-face {
   font-family: 'Pricedown';
-  src: url('/fonts/Pricedown.ttf') format('truetype');
+  src: url('/fonts/Pricedown.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;

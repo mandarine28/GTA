@@ -6,8 +6,10 @@ import { useState, useEffect } from 'react'
 const RELEASE_DATE = new Date('2026-11-19T00:00:00')
 
 function useCountdown(target: Date) {
+  const [mounted, setMounted] = useState(false)
   const [t, setT] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
   useEffect(() => {
+    setMounted(true)
     const tick = () => {
       const diff = Math.max(0, target.getTime() - Date.now())
       setT({
@@ -20,8 +22,8 @@ function useCountdown(target: Date) {
     tick()
     const id = setInterval(tick, 1000)
     return () => clearInterval(id)
-  }, [])
-  return t
+  }, [target])
+  return { ...t, mounted }
 }
 
 const navColumns = [
@@ -80,7 +82,7 @@ function CountUnit({ value, label }: { value: number; label: string }) {
 }
 
 export default function Footer() {
-  const { days, hours, minutes, seconds } = useCountdown(RELEASE_DATE)
+  const { days, hours, minutes, seconds, mounted } = useCountdown(RELEASE_DATE)
 
   return (
     <footer style={{ background: '#060f1c', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
@@ -89,14 +91,17 @@ export default function Footer() {
       <div className="px-4 py-16" style={{ background: 'linear-gradient(180deg, rgba(240,192,64,0.04) 0%, transparent 100%)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div className="max-w-7xl mx-auto text-center">
           <p className="text-xs font-bold tracking-[0.3em] uppercase mb-3" style={{ color: 'var(--accent-gold)' }}>
-            Disponible le 26 mai 2026
+            Disponible le 19 novembre 2026
           </p>
           <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-8">
             PRÉCOMMANDER GTA VI<br />
             <span style={{ color: 'var(--accent-gold)' }}>DÈS MAINTENANT</span>
           </h2>
 
-          <div className="flex items-start justify-center gap-4 mb-10">
+          <div
+            className="flex items-start justify-center gap-4 mb-10"
+            style={{ opacity: mounted ? 1 : 0, transition: 'opacity 0.3s' }}
+          >
             <CountUnit value={days} label="Jours" />
             <span className="text-2xl font-black mt-4" style={{ color: 'var(--accent-gold)' }}>:</span>
             <CountUnit value={hours} label="Heures" />

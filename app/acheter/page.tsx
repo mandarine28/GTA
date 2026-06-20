@@ -16,7 +16,7 @@ const retailers = [
   { name: 'cdiscount', display: 'Cdiscount®', href: '#', style: { fontSize: '1.15rem', fontWeight: 700 } },
   { name: 'leclerc', display: 'E.Leclerc ®', href: '#', style: { fontSize: '1.1rem', fontWeight: 600 } },
   { name: 'fnac', display: 'fnac', href: '#', style: { fontFamily: 'Arial, sans-serif', fontSize: '1.5rem', fontWeight: 900, letterSpacing: '-0.02em' } },
-  { name: 'gmg', display: '🎮 green man\ngaming', href: '#', style: { fontSize: '0.9rem', fontWeight: 700, lineHeight: 1.3, textAlign: 'center' as const } },
+  { name: 'gmg', display: 'green man\ngaming', href: '#', style: { fontSize: '0.9rem', fontWeight: 700, lineHeight: 1.3, textAlign: 'center' as const } },
 ]
 
 const infoLinks = [

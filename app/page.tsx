@@ -24,7 +24,7 @@ export default function HomePage() {
             <p className="text-xs font-bold tracking-[0.3em] uppercase mb-4" style={{ color: 'var(--accent-gold)' }}>
               La référence francophone
             </p>
-            <h1 className="text-6xl md:text-7xl font-black tracking-tight leading-none mb-6">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-none mb-6">
               TOUT SUR<br />
               <span style={{ color: 'var(--accent-gold)' }}>GTA VI</span>
             </h1>
