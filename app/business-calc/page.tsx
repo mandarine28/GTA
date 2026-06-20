@@ -103,7 +103,28 @@ function fmt(n: number) {
   return `$${(n / 1000).toFixed(0)}K`
 }
 
+const LIVE = false // Passer à true au lancement de GTA 6
+
+const LIVE = false // Passer à true au lancement de GTA 6
+
 export default function BusinessCalcPage() {
+  if (!LIVE) return (
+    <>
+      <PageHero title="BUSINESS GTA ONLINE" label="Outils" image="/images/gameplay6.jpg" />
+      <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
+        <ComingSoonNotice />
+      </div>
+    </>
+  )
+  if (!LIVE) return (
+    <>
+      <PageHero title="BUSINESS GTA ONLINE" label="Outils" image="/images/gameplay6.jpg" />
+      <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
+        <ComingSoonNotice />
+      </div>
+    </>
+  )
+
   const [category, setCategory] = useState('Tout')
   const [hours, setHours] = useState(2)
   const [sort, setSort] = useState<'revenue' | 'name'>('revenue')

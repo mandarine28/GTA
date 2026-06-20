@@ -24,7 +24,28 @@ const cheats: { name: string; effect: string; ps5: string; xbox: string; pc: str
 
 const categories = ['Tout', 'Argent', 'Santé', 'Armes', 'Police', 'Véhicules', 'Fun']
 
+const LIVE = false // Passer à true au lancement de GTA 6
+
+const LIVE = false // Passer à true au lancement de GTA 6
+
 export default function CheatsPage() {
+  if (!LIVE) return (
+    <>
+      <PageHero title="CODES DE TRICHE" label="Guides" image="/images/gameplay4.jpg" />
+      <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
+        <ComingSoonNotice />
+      </div>
+    </>
+  )
+  if (!LIVE) return (
+    <>
+      <PageHero title="CODES DE TRICHE" label="Guides" image="/images/gameplay4.jpg" />
+      <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
+        <ComingSoonNotice />
+      </div>
+    </>
+  )
+
   const [platform, setPlatform] = useState<Platform>('ps5')
   const [category, setCategory] = useState('Tout')
   const [copied, setCopied] = useState<string | null>(null)
@@ -109,6 +130,11 @@ export default function CheatsPage() {
       <p className="text-xs mt-8 text-center" style={{ color: 'var(--text-muted)' }}>
         Codes basés sur les patterns GTA V, à confirmer lors de la sortie officielle le 19 novembre 2026.
       </p>
+
+      <PageNextSteps steps={[
+        { href: '/glitches', label: 'Guides', title: 'Glitches GTA VI', desc: 'Exploits vérifiés et actifs', image: '/images/gameplay3.jpg' },
+        { href: '/money', label: 'Guides', title: "Gagner de l'argent", desc: 'Meilleures méthodes $/h', image: '/images/gameplay4.jpg' },
+      ]} />
     </div>
     </>
   )

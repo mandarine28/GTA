@@ -26,7 +26,28 @@ function fmt(n: number) {
   return `${(n / 1000).toFixed(0)}K`
 }
 
+const LIVE = false // Passer à true au lancement de GTA 6
+
+const LIVE = false // Passer à true au lancement de GTA 6
+
 export default function SharkcardPage() {
+  if (!LIVE) return (
+    <>
+      <PageHero title="SHARK CARDS" label="Outils" image="/images/gameplay4.jpg" />
+      <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
+        <ComingSoonNotice />
+      </div>
+    </>
+  )
+  if (!LIVE) return (
+    <>
+      <PageHero title="SHARK CARDS" label="Outils" image="/images/gameplay4.jpg" />
+      <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
+        <ComingSoonNotice />
+      </div>
+    </>
+  )
+
   const [activity, setActivity] = useState(grindable[0])
   const [hourlyWage, setHourlyWage] = useState(15)
 

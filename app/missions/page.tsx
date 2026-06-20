@@ -17,7 +17,28 @@ const difficultyColor: Record<string, string> = {
   'Difficile': 'text-red-400 bg-red-400/10',
 }
 
+const LIVE = false // Passer à true au lancement de GTA 6
+
+const LIVE = false // Passer à true au lancement de GTA 6
+
 export default function MissionsPage() {
+  if (!LIVE) return (
+    <>
+      <PageHero title="MISSIONS" label="Guides" image="/images/gameplay1.jpg" />
+      <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
+        <ComingSoonNotice />
+      </div>
+    </>
+  )
+  if (!LIVE) return (
+    <>
+      <PageHero title="MISSIONS" label="Guides" image="/images/gameplay1.jpg" />
+      <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
+        <ComingSoonNotice />
+      </div>
+    </>
+  )
+
   const [selected, setSelected] = useState<string | null>(null)
   const [guide, setGuide] = useState<string | null>(null)
 
