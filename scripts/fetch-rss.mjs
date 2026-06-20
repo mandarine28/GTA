@@ -22,8 +22,8 @@ const SOURCES = [
   },
   {
     name: 'Reddit r/GTA6',
-    url: 'https://www.reddit.com/r/GTA6/new.json?limit=25&sort=new',
-    type: 'reddit-json',
+    url: 'https://www.reddit.com/r/GTA6/new.rss',
+    type: 'rss',
   },
 ]
 
@@ -303,7 +303,11 @@ async function main() {
       }
 
       const allBodyImages = [...new Set([...rssBodyImages, ...pageBodyImages])]
-      const contentWithImages = weaveImages(rawContent, allBodyImages)
+      // Fallback: insert cover image midway in content if no body images found
+      const imagesToWeave = allBodyImages.length > 0
+        ? allBodyImages
+        : (cover_image ? [cover_image] : [])
+      const contentWithImages = weaveImages(rawContent, imagesToWeave)
 
       toInsert.push({
         title: item.title.slice(0, 255),
