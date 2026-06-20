@@ -134,6 +134,13 @@ function parseRedditJson(json) {
     }))
 }
 
+// ── GTA 6 relevance filter ────────────────────────────────────────
+
+function isGTA6Related(title) {
+  const t = title.toLowerCase()
+  return /gta.{0,3}6|gta.{0,3}vi\b|grand theft auto.{0,3}6|grand theft auto.{0,3}vi\b|vice city|leonida/.test(t)
+}
+
 // ── Category detection ────────────────────────────────────────────
 
 function detectCategory(title) {
@@ -202,6 +209,7 @@ async function main() {
 
     for (const item of items) {
       if (!item.title || !item.link) continue
+      if (!isGTA6Related(item.title)) continue
       if (existingUrls.has(item.link)) continue
 
       const pubDate = item.pubDate
