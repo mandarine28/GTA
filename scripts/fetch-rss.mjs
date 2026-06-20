@@ -145,6 +145,36 @@ function parseRedditJson(json) {
     }))
 }
 
+// ── Body image extractor ──────────────────────────────────────────
+
+function extractBodyImages(html) {
+  const imgs = []
+  const re = /<img[^>]+src=["']([^"']+)["']/gi
+  let m
+  while ((m = re.exec(html)) !== null) {
+    const src = m[1]
+    if (src.startsWith('http') && !/pixel|tracking|stat\.|beacon|1x1|spacer/i.test(src)) {
+      imgs.push(src)
+    }
+  }
+  return imgs
+}
+
+function weaveImages(text, images) {
+  if (images.length === 0) return text
+  const paragraphs = text.split('\n\n')
+  const result = []
+  let imgIdx = 0
+  for (let i = 0; i < paragraphs.length; i++) {
+    result.push(paragraphs[i])
+    // Insert one image after every 3rd paragraph
+    if ((i + 1) % 3 === 0 && imgIdx < images.length) {
+      result.push(`[IMAGE:${images[imgIdx++]}]`)
+    }
+  }
+  return result.join('\n\n')
+}
+
 // ── og:image scraper ──────────────────────────────────────────────
 
 async function fetchOgImage(url) {
@@ -245,10 +275,13 @@ async function main() {
       const pubDate = item.pubDate
         ? new Date(item.pubDate).toISOString()
         : new Date().toISOString()
-      const rawContent = stripHtml(item.description || item.title)
+      const rawHtml = item.description || item.title
+      const bodyImages = extractBodyImages(rawHtml)
+      const rawContent = stripHtml(rawHtml)
         .replace(/^listen to this\s*/i, '')
         .replace(/listenbutton\w*\s*/gi, '')
         .trim()
+      const contentWithImages = weaveImages(rawContent, bodyImages)
 
       // Image: from RSS first, then og:image scrape
       let cover_image = item.image || null
@@ -259,7 +292,7 @@ async function main() {
       toInsert.push({
         title: item.title.slice(0, 255),
         slug: makeSlug(item.title, pubDate, item.link),
-        content: rawContent.slice(0, 8000),
+        content: contentWithImages.slice(0, 8000),
         summary: rawContent.slice(0, 200),
         source_url: item.link,
         source_name: source.name,

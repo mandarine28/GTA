@@ -64,6 +64,14 @@ function renderContent(content: string) {
       const text = trimmed.slice(3)
       return <h2 key={i} id={slugify(text)}>{text}</h2>
     }
+    if (trimmed.startsWith('[IMAGE:') && trimmed.endsWith(']')) {
+      const src = trimmed.slice(7, -1)
+      return (
+        <div key={i} className="relative w-full rounded-xl overflow-hidden my-6" style={{ aspectRatio: '16/9' }}>
+          <Image src={src} alt="" fill className="object-cover" />
+        </div>
+      )
+    }
     return <p key={i}>{trimmed}</p>
   })
 }
