@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { mockArticles } from '@/lib/mock-data'
+import { getArticles, getArticleBySlug } from '@/lib/db'
 import type { Metadata } from 'next'
 
 const newsImages = [
@@ -16,15 +16,16 @@ const categoryLabel: Record<string, string> = {
   easter_egg: 'Easter Egg',
 }
 
-export function generateStaticParams() {
-  return mockArticles.map(a => ({ slug: a.slug }))
+export async function generateStaticParams() {
+  const articles = await getArticles()
+  return articles.map(a => ({ slug: a.slug }))
 }
 
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
   const { slug } = await params
-  const article = mockArticles.find(a => a.slug === slug)
+  const article = await getArticleBySlug(slug)
   if (!article) return {}
   return {
     title: `${article.title} - Grand Theft Info`,
@@ -69,12 +70,12 @@ function renderContent(content: string) {
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const article = mockArticles.find(a => a.slug === slug)
+  const [article, allArticles] = await Promise.all([getArticleBySlug(slug), getArticles()])
   if (!article) notFound()
 
   const minutes = readingTime(article.content)
   const coverImg = article.cover_image || newsImages[0]
-  const related = mockArticles.filter(a => a.slug !== slug).slice(0, 3)
+  const related = allArticles.filter(a => a.slug !== slug).slice(0, 3)
   const headings = extractHeadings(article.content)
 
   return (

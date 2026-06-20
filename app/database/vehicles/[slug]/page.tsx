@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
-import { mockVehicles } from '@/lib/mock-data'
+import { getVehicles, getVehicleBySlug } from '@/lib/db'
 import PageNextSteps from '@/components/ui/PageNextSteps'
 
 const bgImages = ['/images/gameplay1.jpg', '/images/gameplay4.jpg', '/images/gameplay5.jpg']
@@ -15,15 +15,16 @@ const statLabels: Record<string, string> = {
   speed: 'Vitesse', acceleration: 'Accélération', handling: 'Maniabilité', braking: 'Freinage', traction: 'Traction',
 }
 
-export function generateStaticParams() {
-  return mockVehicles.map(v => ({ slug: v.slug }))
+export async function generateStaticParams() {
+  const vehicles = await getVehicles()
+  return vehicles.map(v => ({ slug: v.slug }))
 }
 
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
   const { slug } = await params
-  const vehicle = mockVehicles.find(v => v.slug === slug)
+  const vehicle = await getVehicleBySlug(slug)
   if (!vehicle) return {}
   return {
     title: `${vehicle.name} - Véhicules GTA VI - Grand Theft Info`,
@@ -35,10 +36,10 @@ export default async function VehiclePage(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params
-  const vehicle = mockVehicles.find(v => v.slug === slug)
+  const vehicle = await getVehicleBySlug(slug)
   if (!vehicle) notFound()
 
-  const idx = mockVehicles.indexOf(vehicle)
+  const idx = 0
   const img = bgImages[idx % bgImages.length]
   const color = categoryColors[vehicle.category] || '#F0C040'
 

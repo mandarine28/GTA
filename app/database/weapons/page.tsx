@@ -1,4 +1,4 @@
-import { mockWeapons } from '@/lib/mock-data'
+import { getWeapons } from '@/lib/db'
 import PageHero from '@/components/ui/PageHero'
 import PageNextSteps from '@/components/ui/PageNextSteps'
 
@@ -12,13 +12,14 @@ const categoryColor: Record<string, string> = {
   melee: '#6B7280',
 }
 
-export default function WeaponsPage() {
+export default async function WeaponsPage() {
+  const weapons = await getWeapons()
   return (
     <>
       <PageHero title="ARMES GTA VI" label="Base de données" image="/images/gameplay6.jpg" />
       <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {mockWeapons.map((weapon) => {
+        {weapons.map((weapon) => {
           const color = categoryColor[weapon.category] || '#F0C040'
           return (
             <div key={weapon.id} className="rounded-2xl overflow-hidden" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>

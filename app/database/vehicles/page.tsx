@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { mockVehicles } from '@/lib/mock-data'
+import { getVehicles } from '@/lib/db'
 import PageHero from '@/components/ui/PageHero'
 import PageNextSteps from '@/components/ui/PageNextSteps'
 
@@ -9,13 +9,14 @@ const categoryColors: Record<string, string> = {
   supercar: '#F0C040', muscle: '#E05030', motorcycle: '#8B1FA5', truck: '#3080E0', suv: '#20A060',
 }
 
-export default function VehiclesPage() {
+export default async function VehiclesPage() {
+  const vehicles = await getVehicles()
   return (
     <>
       <PageHero title="VÉHICULES GTA VI" label="Base de données" image="/images/gameplay5.jpg" />
       <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mockVehicles.map((v, idx) => (
+          {vehicles.map((v, idx) => (
             <Link
               key={v.id}
               href={`/database/vehicles/${v.slug}`}

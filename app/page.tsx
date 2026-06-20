@@ -1,12 +1,14 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { mockArticles, mockWeeklyUpdate } from '@/lib/mock-data'
+import { mockWeeklyUpdate } from '@/lib/mock-data'
+import { getArticles } from '@/lib/db'
 import Countdown from '@/components/ui/Countdown'
 
 const newsImages = ['/images/gameplay1.jpg', '/images/gameplay2.jpg', '/images/gameplay3.jpg']
 
-export default function HomePage() {
-  const latestArticles = mockArticles.slice(0, 3)
+export default async function HomePage() {
+  const allArticles = await getArticles()
+  const latestArticles = allArticles.slice(0, 3)
   const update = mockWeeklyUpdate
 
   return (
