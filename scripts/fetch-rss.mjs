@@ -98,11 +98,20 @@ function extractLink(itemXml) {
 }
 
 function extractContentRss(itemXml) {
-  // Prefer full content over description
   const fullRe = /<content:encoded[^>]*><!\[CDATA\[([\s\S]*?)\]\]><\/content:encoded>/i
   const fullMatch = itemXml.match(fullRe)
   if (fullMatch) return fullMatch[1].trim()
   return extractXmlTag(itemXml, 'description')
+}
+
+function extractImageRss(itemXml) {
+  const media = itemXml.match(/<media:(?:content|thumbnail)[^>]+url=["']([^"']+)["']/)
+  if (media) return media[1]
+  const enclosure = itemXml.match(/<enclosure[^>]+url=["']([^"']+)["'][^>]*type=["']image/)
+  if (enclosure) return enclosure[1]
+  const img = itemXml.match(/<img[^>]+src=["']([^"']+)["']/)
+  if (img) return img[1]
+  return null
 }
 
 function parseRSS(xml) {
@@ -116,6 +125,7 @@ function parseRSS(xml) {
       link: extractLink(itemXml),
       description: extractContentRss(itemXml),
       pubDate: extractXmlTag(itemXml, 'pubDate') || extractXmlTag(itemXml, 'dc:date'),
+      image: extractImageRss(itemXml),
     })
   }
   return items
@@ -131,7 +141,27 @@ function parseRedditJson(json) {
       link: `https://www.reddit.com${c.data.permalink}`,
       description: c.data.selftext || c.data.title,
       pubDate: new Date(c.data.created_utc * 1000).toISOString(),
+      image: c.data.thumbnail?.startsWith('http') ? c.data.thumbnail : null,
     }))
+}
+
+// ── og:image scraper ──────────────────────────────────────────────
+
+async function fetchOgImage(url) {
+  try {
+    const res = await fetch(url, {
+      headers: { 'User-Agent': 'GrandTheftInfo-RSS/1.0 (+https://gta6-hub-tawny.vercel.app)' },
+      signal: AbortSignal.timeout(8_000),
+    })
+    if (!res.ok) return null
+    const html = await res.text()
+    const match =
+      html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/) ||
+      html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/)
+    return match ? match[1] : null
+  } catch {
+    return null
+  }
 }
 
 // ── GTA 6 relevance filter ────────────────────────────────────────
@@ -220,6 +250,12 @@ async function main() {
         .replace(/listenbutton\w*\s*/gi, '')
         .trim()
 
+      // Image: from RSS first, then og:image scrape
+      let cover_image = item.image || null
+      if (!cover_image && source.type !== 'reddit-json') {
+        cover_image = await fetchOgImage(item.link)
+      }
+
       toInsert.push({
         title: item.title.slice(0, 255),
         slug: makeSlug(item.title, pubDate, item.link),
@@ -228,6 +264,7 @@ async function main() {
         source_url: item.link,
         source_name: source.name,
         category: detectCategory(item.title),
+        cover_image,
         published_at: pubDate,
       })
 
