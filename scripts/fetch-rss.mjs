@@ -162,16 +162,15 @@ function extractBodyImages(html) {
 
 function weaveImages(text, images) {
   if (images.length === 0) return text
-  const paragraphs = text.split('\n\n')
-  const result = []
-  let imgIdx = 0
-  for (let i = 0; i < paragraphs.length; i++) {
-    result.push(paragraphs[i])
-    // Insert one image after every 3rd paragraph
-    if ((i + 1) % 3 === 0 && imgIdx < images.length) {
-      result.push(`[IMAGE:${images[imgIdx++]}]`)
-    }
-  }
+  const paragraphs = text.split('\n\n').filter(p => p.trim())
+  if (paragraphs.length === 0) return text
+
+  const mid = Math.max(1, Math.floor(paragraphs.length / 2))
+  const result = [
+    ...paragraphs.slice(0, mid),
+    `[IMAGE:${images[0]}]`,
+    ...paragraphs.slice(mid),
+  ]
   return result.join('\n\n')
 }
 
