@@ -56,7 +56,7 @@ export default function ConfigPage() {
     <>
       <PageHero title="ÉDITIONS" label="Jeu" image="/images/gameplay3.jpg" />
       <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
-      <div className="flex gap-8 items-stretch justify-center">
+      <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch justify-center">
         {editions.map((edition) => (
           <div
             key={edition.name}
