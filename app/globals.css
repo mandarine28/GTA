@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+/* Pricedown — place the font file at public/fonts/Pricedown.ttf */
+@font-face {
+  font-family: 'Pricedown';
+  src: url('/fonts/Pricedown.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --bg-gradient: linear-gradient(160deg, #185F72 0%, #0E3D55 40%, #081E36 100%);
+  --bg-card: #0F2840;
+  --bg-card-light: #162F4A;
+  --accent-gold: #F0C040;
+  --accent-magenta: #8B1FA5;
+  --text-primary: #FFFFFF;
+  --text-warm: #ECE2D0;
+  --text-muted: rgba(255,255,255,0.55);
+  --border: rgba(255,255,255,0.1);
+  --border-gold: rgba(240,192,64,0.6);
+}
+
+@theme inline {
+  --font-sans: var(--font-urbanist);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  min-height: 100vh;
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  font-family: var(--font-urbanist), Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-barlow), Arial, sans-serif;
+}
+
+.text-gold { color: var(--accent-gold); }
+.text-magenta { color: var(--accent-magenta); }
+
+.gradient-title {
+  background: linear-gradient(90deg, #FFFFFF 0%, var(--accent-gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.card-gold {
+  background: var(--bg-card);
+  border: 1px solid var(--border-gold);
+  border-radius: 16px;
+}
+
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+.btn-gold:hover {
+  filter: brightness(0.88);
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.btn-outline:hover {
+  background: rgba(255,255,255,0.1);
+  transform: translateY(-2px);
+}
+
+/* Skip link — accessible keyboard nav */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.875rem;
+  background: var(--accent-gold);
+  color: #081E36;
+  transition: top 0.1s;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* Article TOC */
+.toc-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  font-size: 0.8125rem;
+  color: rgba(255,255,255,0.5);
+  transition: color 0.15s ease, background 0.15s ease;
+  text-decoration: none;
+}
+.toc-link:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.04);
+}
+.toc-num {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.45);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.toc-link:hover .toc-num {
+  background: rgba(240,192,64,0.14);
+  color: var(--accent-gold);
+}
+
+/* Article body typography */
+.article-body {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: var(--text-warm);
+  max-width: 68ch;
+}
+.article-body p {
+  margin-bottom: 1.5rem;
+}
+.article-body h2 {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.article-body h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+}
+.article-body strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+.article-body a {
+  color: var(--accent-gold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.article-body ul, .article-body ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.article-body li {
+  margin-bottom: 0.4rem;
+}
