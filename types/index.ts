@@ -37,6 +37,7 @@ export interface VehicleStats {
 
 export interface Vehicle {
   id: string
+  slug: string
   name: string
   category: VehicleCategory
   manufacturer: string
