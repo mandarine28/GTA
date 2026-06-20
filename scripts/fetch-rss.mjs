@@ -149,15 +149,15 @@ function parseRedditJson(json) {
 
 function extractBodyImages(html) {
   const imgs = []
-  const re = /<img[^>]+src=["']([^"']+)["']/gi
+  const re = /<img[^>]+(?:src|data-src|data-lazy-src|data-original)=["'](https?[^"']+)["']/gi
   let m
   while ((m = re.exec(html)) !== null) {
     const src = m[1]
-    if (src.startsWith('http') && !/pixel|tracking|stat\.|beacon|1x1|spacer/i.test(src)) {
+    if (!/pixel|tracking|stat\.|beacon|1x1|spacer|avatar|icon|logo/i.test(src)) {
       imgs.push(src)
     }
   }
-  return imgs
+  return [...new Set(imgs)]
 }
 
 function weaveImages(text, images) {
@@ -175,22 +175,33 @@ function weaveImages(text, images) {
   return result.join('\n\n')
 }
 
-// ── og:image scraper ──────────────────────────────────────────────
+// ── Article page scraper (og:image + body images) ────────────────
 
-async function fetchOgImage(url) {
+async function fetchArticleMeta(url) {
   try {
     const res = await fetch(url, {
-      headers: { 'User-Agent': 'GrandTheftInfo-RSS/1.0 (+https://gta6-hub-tawny.vercel.app)' },
-      signal: AbortSignal.timeout(8_000),
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; GrandTheftInfo-Bot/1.0)',
+      },
+      signal: AbortSignal.timeout(10_000),
     })
-    if (!res.ok) return null
+    if (!res.ok) return { ogImage: null, bodyImages: [] }
     const html = await res.text()
-    const match =
+
+    const ogMatch =
       html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/) ||
       html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/)
-    return match ? match[1] : null
-  } catch {
-    return null
+    const ogImage = ogMatch ? ogMatch[1] : null
+
+    const bodyImages = extractBodyImages(html)
+      .filter(src => src !== ogImage)
+      .slice(0, 5)
+
+    console.log(`    og:image: ${ogImage ? 'found' : 'none'}, body images: ${bodyImages.length}`)
+    return { ogImage, bodyImages }
+  } catch (err) {
+    console.warn(`    fetchArticleMeta failed: ${err.message}`)
+    return { ogImage: null, bodyImages: [] }
   }
 }
 
@@ -276,18 +287,23 @@ async function main() {
         ? new Date(item.pubDate).toISOString()
         : new Date().toISOString()
       const rawHtml = item.description || item.title
-      const bodyImages = extractBodyImages(rawHtml)
+      const rssBodyImages = extractBodyImages(rawHtml)
       const rawContent = stripHtml(rawHtml)
         .replace(/^listen to this\s*/i, '')
         .replace(/listenbutton\w*\s*/gi, '')
         .trim()
-      const contentWithImages = weaveImages(rawContent, bodyImages)
 
-      // Image: from RSS first, then og:image scrape
+      // Scrape article page for og:image + body images
       let cover_image = item.image || null
-      if (!cover_image && source.type !== 'reddit-json') {
-        cover_image = await fetchOgImage(item.link)
+      let pageBodyImages = []
+      if (source.type !== 'reddit-json') {
+        const meta = await fetchArticleMeta(item.link)
+        if (!cover_image) cover_image = meta.ogImage
+        pageBodyImages = meta.bodyImages
       }
+
+      const allBodyImages = [...new Set([...rssBodyImages, ...pageBodyImages])]
+      const contentWithImages = weaveImages(rawContent, allBodyImages)
 
       toInsert.push({
         title: item.title.slice(0, 255),
