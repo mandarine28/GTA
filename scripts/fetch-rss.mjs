@@ -208,6 +208,9 @@ async function main() {
         ? new Date(item.pubDate).toISOString()
         : new Date().toISOString()
       const rawContent = stripHtml(item.description || item.title)
+        .replace(/^listen to this\s*/i, '')
+        .replace(/listenbutton\w*\s*/gi, '')
+        .trim()
 
       toInsert.push({
         title: item.title.slice(0, 255),
