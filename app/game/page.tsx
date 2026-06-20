@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { Metadata } from 'next'
 import PageHero from '@/components/ui/PageHero'
 import SidebarLayout from '@/components/ui/SidebarLayout'
@@ -21,6 +22,7 @@ const sidebarSections = [
 
 const characters = [
   {
+    slug: 'jason-duval',
     name: 'Jason Duval',
     role: 'Protagoniste principal',
     desc: 'Ancien braqueur cherchant à rembourser ses dettes dans le comté de Leonida. Personnage principal jouable, plus posé et stratégique que ses prédécesseurs.',
@@ -29,11 +31,12 @@ const characters = [
     accent: 'var(--accent-gold)',
   },
   {
+    slug: 'lucia-caminos',
     name: 'Lucia Caminos',
     role: 'Co-protagoniste',
     desc: 'Petite amie de Jason, première femme protagoniste jouable de la franchise. Déterminée, impulsive, et au centre de la dynamique criminelle du jeu.',
     traits: ['Impulsive', 'Déterminée', '1ère femme jouable GTA'],
-    img: '/images/char2.png',
+    img: '/images/gameplay2.jpg',
     accent: 'var(--accent-magenta)',
   },
 ]
@@ -90,13 +93,23 @@ export default function GamePage() {
           <h2 className="text-2xl font-black mb-6">Protagonistes</h2>
           <div className="grid md:grid-cols-2 gap-6">
             {characters.map((char) => (
-              <div key={char.name} className="rounded-2xl overflow-hidden" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
+              <Link
+                key={char.name}
+                href={`/characters/${char.slug}`}
+                className="group rounded-2xl overflow-hidden block transition-transform hover:-translate-y-1"
+                style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}
+              >
                 <div className="relative h-64 overflow-hidden">
-                  <Image src={char.img} alt={char.name} fill className="object-cover object-top" />
+                  <Image src={char.img} alt={char.name} fill className="object-cover object-top group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0" style={{ background: 'linear-gradient(0deg, rgba(15,40,64,1) 0%, rgba(15,40,64,0.3) 60%, transparent 100%)' }} />
-                  <div className="absolute bottom-4 left-5">
-                    <p className="font-black text-2xl text-white">{char.name}</p>
-                    <p className="text-sm font-semibold" style={{ color: char.accent }}>{char.role}</p>
+                  <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between">
+                    <div>
+                      <p className="font-black text-2xl text-white">{char.name}</p>
+                      <p className="text-sm font-semibold" style={{ color: char.accent }}>{char.role}</p>
+                    </div>
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: char.accent }}>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#081E36" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </div>
                   </div>
                 </div>
                 <div className="p-5">
@@ -109,7 +122,7 @@ export default function GamePage() {
                     ))}
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </section>
