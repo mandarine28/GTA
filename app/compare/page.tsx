@@ -9,7 +9,18 @@ import PageNextSteps from '@/components/ui/PageNextSteps'
 
 type Mode = 'vehicles' | 'weapons'
 
+const LIVE = false // Passer à true au lancement de GTA 6
+
 export default function ComparePage() {
+  if (!LIVE) return (
+    <>
+      <PageHero title="COMPARATEUR" label="Base de données" image="/images/gameplay1.jpg" />
+      <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
+        <ComingSoonNotice />
+      </div>
+    </>
+  )
+
   const [mode, setMode] = useState<Mode>('vehicles')
   const [leftId, setLeftId] = useState<string>('')
   const [rightId, setRightId] = useState<string>('')

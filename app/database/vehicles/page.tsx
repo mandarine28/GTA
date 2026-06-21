@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getVehicles } from '@/lib/db'
 import PageHero from '@/components/ui/PageHero'
+import ComingSoonNotice from '@/components/ui/ComingSoonNotice'
 import PageNextSteps from '@/components/ui/PageNextSteps'
 
 const bgImages = ['/images/gameplay1.jpg', '/images/gameplay4.jpg', '/images/gameplay5.jpg']
@@ -9,7 +10,18 @@ const categoryColors: Record<string, string> = {
   supercar: '#F0C040', muscle: '#E05030', motorcycle: '#8B1FA5', truck: '#3080E0', suv: '#20A060',
 }
 
+const LIVE = false // Passer à true au lancement de GTA 6
+
 export default async function VehiclesPage() {
+  if (!LIVE) return (
+    <>
+      <PageHero title="VÉHICULES GTA VI" label="Base de données" image="/images/gameplay5.jpg" />
+      <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
+        <ComingSoonNotice />
+      </div>
+    </>
+  )
+
   const vehicles = await getVehicles()
   return (
     <>

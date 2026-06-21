@@ -1,5 +1,6 @@
 import { getWeapons } from '@/lib/db'
 import PageHero from '@/components/ui/PageHero'
+import ComingSoonNotice from '@/components/ui/ComingSoonNotice'
 import PageNextSteps from '@/components/ui/PageNextSteps'
 
 const categoryColor: Record<string, string> = {
@@ -12,7 +13,18 @@ const categoryColor: Record<string, string> = {
   melee: '#6B7280',
 }
 
+const LIVE = false // Passer à true au lancement de GTA 6
+
 export default async function WeaponsPage() {
+  if (!LIVE) return (
+    <>
+      <PageHero title="ARMES GTA VI" label="Base de données" image="/images/gameplay6.jpg" />
+      <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
+        <ComingSoonNotice />
+      </div>
+    </>
+  )
+
   const weapons = await getWeapons()
   return (
     <>
