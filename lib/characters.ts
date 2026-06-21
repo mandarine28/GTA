@@ -1,3 +1,9 @@
+export const roleLabelStyle: Record<string, { color: string; bg: string; border: string }> = {
+  'JOUABLE':    { color: '#F0C040', bg: 'rgba(240,192,64,0.15)',  border: 'rgba(240,192,64,0.35)' },
+  'ANTAGONISTE':{ color: '#EF4444', bg: 'rgba(239,68,68,0.15)',   border: 'rgba(239,68,68,0.35)'  },
+  'ALLIÉ':      { color: '#22c55e', bg: 'rgba(34,197,94,0.15)',   border: 'rgba(34,197,94,0.35)'  },
+}
+
 export interface CharacterData {
   slug: string
   name: string

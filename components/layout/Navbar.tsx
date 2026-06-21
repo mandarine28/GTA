@@ -21,7 +21,8 @@ const menu = [
     href: '/game',
     image: '/images/gameplay2.jpg',
     links: [
-      { href: '/game', label: 'Histoire & Personnages', desc: 'Jason, Lucia et le cast' },
+      { href: '/game', label: 'Histoire & Synopsis', desc: 'Scénario, univers, infos clés' },
+      { href: '/characters', label: 'Personnages', desc: 'Jason, Lucia et le cast complet' },
       { href: '/config', label: 'Éditions', desc: 'Standard, Deluxe, Ultimate' },
       { href: '/map', label: 'Carte de Vice City', desc: 'Explorez le monde' },
     ],

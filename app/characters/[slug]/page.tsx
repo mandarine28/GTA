@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
-import { characters } from '@/lib/characters'
+import { characters, roleLabelStyle } from '@/lib/characters'
 import PageNextSteps from '@/components/ui/PageNextSteps'
 
 export function generateStaticParams() {
@@ -66,7 +66,7 @@ export default async function CharacterPage(
             <div>
               <span
                 className="inline-block text-[10px] font-black tracking-[0.25em] uppercase px-3 py-1.5 rounded-full mb-3"
-                style={{ background: char.accentColor, color: '#081E36' }}
+                style={{ background: roleLabelStyle[char.roleLabel]?.bg, color: roleLabelStyle[char.roleLabel]?.color, border: `1px solid ${roleLabelStyle[char.roleLabel]?.border}` }}
               >
                 {char.roleLabel}
               </span>

@@ -4,6 +4,7 @@ import { Metadata } from 'next'
 import PageHero from '@/components/ui/PageHero'
 import SidebarLayout from '@/components/ui/SidebarLayout'
 import PageNextSteps from '@/components/ui/PageNextSteps'
+import { characters, roleLabelStyle } from '@/lib/characters'
 
 export const metadata: Metadata = {
   title: 'Grand Theft Info - Histoire & Personnages',
@@ -14,30 +15,9 @@ const sidebarSections = [
     title: 'Jeu',
     items: [
       { label: 'Synopsis', anchor: 'synopsis' },
-      { label: 'Protagonistes', anchor: 'protagonistes' },
+      { label: 'Personnages', anchor: 'personnages' },
       { label: 'Informations clés', anchor: 'infos' },
     ],
-  },
-]
-
-const characters = [
-  {
-    slug: 'jason-duval',
-    name: 'Jason Duval',
-    role: 'Protagoniste principal',
-    desc: 'Ancien braqueur cherchant à rembourser ses dettes dans le comté de Leonida. Personnage principal jouable, plus posé et stratégique que ses prédécesseurs.',
-    traits: ['Ancien criminel', 'Loyal', 'Calculateur'],
-    img: '/images/hero-char.png',
-    accent: 'var(--accent-gold)',
-  },
-  {
-    slug: 'lucia-caminos',
-    name: 'Lucia Caminos',
-    role: 'Co-protagoniste',
-    desc: 'Petite amie de Jason, première femme protagoniste jouable de la franchise. Déterminée, impulsive, et au centre de la dynamique criminelle du jeu.',
-    traits: ['Impulsive', 'Déterminée', '1ère femme jouable GTA'],
-    img: '/images/gameplay2.jpg',
-    accent: 'var(--accent-magenta)',
   },
 ]
 
@@ -89,42 +69,78 @@ export default function GamePage() {
         </section>
 
         {/* Characters */}
-        <section id="protagonistes" className="mb-12">
-          <h2 className="text-2xl font-black mb-6">Protagonistes</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            {characters.map((char) => (
-              <Link
-                key={char.name}
-                href={`/characters/${char.slug}`}
-                className="group rounded-2xl overflow-hidden block transition-transform hover:-translate-y-1"
-                style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}
-              >
-                <div className="relative h-64 overflow-hidden">
-                  <Image src={char.img} alt={char.name} fill className="object-cover object-top group-hover:scale-105 transition-transform duration-500" />
-                  <div className="absolute inset-0" style={{ background: 'linear-gradient(0deg, rgba(15,40,64,1) 0%, rgba(15,40,64,0.3) 60%, transparent 100%)' }} />
-                  <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between">
-                    <div>
-                      <p className="font-black text-2xl text-white">{char.name}</p>
-                      <p className="text-sm font-semibold" style={{ color: char.accent }}>{char.role}</p>
-                    </div>
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: char.accent }}>
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#081E36" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-5">
-                  <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--text-warm)' }}>{char.desc}</p>
-                  <div className="flex gap-2 flex-wrap">
-                    {char.traits.map(trait => (
-                      <span key={trait} className="text-xs px-2.5 py-1 rounded-full font-semibold" style={{ background: 'rgba(255,255,255,0.08)', color: 'var(--text-muted)' }}>
-                        {trait}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </Link>
-            ))}
+        <section id="personnages" className="mb-12">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-black">Personnages</h2>
+            <Link href="/characters" className="text-xs font-bold tracking-wider uppercase hover:opacity-70 transition-opacity" style={{ color: 'var(--accent-gold)' }}>
+              Voir tout le cast →
+            </Link>
           </div>
+
+          {/* Protagonistes */}
+          <p className="text-[10px] font-black tracking-[0.25em] uppercase mb-3" style={{ color: 'var(--accent-gold)' }}>Protagonistes jouables</p>
+          <div className="grid md:grid-cols-2 gap-5 mb-8">
+            {characters.filter(c => c.roleLabel === 'JOUABLE').map((char) => {
+              const ls = roleLabelStyle[char.roleLabel]
+              return (
+                <Link
+                  key={char.slug}
+                  href={`/characters/${char.slug}`}
+                  className="group rounded-2xl overflow-hidden block transition-transform hover:-translate-y-1"
+                  style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}
+                >
+                  <div className="relative h-56 overflow-hidden">
+                    <Image src={char.coverImage} alt={char.name} fill className="object-cover object-top group-hover:scale-105 transition-transform duration-500" />
+                    <div className="absolute inset-0" style={{ background: 'linear-gradient(0deg, rgba(15,40,64,1) 0%, rgba(15,40,64,0.3) 60%, transparent 100%)' }} />
+                    <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between">
+                      <div>
+                        <span className="inline-block text-[9px] font-black tracking-widest uppercase px-2 py-0.5 rounded-full mb-1" style={{ background: ls.bg, color: ls.color, border: `1px solid ${ls.border}` }}>{char.roleLabel}</span>
+                        <p className="font-black text-xl text-white">{char.name}</p>
+                        <p className="text-xs font-semibold" style={{ color: 'rgba(255,255,255,0.5)' }}>{char.role}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-4">
+                    <p className="text-sm leading-relaxed mb-3" style={{ color: 'var(--text-warm)' }}>{char.lead}</p>
+                    <div className="flex gap-2 flex-wrap">
+                      {char.traits.slice(0, 3).map(trait => (
+                        <span key={trait} className="text-xs px-2.5 py-1 rounded-full font-semibold" style={{ background: 'rgba(255,255,255,0.08)', color: 'var(--text-muted)' }}>{trait}</span>
+                      ))}
+                    </div>
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+
+          {/* Cast secondaire aperçu */}
+          <p className="text-[10px] font-black tracking-[0.25em] uppercase mb-3" style={{ color: 'var(--text-muted)' }}>Cast secondaire</p>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-5">
+            {characters.filter(c => c.roleLabel !== 'JOUABLE').map((char) => {
+              const ls = roleLabelStyle[char.roleLabel]
+              return (
+                <Link
+                  key={char.slug}
+                  href={`/characters/${char.slug}`}
+                  className="group rounded-xl p-4 flex items-center gap-3 transition-all hover:-translate-y-0.5"
+                  style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}
+                >
+                  <div className="flex-1 min-w-0">
+                    <span className="inline-block text-[8px] font-black tracking-widest uppercase px-1.5 py-0.5 rounded-full mb-1" style={{ background: ls.bg, color: ls.color, border: `1px solid ${ls.border}` }}>{char.roleLabel}</span>
+                    <p className="text-sm font-black text-white truncate">{char.name}</p>
+                    <p className="text-xs truncate" style={{ color: 'var(--text-muted)' }}>{char.role}</p>
+                  </div>
+                  <svg className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ color: 'var(--accent-gold)' }}>
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              )
+            })}
+          </div>
+
+          <Link href="/characters" className="inline-flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(240,192,64,0.1)', color: 'var(--accent-gold)', border: '1px solid rgba(240,192,64,0.25)' }}>
+            Fiches complètes de tous les personnages →
+          </Link>
         </section>
 
         {/* Key facts */}

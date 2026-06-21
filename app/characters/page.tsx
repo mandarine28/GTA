@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
-import { characters } from '@/lib/characters'
+import { characters, roleLabelStyle } from '@/lib/characters'
 import PageHero from '@/components/ui/PageHero'
 import PageNextSteps from '@/components/ui/PageNextSteps'
 
@@ -46,7 +46,7 @@ export default function CharactersPage() {
               <div className="absolute inset-x-0 bottom-0 p-8">
                 <span
                   className="inline-block text-[10px] font-black tracking-[0.25em] uppercase px-3 py-1.5 rounded-full mb-3"
-                  style={{ background: char.accentColor, color: '#081E36' }}
+                  style={{ background: roleLabelStyle[char.roleLabel]?.bg, color: roleLabelStyle[char.roleLabel]?.color, border: `1px solid ${roleLabelStyle[char.roleLabel]?.border}` }}
                 >
                   {char.roleLabel}
                 </span>
@@ -73,7 +73,7 @@ export default function CharactersPage() {
               </div>
               <div
                 className="absolute top-6 right-6 w-10 h-10 rounded-full flex items-center justify-center transition-all group-hover:scale-110"
-                style={{ background: char.accentColor }}
+                style={{ background: roleLabelStyle[char.roleLabel]?.color }}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#081E36" strokeWidth="2.5">
                   <path d="M5 12h14M12 5l7 7-7 7" />
@@ -108,7 +108,7 @@ export default function CharactersPage() {
               <div className="absolute inset-x-0 bottom-0 p-5">
                 <span
                   className="inline-block text-[9px] font-black tracking-[0.2em] uppercase px-2.5 py-1 rounded-full mb-2"
-                  style={{ background: `${char.accentColor}22`, color: char.accentColor, border: `1px solid ${char.accentColor}44` }}
+                  style={{ background: roleLabelStyle[char.roleLabel]?.bg, color: roleLabelStyle[char.roleLabel]?.color, border: `1px solid ${roleLabelStyle[char.roleLabel]?.border}` }}
                 >
                   {char.roleLabel}
                 </span>
