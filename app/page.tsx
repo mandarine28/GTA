@@ -21,24 +21,9 @@ export default async function HomePage() {
     <div>
       {/* HERO */}
       <section className="relative min-h-[90vh] flex items-center overflow-hidden rounded-3xl mx-4 mt-4">
-        <Image
-          src={allArticles[0]?.cover_image || stableFallback(allArticles[0]?.slug ?? '') || '/images/hero-bg.jpg'}
-          alt={allArticles[0]?.title ?? 'GTA 6 Hero'}
-          fill
-          className="object-cover object-center"
-          priority
-        />
+        <Image src="/images/hero-bg.jpg" alt="GTA 6 Hero" fill className="object-cover object-center" priority />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(11,10,8,0.92) 0%, rgba(11,10,8,0.6) 50%, rgba(11,10,8,0.2) 100%)' }} />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(0deg, rgba(11,10,8,1) 0%, transparent 40%)' }} />
-        {allArticles[0] && (
-          <Link
-            href={`/news/${allArticles[0].slug}`}
-            className="absolute top-5 left-5 flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-black tracking-widest uppercase backdrop-blur-sm transition-opacity hover:opacity-80"
-            style={{ background: 'var(--accent-gold)', color: '#081E36' }}
-          >
-            À la une · {allArticles[0].title.slice(0, 48)}{allArticles[0].title.length > 48 ? '…' : ''}
-          </Link>
-        )}
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-0 items-center">
           <div className="max-w-xl">
