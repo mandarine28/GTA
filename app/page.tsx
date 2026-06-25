@@ -6,6 +6,12 @@ import Countdown from '@/components/ui/Countdown'
 
 const newsImages = ['/images/gameplay1.jpg', '/images/gameplay2.jpg', '/images/gameplay3.jpg']
 
+function stableFallback(slug: string) {
+  let hash = 0
+  for (let i = 0; i < slug.length; i++) hash = (hash * 31 + slug.charCodeAt(i)) & 0xffffffff
+  return newsImages[Math.abs(hash) % newsImages.length]
+}
+
 export default async function HomePage() {
   const allArticles = await getArticles()
   const latestArticles = allArticles.slice(0, 3)
@@ -121,7 +127,7 @@ export default async function HomePage() {
             {latestArticles.map((article, idx) => (
               <Link key={article.id} href={`/news/${article.slug}`} className="group relative rounded-2xl overflow-hidden block" style={{ background: 'var(--bg-card)' }}>
                 <div className="relative h-48 overflow-hidden">
-                  <Image src={newsImages[idx] || '/images/gameplay1.jpg'} alt={article.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <Image src={article.cover_image || stableFallback(article.slug)} alt={article.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0" style={{ background: 'linear-gradient(0deg, rgba(38,33,52,1) 0%, transparent 60%)' }} />
                   <span className="absolute top-3 left-3 text-xs font-bold tracking-widest uppercase px-2 py-1 rounded-md" style={{ background: 'var(--accent-gold)', color: '#0b0a08' }}>
                     {article.category.replace('_', ' ')}
