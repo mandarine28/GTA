@@ -81,9 +81,24 @@ export default async function HomePage() {
           </div>
 
           <div className="relative hidden lg:block h-[90vh]">
-            <div className="absolute inset-6 rounded-[2.5rem] overflow-hidden">
-              <Image src="/images/hero-char.png" alt="GTA 6 Character" fill className="object-contain object-center" />
-            </div>
+            <Link href={allArticles[0] ? `/news/${allArticles[0].slug}` : '/news'} className="absolute inset-6 rounded-[2.5rem] overflow-hidden block group">
+              <Image
+                src={allArticles[0]?.cover_image || stableFallback(allArticles[0]?.slug ?? '') || '/images/gameplay1.jpg'}
+                alt={allArticles[0]?.title ?? 'Dernière news'}
+                fill
+                className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                priority
+              />
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(0deg, rgba(8,20,40,0.9) 0%, transparent 50%)' }} />
+              <div className="absolute bottom-0 left-0 right-0 p-8">
+                <span className="text-xs font-black tracking-widest uppercase px-3 py-1.5 rounded-full mb-3 inline-block" style={{ background: 'var(--accent-gold)', color: '#081E36' }}>
+                  À la une
+                </span>
+                <p className="text-xl font-black text-white leading-tight">
+                  {allArticles[0]?.title}
+                </p>
+              </div>
+            </Link>
           </div>
         </div>
       </section>
