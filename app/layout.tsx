@@ -30,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" className="h-full antialiased">
-      <body className={`${urbanist.variable} ${barlow.variable} min-h-full flex flex-col bg-zinc-950 text-white`}>
+      <body suppressHydrationWarning className={`${urbanist.variable} ${barlow.variable} min-h-full flex flex-col bg-zinc-950 text-white`}>
         <TopBanner />
         <Navbar />
         <main className="flex-1">{children}</main>
