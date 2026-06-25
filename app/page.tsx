@@ -65,7 +65,7 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="relative hidden lg:block h-[90vh]">
+          <div className="relative hidden lg:block h-[60vh] self-center">
             <Link href={allArticles[0] ? `/news/${allArticles[0].slug}` : '/news'} className="absolute inset-6 rounded-[2.5rem] overflow-hidden block group">
               <Image
                 src={allArticles[0]?.cover_image || stableFallback(allArticles[0]?.slug ?? '') || '/images/gameplay1.jpg'}
