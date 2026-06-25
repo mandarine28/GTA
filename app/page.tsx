@@ -88,43 +88,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* MÀJ HEBDO */}
-      <section className="py-20 px-4" style={{ background: 'rgba(8,20,40,0.6)' }}>
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <p className="text-xs font-bold tracking-widest uppercase mb-1" style={{ color: 'var(--accent-gold)' }}>Cette semaine</p>
-              <h2 className="text-3xl font-black">Mise à jour GTA Online</h2>
-            </div>
-            <Link href="/weekly" className="text-sm font-semibold hover:opacity-70 transition-opacity" style={{ color: 'var(--accent-gold)' }}>
-              Voir tout →
-            </Link>
-          </div>
-
-          <div className="rounded-2xl overflow-hidden border" style={{ borderColor: 'rgba(255,255,255,0.06)', background: 'var(--bg-card)' }}>
-            <div className="p-6 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-              <p className="text-sm mb-1" style={{ color: 'var(--text-muted)' }}>
-                Semaine du {new Date(update.week_start).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
-              </p>
-              <p style={{ color: 'var(--text-warm)' }}>{update.summary}</p>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-4">
-              {[
-                { label: 'Bonus', content: update.bonuses.map((b, i) => <p key={i} className="text-sm text-white">{b.name} <span className="font-bold" style={{ color: '#22c55e' }}>{b.multiplier}</span></p>) },
-                { label: 'Nouveaux véhicules', content: update.vehicles.filter(v => v.new).map((v, i) => <p key={i} className="text-sm text-white">{v.name}</p>) },
-                { label: 'Réductions', content: update.vehicles.filter(v => v.discount).map((v, i) => <p key={i} className="text-sm text-white">{v.name} <span className="font-bold text-red-400">-{v.discount}%</span></p>) },
-                { label: 'Events', content: update.events.map((e, i) => <p key={i} className="text-sm text-white">{e.name}</p>) },
-              ].map((col, i) => (
-                <div key={i} className="p-5 border-r last:border-r-0" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-                  <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: 'var(--accent-gold)' }}>{col.label}</p>
-                  <div className="space-y-1">{col.content}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* DERNIÈRES NEWS */}
       <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
@@ -158,6 +121,32 @@ export default async function HomePage() {
                 </div>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* MÀJ HEBDO */}
+      <section className="py-20 px-4" style={{ background: 'rgba(8,20,40,0.6)' }}>
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <p className="text-xs font-bold tracking-widest uppercase mb-1" style={{ color: 'var(--accent-gold)' }}>GTA Online</p>
+              <h2 className="text-3xl font-black">Mise à jour hebdomadaire</h2>
+            </div>
+          </div>
+          <div className="rounded-2xl border flex flex-col items-center justify-center py-16 px-6 text-center gap-4" style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'var(--bg-card)' }}>
+            <span className="text-4xl">🎮</span>
+            <p className="text-lg font-black text-white">Disponible dès la sortie de GTA VI</p>
+            <p className="text-sm max-w-md" style={{ color: 'var(--text-muted)' }}>
+              Les mises à jour hebdomadaires GTA Online seront publiées ici chaque semaine après le lancement du jeu. Bonus, nouveaux véhicules, réductions et événements en temps réel.
+            </p>
+            <Link
+              href="/weekly"
+              className="mt-2 px-5 py-2.5 rounded-xl text-sm font-bold border transition-opacity hover:opacity-70"
+              style={{ borderColor: 'rgba(255,255,255,0.15)', color: 'var(--text-warm)' }}
+            >
+              En savoir plus
+            </Link>
           </div>
         </div>
       </section>
