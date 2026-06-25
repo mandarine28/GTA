@@ -4,7 +4,8 @@ import { Metadata } from 'next'
 import PageHero from '@/components/ui/PageHero'
 import SidebarLayout from '@/components/ui/SidebarLayout'
 import PageNextSteps from '@/components/ui/PageNextSteps'
-import { characters, roleLabelStyle } from '@/lib/characters'
+import { roleLabelStyle } from '@/lib/characters'
+import { getCharacters } from '@/sanity/lib/queries'
 
 export const metadata: Metadata = {
   title: 'Grand Theft Info - Histoire & Personnages',
@@ -30,7 +31,9 @@ const facts = [
   { label: 'Développement', value: 'Rockstar North, 12 ans de développement' },
 ]
 
-export default function GamePage() {
+export default async function GamePage() {
+  const characters = await getCharacters()
+
   return (
     <>
       <PageHero title="HISTOIRE & PERSONNAGES" label="Jeu" image="/images/gameplay2.jpg" />

@@ -1,13 +1,16 @@
 #!/usr/bin/env node
-// Daily RSS pipeline: fetch → deduplicate by source_url → insert Supabase
-// Requires env: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
+// Daily RSS pipeline: fetch → deduplicate by source_url → insert Sanity
+// Requires env: NEXT_PUBLIC_SANITY_PROJECT_ID, NEXT_PUBLIC_SANITY_DATASET, SANITY_API_TOKEN
 
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@sanity/client'
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-)
+const sanity = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET ?? 'production',
+  apiVersion: '2024-01-01',
+  token: process.env.SANITY_API_TOKEN,
+  useCdn: false,
+})
 
 const SOURCES = [
   {
@@ -87,13 +90,10 @@ function extractXmlTag(xml, tag) {
 }
 
 function extractLink(itemXml) {
-  // <link>URL</link>
   const plain = itemXml.match(/<link>([^<]+)<\/link>/)
   if (plain) return plain[1].trim()
-  // <link href="URL" .../>
   const attr = itemXml.match(/<link[^>]+href="([^"]+)"/)
   if (attr) return attr[1].trim()
-  // Fallback: <guid>URL</guid>
   return extractXmlTag(itemXml, 'guid')
 }
 
@@ -164,14 +164,12 @@ function weaveImages(text, images) {
   if (images.length === 0) return text
   const paragraphs = text.split('\n\n').filter(p => p.trim())
   if (paragraphs.length === 0) return text
-
   const mid = Math.max(1, Math.floor(paragraphs.length / 2))
-  const result = [
+  return [
     ...paragraphs.slice(0, mid),
     `[IMAGE:${images[0]}]`,
     ...paragraphs.slice(mid),
-  ]
-  return result.join('\n\n')
+  ].join('\n\n')
 }
 
 // ── Article page scraper (og:image + body images) ────────────────
@@ -179,9 +177,7 @@ function weaveImages(text, images) {
 async function fetchArticleMeta(url) {
   try {
     const res = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; GrandTheftInfo-Bot/1.0)',
-      },
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; GrandTheftInfo-Bot/1.0)' },
       signal: AbortSignal.timeout(10_000),
     })
     if (!res.ok) return { ogImage: null, bodyImages: [] }
@@ -191,10 +187,7 @@ async function fetchArticleMeta(url) {
       html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/) ||
       html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/)
     const ogImage = ogMatch ? ogMatch[1] : null
-
-    const bodyImages = extractBodyImages(html)
-      .filter(src => src !== ogImage)
-      .slice(0, 5)
+    const bodyImages = extractBodyImages(html).filter(src => src !== ogImage).slice(0, 5)
 
     console.log(`    og:image: ${ogImage ? 'found' : 'none'}, body images: ${bodyImages.length}`)
     return { ogImage, bodyImages }
@@ -228,14 +221,12 @@ async function fetchSource(source) {
   try {
     const res = await fetch(source.url, {
       headers: {
-        'User-Agent':
-          'GrandTheftInfo-RSS/1.0 (+https://gta6-hub-tawny.vercel.app)',
+        'User-Agent': 'GrandTheftInfo-RSS/1.0 (+https://gta6-hub-tawny.vercel.app)',
         Accept: source.type === 'reddit-json' ? 'application/json' : 'application/rss+xml, application/xml, text/xml',
       },
       signal: AbortSignal.timeout(12_000),
     })
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
-
     if (source.type === 'reddit-json') {
       const json = await res.json()
       return parseRedditJson(json)
@@ -251,24 +242,17 @@ async function fetchSource(source) {
 // ── Main ──────────────────────────────────────────────────────────
 
 async function main() {
-  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    console.error('Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY')
+  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || !process.env.SANITY_API_TOKEN) {
+    console.error('Missing NEXT_PUBLIC_SANITY_PROJECT_ID or SANITY_API_TOKEN')
     process.exit(1)
   }
 
   // 1. Load existing source_urls to deduplicate
-  const { data: existing, error: fetchErr } = await supabase
-    .from('articles')
-    .select('source_url')
-    .not('source_url', 'is', null)
-
-  if (fetchErr) {
-    console.error('Supabase error:', fetchErr.message)
-    process.exit(1)
-  }
-
+  const existing = await sanity.fetch(
+    `*[_type == "article" && defined(source_url)] { source_url }`
+  )
   const existingUrls = new Set(existing.map((r) => r.source_url))
-  console.log(`${existingUrls.size} source URLs already in DB`)
+  console.log(`${existingUrls.size} source URLs already in Sanity`)
 
   // 2. Fetch all sources and build insert list
   const toInsert = []
@@ -292,7 +276,6 @@ async function main() {
         .replace(/listenbutton\w*\s*/gi, '')
         .trim()
 
-      // Scrape article page for og:image + body images
       let cover_image = item.image || null
       let pageBodyImages = []
       if (source.type !== 'reddit-json') {
@@ -302,15 +285,18 @@ async function main() {
       }
 
       const allBodyImages = [...new Set([...rssBodyImages, ...pageBodyImages])]
-      // Fallback: insert cover image midway in content if no body images found
       const imagesToWeave = allBodyImages.length > 0
         ? allBodyImages
         : (cover_image ? [cover_image] : [])
       const contentWithImages = weaveImages(rawContent, imagesToWeave)
 
+      const slug = makeSlug(item.title, pubDate, item.link)
+
       toInsert.push({
+        _type: 'article',
+        _id: `rss-${slug}`,
         title: item.title.slice(0, 255),
-        slug: makeSlug(item.title, pubDate, item.link),
+        slug: { _type: 'slug', current: slug },
         content: contentWithImages.slice(0, 8000),
         summary: rawContent.slice(0, 200),
         source_url: item.link,
@@ -320,7 +306,6 @@ async function main() {
         published_at: pubDate,
       })
 
-      // Prevent cross-source duplicates within this run
       existingUrls.add(item.link)
     }
   }
@@ -330,17 +315,20 @@ async function main() {
     return
   }
 
-  console.log(`Inserting ${toInsert.length} new articles...`)
+  console.log(`Inserting ${toInsert.length} new articles into Sanity...`)
 
   // 3. Insert in batches of 50
   for (let i = 0; i < toInsert.length; i += 50) {
     const batch = toInsert.slice(i, i + 50)
-    const { error: insertErr } = await supabase.from('articles').insert(batch)
-    if (insertErr) {
-      console.error(`Batch ${Math.floor(i / 50) + 1} error:`, insertErr.message)
-      console.error('Slugs:', batch.map((a) => a.slug).join(', '))
-    } else {
+    try {
+      const transaction = sanity.transaction()
+      for (const doc of batch) {
+        transaction.createOrReplace(doc)
+      }
+      await transaction.commit()
       console.log(`  ✓ Batch ${Math.floor(i / 50) + 1}: ${batch.length} articles inserted`)
+    } catch (err) {
+      console.error(`Batch ${Math.floor(i / 50) + 1} error:`, err.message)
     }
   }
 

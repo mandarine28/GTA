@@ -2,18 +2,20 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
-import { characters, roleLabelStyle } from '@/lib/characters'
+import { roleLabelStyle } from '@/lib/characters'
+import { getCharacterBySlug, getCharacterSlugs } from '@/sanity/lib/queries'
 import PageNextSteps from '@/components/ui/PageNextSteps'
 
-export function generateStaticParams() {
-  return characters.map(c => ({ slug: c.slug }))
+export async function generateStaticParams() {
+  const slugs = await getCharacterSlugs()
+  return slugs.map(slug => ({ slug }))
 }
 
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
   const { slug } = await params
-  const char = characters.find(c => c.slug === slug)
+  const char = await getCharacterBySlug(slug)
   if (!char) return {}
   return {
     title: `${char.name} - Personnage GTA VI - Grand Theft Info`,
@@ -25,7 +27,7 @@ export default async function CharacterPage(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params
-  const char = characters.find(c => c.slug === slug)
+  const char = await getCharacterBySlug(slug)
   if (!char) notFound()
 
   return (
@@ -87,7 +89,6 @@ export default async function CharacterPage(
 
           {/* SIDEBAR */}
           <aside>
-            {/* Fiche rapide */}
             <div className="rounded-2xl p-5 mb-5 sticky top-24" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
               <p className="text-xs font-black tracking-[0.2em] uppercase mb-4" style={{ color: char.accentColor }}>
                 Fiche personnage
@@ -123,12 +124,10 @@ export default async function CharacterPage(
 
           {/* MAIN */}
           <div>
-            {/* Lead */}
             <p className="text-lg font-semibold leading-relaxed mb-10" style={{ color: 'var(--text-warm)', borderLeft: `3px solid ${char.accentColor}`, paddingLeft: '1.25rem' }}>
               {char.lead}
             </p>
 
-            {/* Histoire */}
             <section className="mb-10">
               <h2 className="text-2xl font-black uppercase mb-6" style={{ color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.75rem' }}>
                 Histoire
@@ -142,7 +141,6 @@ export default async function CharacterPage(
               </div>
             </section>
 
-            {/* Personnalité */}
             <section className="mb-10">
               <h2 className="text-2xl font-black uppercase mb-5" style={{ color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.75rem' }}>
                 Personnalité
@@ -152,7 +150,6 @@ export default async function CharacterPage(
               </p>
             </section>
 
-            {/* Citations */}
             <section className="mb-10">
               <h2 className="text-2xl font-black uppercase mb-5" style={{ color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.75rem' }}>
                 Citations
@@ -170,19 +167,20 @@ export default async function CharacterPage(
               </div>
             </section>
 
-            {/* Galerie */}
-            <section className="mb-10">
-              <h2 className="text-2xl font-black uppercase mb-5" style={{ color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.75rem' }}>
-                Galerie
-              </h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {char.mediaImages.map((img, i) => (
-                  <div key={i} className="relative rounded-xl overflow-hidden" style={{ aspectRatio: '16/10' }}>
-                    <Image src={img} alt={`${char.name} - image ${i + 1}`} fill className="object-cover hover:scale-105 transition-transform duration-500" />
-                  </div>
-                ))}
-              </div>
-            </section>
+            {char.mediaImages?.length > 0 && (
+              <section className="mb-10">
+                <h2 className="text-2xl font-black uppercase mb-5" style={{ color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.75rem' }}>
+                  Galerie
+                </h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {char.mediaImages.map((img, i) => (
+                    <div key={i} className="relative rounded-xl overflow-hidden" style={{ aspectRatio: '16/10' }}>
+                      <Image src={img} alt={`${char.name} - image ${i + 1}`} fill className="object-cover hover:scale-105 transition-transform duration-500" />
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
           </div>
         </div>
 

@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
-import { characters, roleLabelStyle } from '@/lib/characters'
+import { roleLabelStyle } from '@/lib/characters'
+import { getCharacters } from '@/sanity/lib/queries'
 import PageHero from '@/components/ui/PageHero'
 import PageNextSteps from '@/components/ui/PageNextSteps'
 
@@ -10,7 +11,9 @@ export const metadata: Metadata = {
   description: 'Protagonistes jouables, alliés et antagonistes de GTA VI. Fiches complètes : Jason Duval, Lucia Caminos, Brian Heder, et tout le cast confirmé.',
 }
 
-export default function CharactersPage() {
+export default async function CharactersPage() {
+  const characters = await getCharacters()
+
   return (
     <>
       <PageHero title="PERSONNAGES" label="GTA VI" image="/images/gameplay1.jpg" />
