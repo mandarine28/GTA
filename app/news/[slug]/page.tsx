@@ -9,6 +9,12 @@ const newsImages = [
   '/images/gameplay4.jpg', '/images/gameplay5.jpg', '/images/gameplay6.jpg',
 ]
 
+function stableFallback(slug: string) {
+  let hash = 0
+  for (let i = 0; i < slug.length; i++) hash = (hash * 31 + slug.charCodeAt(i)) & 0xffffffff
+  return newsImages[Math.abs(hash) % newsImages.length]
+}
+
 const categoryLabel: Record<string, string> = {
   news: 'News',
   patch: 'Patch',
@@ -82,7 +88,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   if (!article) notFound()
 
   const minutes = readingTime(article.content)
-  const coverImg = article.cover_image || newsImages[0]
+  const coverImg = article.cover_image || stableFallback(article.slug)
   const related = allArticles.filter(a => a.slug !== slug).slice(0, 3)
   const headings = extractHeadings(article.content)
 

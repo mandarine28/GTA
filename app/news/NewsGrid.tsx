@@ -24,22 +24,26 @@ const IMAGES = [
   '/images/gameplay4.jpg', '/images/gameplay5.jpg', '/images/gameplay6.jpg',
 ]
 
+function stableFallback(slug: string) {
+  let hash = 0
+  for (let i = 0; i < slug.length; i++) hash = (hash * 31 + slug.charCodeAt(i)) & 0xffffffff
+  return IMAGES[Math.abs(hash) % IMAGES.length]
+}
+
 function readingTime(content: string) {
   return Math.max(1, Math.round(content.trim().split(/\s+/).length / 200))
 }
 
 function ArticleCard({
   article,
-  idx,
   className = '',
   titleSize = 'text-base',
 }: {
   article: Article
-  idx: number
   className?: string
   titleSize?: string
 }) {
-  const img = article.cover_image || IMAGES[idx % IMAGES.length]
+  const img = article.cover_image || stableFallback(article.slug)
   const mins = readingTime(article.content)
 
   return (
@@ -116,10 +120,10 @@ export default function NewsGrid({ articles }: { articles: Article[] }) {
       {(hero || secondary) && (
         <div className="grid lg:grid-cols-[3fr_2fr] gap-5 mb-5">
           {hero && (
-            <ArticleCard article={hero} idx={0} className="h-[420px]" titleSize="text-2xl" />
+            <ArticleCard article={hero} className="h-[420px]" titleSize="text-2xl" />
           )}
           {secondary && (
-            <ArticleCard article={secondary} idx={1} className="h-[420px]" titleSize="text-lg" />
+            <ArticleCard article={secondary} className="h-[420px]" titleSize="text-lg" />
           )}
         </div>
       )}
@@ -127,11 +131,10 @@ export default function NewsGrid({ articles }: { articles: Article[] }) {
       {/* Bottom row */}
       {rest.length > 0 && (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {rest.map((article, i) => (
+          {rest.map((article) => (
             <ArticleCard
               key={article.id}
               article={article}
-              idx={i + 2}
               className="h-[280px]"
               titleSize="text-base"
             />
