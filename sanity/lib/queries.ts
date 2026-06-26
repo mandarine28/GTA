@@ -46,6 +46,13 @@ const characterFields = groq`
     defined(coverImage.asset) => coverImage.asset->url,
     slug.current == "jason-duval" => '/images/characters/jason-duval.png',
     slug.current == "lucia-caminos" => '/images/characters/lucia-caminos.png',
+    slug.current == "brian-heder" => '/images/characters/brian-heder.png',
+    slug.current == "cal-hampton" => '/images/characters/cal-hampton.png',
+    slug.current == "boobie-ike" => '/images/characters/boobie-ike.png',
+    slug.current == "drequan-priest" => '/images/characters/drequan-priest.png',
+    slug.current == "bae-luxe" => '/images/characters/bae-luxe.png',
+    slug.current == "roxy" => '/images/characters/roxy.png',
+    slug.current == "raul-bautista" => '/images/characters/raul-bautista.png',
     '/images/gameplay1.jpg'
   ),
   gender,
