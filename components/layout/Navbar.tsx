@@ -60,15 +60,6 @@ const menu: NavSection[] = [
       { href: '/sharkcard', label: 'Shark Cards', desc: 'Grind vs argent réel', soon: true },
     ],
   },
-  {
-    label: 'Médias',
-    href: '/media/trailers',
-    image: '/images/gameplay6.jpg',
-    links: [
-      { href: '/media/screenshots', label: 'Screenshots & Artworks', desc: 'Images officielles HD' },
-      { href: '/media/trailers', label: 'Trailers', desc: 'Toutes les vidéos' },
-    ],
-  },
 ]
 
 function ClockIcon() {
