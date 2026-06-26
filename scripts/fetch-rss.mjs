@@ -253,6 +253,41 @@ async function fetchArticleMeta(url) {
   }
 }
 
+// ── DeepL translation ─────────────────────────────────────────────
+
+const DEEPL_KEY = process.env.DEEPL_API_KEY
+const DEEPL_URL = DEEPL_KEY?.endsWith(':fx')
+  ? 'https://api-free.deepl.com/v2/translate'
+  : 'https://api.deepl.com/v2/translate'
+
+async function translateToFr(texts) {
+  if (!DEEPL_KEY) return texts
+  try {
+    const res = await fetch(DEEPL_URL, {
+      method: 'POST',
+      headers: {
+        'Authorization': `DeepL-Auth-Key ${DEEPL_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        text: texts,
+        target_lang: 'FR',
+        source_lang: 'EN',
+      }),
+      signal: AbortSignal.timeout(15_000),
+    })
+    if (!res.ok) {
+      console.warn(`  ⚠ DeepL HTTP ${res.status}`)
+      return texts
+    }
+    const data = await res.json()
+    return data.translations.map(t => t.text)
+  } catch (err) {
+    console.warn(`  ⚠ DeepL failed: ${err.message}`)
+    return texts
+  }
+}
+
 // ── GTA 6 relevance filter ────────────────────────────────────────
 
 function isGTA6Related(title) {
@@ -350,15 +385,22 @@ async function main() {
         : (cover_image ? [cover_image] : [])
       const contentWithImages = weaveImages(rawContent, imagesToWeave)
 
+      // Traduire titre + contenu en français via DeepL
+      const [translatedTitle, translatedContent] = await translateToFr([
+        item.title.slice(0, 255),
+        contentWithImages.slice(0, 8000),
+      ])
+      const translatedSummary = translatedContent.replace(/\[IMAGE:[^\]]+\]\n\n?/g, '').slice(0, 200)
+
       const slug = makeSlug(item.title, pubDate, item.link)
 
       toInsert.push({
         _type: 'article',
         _id: `rss-${slug}`,
-        title: item.title.slice(0, 255),
+        title: translatedTitle,
         slug: { _type: 'slug', current: slug },
-        content: contentWithImages.slice(0, 8000),
-        summary: rawContent.slice(0, 200),
+        content: translatedContent,
+        summary: translatedSummary,
         source_url: item.link,
         source_name: source.name,
         category: detectCategory(item.title),
