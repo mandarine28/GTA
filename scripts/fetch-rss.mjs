@@ -49,13 +49,31 @@ const SOURCES = [
     type: 'rss',
   },
   {
-    name: 'Gamekult',
-    url: 'https://www.gamekult.com/rss.xml',
+    name: 'JeuxVideo.com',
+    url: 'https://www.jeuxvideo.com/rss/rss.xml',
+    type: 'rss',
+  },
+  // ── Communauté & agrégateurs ──────────────────────────────────────
+  {
+    name: 'Reddit r/GTA6',
+    url: 'https://www.reddit.com/r/GTA6/new.json?limit=25',
+    type: 'reddit-json',
+    skipGTA6Filter: true,
+  },
+  // ── Médias gaming francophones (supplémentaires) ──────────────────
+  {
+    name: 'Gamergen',
+    url: 'https://www.gamergen.com/rss.xml',
     type: 'rss',
   },
   {
-    name: 'JeuxVideo.com',
-    url: 'https://www.jeuxvideo.com/rss/rss.xml',
+    name: 'Frandroid',
+    url: 'https://www.frandroid.com/feed',
+    type: 'rss',
+  },
+  {
+    name: 'Tom\'s Guide FR',
+    url: 'https://www.tomsguide.fr/feed/',
     type: 'rss',
   },
 ]
@@ -85,35 +103,82 @@ function makeSlug(title, pubDate, sourceUrl) {
   return `${slugify(title)}-${date}-${shortHash(sourceUrl)}`.slice(0, 100)
 }
 
-// ── HTML stripper ─────────────────────────────────────────────────
+// ── HTML entity decoder ───────────────────────────────────────────
+// Map complet : couvre latin-1, latin-ext, typographie, monnaies, maths, grec courant
+
+const HTML_ENTITIES = {
+  amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ',
+  // Typographie
+  rsquo: '’', lsquo: '‘', rdquo: '”', ldquo: '“',
+  sbquo: '‚', bdquo: '„',
+  ndash: '–', mdash: '—', horbar: '―',
+  hellip: '…', laquo: '«', raquo: '»',
+  lsaquo: '‹', rsaquo: '›',
+  bull: '•', middot: '·', permil: '‰',
+  prime: '′', Prime: '″',
+  dagger: '†', Dagger: '‡',
+  trade: '™', copy: '©', reg: '®',
+  // Lettres accentuées minuscules
+  agrave: 'à', aacute: 'á', acirc: 'â', atilde: 'ã',
+  auml: 'ä', aring: 'å', aelig: 'æ',
+  ccedil: 'ç',
+  egrave: 'è', eacute: 'é', ecirc: 'ê', euml: 'ë',
+  igrave: 'ì', iacute: 'í', icirc: 'î', iuml: 'ï',
+  eth: 'ð',
+  ntilde: 'ñ',
+  ograve: 'ò', oacute: 'ó', ocirc: 'ô', otilde: 'õ',
+  ouml: 'ö', oslash: 'ø',
+  ugrave: 'ù', uacute: 'ú', ucirc: 'û', uuml: 'ü',
+  yacute: 'ý', thorn: 'þ', yuml: 'ÿ',
+  oelig: 'œ', scaron: 'š', fnof: 'ƒ',
+  // Lettres accentuées majuscules
+  Agrave: 'À', Aacute: 'Á', Acirc: 'Â', Atilde: 'Ã',
+  Auml: 'Ä', Aring: 'Å', AElig: 'Æ',
+  Ccedil: 'Ç',
+  Egrave: 'È', Eacute: 'É', Ecirc: 'Ê', Euml: 'Ë',
+  Igrave: 'Ì', Iacute: 'Í', Icirc: 'Î', Iuml: 'Ï',
+  ETH: 'Ð',
+  Ntilde: 'Ñ',
+  Ograve: 'Ò', Oacute: 'Ó', Ocirc: 'Ô', Otilde: 'Õ',
+  Ouml: 'Ö', Oslash: 'Ø',
+  Ugrave: 'Ù', Uacute: 'Ú', Ucirc: 'Û', Uuml: 'Ü',
+  Yacute: 'Ý', THORN: 'Þ', szlig: 'ß',
+  OElig: 'Œ', Scaron: 'Š', Yuml: 'Ÿ',
+  // Maths / symboles
+  deg: '°', plusmn: '±', sup2: '²', sup3: '³',
+  acute: '´', micro: 'µ', para: '¶', middot: '·',
+  cedil: '¸', sup1: '¹', ordm: 'º',
+  frac14: '¼', frac12: '½', frac34: '¾',
+  iexcl: '¡', cent: '¢', pound: '£', curren: '¤',
+  yen: '¥', brvbar: '¦', sect: '§', uml: '¨',
+  ordf: 'ª', not: '¬', shy: '­', macr: '¯',
+  euro: '€', times: '×', divide: '÷', minus: '−',
+  infin: '∞', asymp: '≈', ne: '≠', equiv: '≡',
+  le: '≤', ge: '≥', sub: '⊂', sup: '⊃',
+  // Espaces typographiques
+  thinsp: ' ', hairsp: ' ', ensp: ' ', emsp: ' ',
+  zwj: '‍', zwnj: '‌', lrm: '‎', rlm: '‏',
+  // Grec courant
+  alpha: 'α', beta: 'β', gamma: 'γ', delta: 'δ',
+  omega: 'ω', pi: 'π',
+  Alpha: 'Α', Beta: 'Β', Gamma: 'Γ', Delta: 'Δ',
+  Omega: 'Ω',
+  // Flèches / divers
+  larr: '←', rarr: '→', uarr: '↑', darr: '↓',
+  harr: '↔',
+  spades: '♠', clubs: '♣', hearts: '♥', diams: '♦',
+  iquest: '¿',
+}
 
 function decodeHtmlEntities(str) {
+  if (!str) return ''
   return str
-    // Entités numériques décimales &#233; → é
+    // Entités numériques décimales : &#233; → é
     .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(parseInt(code, 10)))
-    // Entités numériques hexadécimales &#x00E9; → é
+    // Entités numériques hexadécimales : &#x00E9; → é
     .replace(/&#x([0-9a-fA-F]+);/g, (_, code) => String.fromCharCode(parseInt(code, 16)))
-    // Entités nommées courantes
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&apos;|&#039;/g, "'")
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&rsquo;|&lsquo;/g, "'")
-    .replace(/&ldquo;|&rdquo;/g, '"')
-    .replace(/&ndash;/g, '–')
-    .replace(/&mdash;/g, '—')
-    .replace(/&hellip;/g, '…')
-    .replace(/&eacute;/g, 'é')
-    .replace(/&egrave;/g, 'è')
-    .replace(/&ecirc;/g, 'ê')
-    .replace(/&agrave;/g, 'à')
-    .replace(/&acirc;/g, 'â')
-    .replace(/&ocirc;/g, 'ô')
-    .replace(/&ucirc;/g, 'û')
-    .replace(/&ccedil;/g, 'ç')
-    .replace(/&oelig;/g, 'œ')
+    // Entités nommées via le map complet — entité inconnue → supprimée (évite les esperluettes résiduelles)
+    .replace(/&([a-zA-Z][a-zA-Z0-9]*);/g, (match, name) => HTML_ENTITIES[name] ?? '')
 }
 
 function stripHtml(html) {
@@ -219,7 +284,6 @@ function ensureReadableParagraphs(text, sentencesPerPara = 3) {
     .flatMap(block => {
       const trimmed = block.trim()
       if (!trimmed || trimmed.startsWith('[IMAGE:') || trimmed.length < 350) return [trimmed]
-      // Découper au bout de sentencesPerPara phrases
       const sentences = trimmed.match(/[^.!?…]+[.!?…]+(?:\s|$)/g) || [trimmed]
       const chunks = []
       for (let i = 0; i < sentences.length; i += sentencesPerPara) {
@@ -247,7 +311,6 @@ function weaveImages(text, images) {
 // ── Article text extractor ────────────────────────────────────────
 
 function extractArticleText(html) {
-  // Isoler le conteneur principal de l'article
   let scope = html
   const containers = [
     /<article[^>]*>([\s\S]*?)<\/article>/i,
@@ -259,7 +322,6 @@ function extractArticleText(html) {
     if (m) { scope = m[1]; break }
   }
 
-  // Extraire les paragraphes
   const paragraphs = []
   const pRe = /<p[^>]*>([\s\S]*?)<\/p>/gi
   let m
@@ -270,7 +332,7 @@ function extractArticleText(html) {
   return paragraphs.join('\n\n')
 }
 
-// ── Article page scraper (og:image + body images + body text) ────
+// ── Article page scraper ──────────────────────────────────────────
 
 async function fetchArticleMeta(url) {
   try {
@@ -303,7 +365,7 @@ const DEEPL_URL = DEEPL_KEY?.endsWith(':fx')
   ? 'https://api-free.deepl.com/v2/translate'
   : 'https://api.deepl.com/v2/translate'
 
-async function translateToFr(texts) {
+async function translateChunk(texts) {
   if (!DEEPL_KEY) return texts
   try {
     const res = await fetch(DEEPL_URL, {
@@ -316,7 +378,7 @@ async function translateToFr(texts) {
         text: texts,
         target_lang: 'FR',
       }),
-      signal: AbortSignal.timeout(15_000),
+      signal: AbortSignal.timeout(30_000),
     })
     if (!res.ok) {
       console.warn(`  ⚠ DeepL HTTP ${res.status}`)
@@ -328,6 +390,34 @@ async function translateToFr(texts) {
     console.warn(`  ⚠ DeepL failed: ${err.message}`)
     return texts
   }
+}
+
+// Traduit un tableau plat de textes en batch (max 50 par requête DeepL)
+async function translateAllToFr(texts) {
+  if (!DEEPL_KEY || texts.length === 0) return texts
+  const results = []
+  for (let i = 0; i < texts.length; i += 50) {
+    const chunk = texts.slice(i, i + 50)
+    console.log(`  → DeepL batch ${Math.floor(i / 50) + 1}: ${chunk.length} textes`)
+    const translated = await translateChunk(chunk)
+    results.push(...translated)
+    if (i + 50 < texts.length) await new Promise(r => setTimeout(r, 300))
+  }
+  return results
+}
+
+// ── Google News URL resolver ──────────────────────────────────────
+// Le RSS Google News ne donne pas de contenu réel — juste des <a href> vers les articles originaux.
+// On extrait l'URL réelle et le nom de la source depuis la description/titre.
+
+function extractGoogleNewsRealUrl(descHtml) {
+  const m = descHtml.match(/<a[^>]+href=["']([^"']+)["']/)
+  return (m && !m[1].includes('google.com')) ? m[1] : null
+}
+
+function extractGoogleNewsSourceName(title) {
+  const m = title.match(/\s[-–]\s([^-–]+)$/)
+  return m ? m[1].trim() : null
 }
 
 // ── GTA 6 relevance filter ────────────────────────────────────────
@@ -380,15 +470,15 @@ export async function runPipeline() {
     process.exit(1)
   }
 
-  // 1. Load existing source_urls to deduplicate
+  // 1. Charger les URLs déjà en Sanity pour dédupliquer
   const existing = await sanity.fetch(
     `*[_type == "article" && defined(source_url)] { source_url }`
   )
   const existingUrls = new Set(existing.map((r) => r.source_url))
   console.log(`${existingUrls.size} source URLs already in Sanity`)
 
-  // 2. Fetch all sources and build insert list
-  const toInsert = []
+  // 2. Collecter les articles candidats (sans traduction pour l'instant)
+  const candidates = []
 
   for (const source of SOURCES) {
     const items = await fetchSource(source)
@@ -396,6 +486,18 @@ export async function runPipeline() {
 
     for (const item of items) {
       if (!item.title || !item.link) continue
+
+      // Résoudre la vraie URL pour les articles Google News
+      if (source.isGoogleNews) {
+        const realUrl = extractGoogleNewsRealUrl(item.description || '')
+        if (realUrl) {
+          item._realSourceName = extractGoogleNewsSourceName(item.title) || source.name
+          item.title = item.title.replace(/\s[-–]\s[^-–]+$/, '').trim()
+          item.link = realUrl
+          item.description = '' // forcer fetchArticleMeta à scraper l'article réel
+        }
+      }
+
       if (!source.skipGTA6Filter && !isGTA6Related(item.title)) continue
       if (existingUrls.has(item.link)) continue
 
@@ -415,7 +517,6 @@ export async function runPipeline() {
         const meta = await fetchArticleMeta(item.link)
         if (!cover_image) cover_image = meta.ogImage
         pageBodyImages = meta.bodyImages
-        // Si le RSS ne donne qu'un court extrait, utiliser le texte scrapé de la page
         if (rawContent.length < 500 && meta.bodyText.length > rawContent.length) {
           rawContent = meta.bodyText.slice(0, 8000)
         }
@@ -428,24 +529,16 @@ export async function runPipeline() {
       const readableContent = ensureReadableParagraphs(rawContent)
       const contentWithImages = weaveImages(readableContent, imagesToWeave)
 
-      // Traduire titre + contenu en français via DeepL
-      const [translatedTitle, translatedContent] = await translateToFr([
-        item.title.slice(0, 255),
-        contentWithImages.slice(0, 8000),
-      ])
-      const translatedSummary = translatedContent.replace(/\[IMAGE:[^\]]+\]\n\n?/g, '').slice(0, 200)
-
       const slug = makeSlug(item.title, pubDate, item.link)
 
-      toInsert.push({
+      candidates.push({
+        _rawTitle: item.title.slice(0, 255),
+        _rawContent: contentWithImages.slice(0, 8000),
         _type: 'article',
         _id: `rss-${slug}`,
-        title: translatedTitle,
         slug: { _type: 'slug', current: slug },
-        content: translatedContent,
-        summary: translatedSummary,
         source_url: item.link,
-        source_name: source.name,
+        source_name: item._realSourceName || source.name,
         category: detectCategory(item.title),
         cover_image,
         published_at: pubDate,
@@ -455,14 +548,40 @@ export async function runPipeline() {
     }
   }
 
-  if (toInsert.length === 0) {
+  if (candidates.length === 0) {
     console.log('No new articles — done.')
     return
   }
 
-  console.log(`Inserting ${toInsert.length} new articles into Sanity...`)
+  console.log(`${candidates.length} new articles to process`)
 
-  // 3. Insert in batches of 50
+  // 3. Batch translation : un seul appel DeepL pour tous les titres + contenus
+  if (DEEPL_KEY) {
+    console.log('Translating all articles with DeepL...')
+    const allTexts = candidates.flatMap(a => [a._rawTitle, a._rawContent])
+    const translated = await translateAllToFr(allTexts)
+
+    candidates.forEach((a, i) => {
+      a.title = translated[i * 2] ?? a._rawTitle
+      a.content = translated[i * 2 + 1] ?? a._rawContent
+    })
+  } else {
+    console.warn('DEEPL_API_KEY not set — articles stored in original language')
+    candidates.forEach(a => {
+      a.title = a._rawTitle
+      a.content = a._rawContent
+    })
+  }
+
+  // Finaliser les articles (summary, nettoyage champs temporaires)
+  const toInsert = candidates.map(({ _rawTitle, _rawContent, ...a }) => ({
+    ...a,
+    summary: a.content.replace(/\[IMAGE:[^\]]+\]\n\n?/g, '').slice(0, 200),
+  }))
+
+  // 4. Insérer dans Sanity par batch de 50
+  console.log(`Inserting ${toInsert.length} articles into Sanity...`)
+
   for (let i = 0; i < toInsert.length; i += 50) {
     const batch = toInsert.slice(i, i + 50)
     try {
