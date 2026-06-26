@@ -13,19 +13,48 @@ const sanity = createClient({
 })
 
 const SOURCES = [
+  // ── Sources spécialisées GTA ──────────────────────────────────────
   {
     name: 'Rockstar Intel',
     url: 'https://rockstarintel.com/feed/',
     type: 'rss',
   },
   {
-    name: 'GTAForums',
-    url: 'https://gtaforums.com/index.php?/forums/rss/5-grand-theft-auto-vi/',
+    name: 'GTA BOOM',
+    url: 'https://www.gtaboom.com/feed/',
+    type: 'rss',
+    skipGTA6Filter: true,
+  },
+  // ── Grands médias gaming (EN) ─────────────────────────────────────
+  {
+    name: 'Push Square',
+    url: 'https://www.pushsquare.com/feeds/latest',
     type: 'rss',
   },
   {
-    name: 'Reddit r/GTA6',
-    url: 'https://www.reddit.com/r/GTA6/new.rss',
+    name: 'Video Games Chronicle',
+    url: 'https://www.videogameschronicle.com/feed/',
+    type: 'rss',
+  },
+  {
+    name: 'Kotaku',
+    url: 'https://kotaku.com/rss',
+    type: 'rss',
+  },
+  // ── Médias gaming francophones ────────────────────────────────────
+  {
+    name: 'ActuGaming',
+    url: 'https://actugaming.net/feed/',
+    type: 'rss',
+  },
+  {
+    name: 'Gamekult',
+    url: 'https://www.gamekult.com/rss.xml',
+    type: 'rss',
+  },
+  {
+    name: 'JeuxVideo.com',
+    url: 'https://www.jeuxvideo.com/rss/rss.xml',
     type: 'rss',
   },
 ]
@@ -263,7 +292,7 @@ async function main() {
 
     for (const item of items) {
       if (!item.title || !item.link) continue
-      if (!isGTA6Related(item.title)) continue
+      if (!source.skipGTA6Filter && !isGTA6Related(item.title)) continue
       if (existingUrls.has(item.link)) continue
 
       const pubDate = item.pubDate
