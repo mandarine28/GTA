@@ -86,19 +86,42 @@ function makeSlug(title, pubDate, sourceUrl) {
 
 // ── HTML stripper ─────────────────────────────────────────────────
 
-function stripHtml(html) {
-  return html
-    .replace(/<script[\s\S]*?<\/script>/gi, '')
-    .replace(/<style[\s\S]*?<\/style>/gi, '')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/&#\d+;/g, '')
+function decodeHtmlEntities(str) {
+  return str
+    // Entités numériques décimales &#233; → é
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(parseInt(code, 10)))
+    // Entités numériques hexadécimales &#x00E9; → é
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, code) => String.fromCharCode(parseInt(code, 16)))
+    // Entités nommées courantes
     .replace(/&amp;/g, '&')
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
-    .replace(/&#039;/g, "'")
-    .replace(/&apos;/g, "'")
+    .replace(/&apos;|&#039;/g, "'")
     .replace(/&nbsp;/g, ' ')
+    .replace(/&rsquo;|&lsquo;/g, "'")
+    .replace(/&ldquo;|&rdquo;/g, '"')
+    .replace(/&ndash;/g, '–')
+    .replace(/&mdash;/g, '—')
+    .replace(/&hellip;/g, '…')
+    .replace(/&eacute;/g, 'é')
+    .replace(/&egrave;/g, 'è')
+    .replace(/&ecirc;/g, 'ê')
+    .replace(/&agrave;/g, 'à')
+    .replace(/&acirc;/g, 'â')
+    .replace(/&ocirc;/g, 'ô')
+    .replace(/&ucirc;/g, 'û')
+    .replace(/&ccedil;/g, 'ç')
+    .replace(/&oelig;/g, 'œ')
+}
+
+function stripHtml(html) {
+  return decodeHtmlEntities(
+    html
+      .replace(/<script[\s\S]*?<\/script>/gi, '')
+      .replace(/<style[\s\S]*?<\/style>/gi, '')
+      .replace(/<[^>]+>/g, ' ')
+  )
     .replace(/\s+/g, ' ')
     .trim()
 }
