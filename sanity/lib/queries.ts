@@ -42,7 +42,12 @@ const characterFields = groq`
   role,
   roleLabel,
   accentColor,
-  "coverImage": coalesce(coverImage.asset->url, '/images/gameplay1.jpg'),
+  "coverImage": select(
+    defined(coverImage.asset) => coverImage.asset->url,
+    slug.current == "jason-duval" => '/images/characters/jason-duval.png',
+    slug.current == "lucia-caminos" => '/images/characters/lucia-caminos.png',
+    '/images/gameplay1.jpg'
+  ),
   gender,
   age,
   origin,
