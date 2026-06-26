@@ -4,7 +4,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useRef, useEffect } from 'react'
 
-const menu = [
+type NavLink = { href: string; label: string; desc: string; soon?: true }
+type NavSection = { label: string; href: string; image: string; links: NavLink[] }
+
+const menu: NavSection[] = [
   {
     label: 'Actualités',
     href: '/news',
@@ -23,7 +26,7 @@ const menu = [
     links: [
       { href: '/game', label: 'Histoire & Synopsis', desc: 'Scénario, univers, infos clés' },
       { href: '/characters', label: 'Personnages', desc: 'Jason, Lucia et le cast complet' },
-      { href: '/config', label: 'Éditions', desc: 'Standard, Deluxe, Ultimate' },
+      { href: '/config', label: 'Éditions', desc: 'Standard & Ultime' },
       { href: '/map', label: 'Carte de Vice City', desc: 'Explorez le monde' },
     ],
   },
@@ -32,10 +35,10 @@ const menu = [
     href: '/cheats',
     image: '/images/gameplay3.jpg',
     links: [
-      { href: '/cheats', label: 'Codes de triche', desc: 'PS5, Xbox, PC' },
-      { href: '/glitches', label: 'Glitches', desc: 'Actifs et vérifiés' },
-      { href: '/money', label: "Gagner de l'argent", desc: 'Meilleures méthodes $/h' },
-      { href: '/easter-eggs', label: 'Easter Eggs', desc: 'Secrets et références' },
+      { href: '/cheats', label: 'Codes de triche', desc: 'PS5, Xbox, PC', soon: true },
+      { href: '/glitches', label: 'Glitches', desc: 'Actifs et vérifiés', soon: true },
+      { href: '/money', label: "Gagner de l'argent", desc: 'Meilleures méthodes $/h', soon: true },
+      { href: '/easter-eggs', label: 'Easter Eggs', desc: 'Secrets et références', soon: true },
     ],
   },
   {
@@ -43,9 +46,9 @@ const menu = [
     href: '/database/vehicles',
     image: '/images/gameplay4.jpg',
     links: [
-      { href: '/database/vehicles', label: 'Véhicules', desc: 'Stats et prix complets' },
-      { href: '/database/weapons', label: 'Armes', desc: 'Dégâts, portée, cadence' },
-      { href: '/compare', label: 'Comparateur', desc: 'Côte à côte' },
+      { href: '/database/vehicles', label: 'Véhicules', desc: 'Stats et prix complets', soon: true },
+      { href: '/database/weapons', label: 'Armes', desc: 'Dégâts, portée, cadence', soon: true },
+      { href: '/compare', label: 'Comparateur', desc: 'Côte à côte', soon: true },
     ],
   },
   {
@@ -53,8 +56,8 @@ const menu = [
     href: '/business-calc',
     image: '/images/gameplay5.jpg',
     links: [
-      { href: '/business-calc', label: 'Business GTA Online', desc: 'Revenu/heure par activité' },
-      { href: '/sharkcard', label: 'Shark Cards', desc: 'Grind vs argent réel' },
+      { href: '/business-calc', label: 'Business GTA Online', desc: 'Revenu/heure par activité', soon: true },
+      { href: '/sharkcard', label: 'Shark Cards', desc: 'Grind vs argent réel', soon: true },
     ],
   },
   {
@@ -67,6 +70,14 @@ const menu = [
     ],
   },
 ]
+
+function ClockIcon() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--accent-gold)', flexShrink: 0 }}>
+      <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+    </svg>
+  )
+}
 
 function Logo({ onClick }: { onClick?: () => void }) {
   return (
@@ -162,8 +173,11 @@ export default function Navbar() {
                               onMouseEnter={e => (e.currentTarget.style.background = 'rgba(240,192,64,0.08)')}
                               onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
                             >
-                              <div>
-                                <p className="text-sm font-semibold text-white leading-tight">{link.label}</p>
+                              <div className="flex-1">
+                                <p className="text-sm font-semibold text-white leading-tight flex items-center gap-1.5">
+                                  {link.label}
+                                  {link.soon && <ClockIcon />}
+                                </p>
                                 <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>{link.desc}</p>
                               </div>
                             </Link>
@@ -281,8 +295,11 @@ export default function Navbar() {
                         className="w-1 h-full self-stretch rounded-full flex-shrink-0"
                         style={{ background: 'var(--accent-gold)', minHeight: 32, width: 2 }}
                       />
-                      <div>
-                        <p className="text-sm font-semibold text-white">{link.label}</p>
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold text-white flex items-center gap-1.5">
+                          {link.label}
+                          {link.soon && <ClockIcon />}
+                        </p>
                         <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>{link.desc}</p>
                       </div>
                     </Link>
