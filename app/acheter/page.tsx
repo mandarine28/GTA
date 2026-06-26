@@ -9,14 +9,14 @@ export const metadata: Metadata = {
 }
 
 const retailers = [
-  { name: 'amazon', display: 'amazon', href: '#', style: { fontFamily: 'Arial, sans-serif', fontSize: '1.5rem', fontWeight: 700, letterSpacing: '-0.02em' } },
-  { name: 'cultura', display: 'Cultura®', href: '#', style: { fontSize: '1.25rem', fontWeight: 600 } },
-  { name: 'micromania', display: 'Micromania', href: '#', style: { fontSize: '1.1rem', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase' as const } },
-  { name: 'rue-du-commerce', display: 'Rue du\nCommerce', href: '#', style: { fontSize: '1rem', fontWeight: 700, textTransform: 'uppercase' as const, lineHeight: 1.2, textAlign: 'center' as const } },
-  { name: 'cdiscount', display: 'Cdiscount®', href: '#', style: { fontSize: '1.15rem', fontWeight: 700 } },
-  { name: 'leclerc', display: 'E.Leclerc ®', href: '#', style: { fontSize: '1.1rem', fontWeight: 600 } },
-  { name: 'fnac', display: 'fnac', href: '#', style: { fontFamily: 'Arial, sans-serif', fontSize: '1.5rem', fontWeight: 900, letterSpacing: '-0.02em' } },
-  { name: 'gmg', display: 'green man\ngaming', href: '#', style: { fontSize: '0.9rem', fontWeight: 700, lineHeight: 1.3, textAlign: 'center' as const } },
+  { name: 'amazon', display: 'amazon', href: 'https://www.amazon.fr/dp/B0GZW5D8YF', style: { fontFamily: 'Arial, sans-serif', fontSize: '1.5rem', fontWeight: 700, letterSpacing: '-0.02em' } },
+  { name: 'fnac', display: 'fnac', href: 'https://www.fnac.com/a23085276/Grand-Theft-Auto-GTA-VI-PS5-Jeu-video-Playstation-5', style: { fontFamily: 'Arial, sans-serif', fontSize: '1.5rem', fontWeight: 900, letterSpacing: '-0.02em' } },
+  { name: 'micromania', display: 'Micromania', href: 'https://www.micromania.fr/p/grand-theft-auto-vi-code-de-telechargement-161836.html', style: { fontSize: '1.1rem', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase' as const } },
+  { name: 'leclerc', display: 'E.Leclerc ®', href: 'https://www.e.leclerc/fp/grand-theft-auto-vi-code-in-a-box-ps5-5026555439824', style: { fontSize: '1.1rem', fontWeight: 600 } },
+  { name: 'carrefour', display: 'Carrefour', href: 'https://www.carrefour.fr/jeux-consoles/gta-6', style: { fontSize: '1.1rem', fontWeight: 700 } },
+  { name: 'cdiscount', display: 'Cdiscount®', href: 'https://www.cdiscount.com/search/#q=grand+theft+auto+6', style: { fontSize: '1.15rem', fontWeight: 700 } },
+  { name: 'cultura', display: 'Cultura®', href: 'https://www.cultura.com/recherche?q=grand+theft+auto+6', style: { fontSize: '1.25rem', fontWeight: 600 } },
+  { name: 'psstore', display: 'PlayStation\nStore', href: 'https://store.playstation.com/fr-fr/product/EP1004-PPSA01547_00-GTAVISTANDARD001', style: { fontSize: '1rem', fontWeight: 700, lineHeight: 1.2, textAlign: 'center' as const } },
 ]
 
 const infoLinks = [
@@ -62,7 +62,7 @@ export default function AcheterPage() {
             Disponible le 19 novembre 2026
           </p>
           <p className="text-xs mb-8" style={{ color: 'rgba(255,255,255,0.5)' }}>
-            (Les précommandes seront disponibles bientôt !)
+            Précommandes ouvertes — Standard 79,99€ · Ultime 99,99€
           </p>
 
           <div className="flex justify-center mb-8">
@@ -150,14 +150,14 @@ export default function AcheterPage() {
             </p>
 
             <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: 'var(--text-muted)' }}>
-              Ajouter à votre liste de souhaits :
+              Précommander en numérique :
             </p>
             <div className="flex gap-3">
-              <a href="#" className="px-4 py-2 rounded-lg text-xs font-black tracking-wide uppercase transition-all hover:opacity-80" style={{ background: '#003087', color: '#fff' }}>
-                PS5
+              <a href="https://store.playstation.com/fr-fr/product/EP1004-PPSA01547_00-GTAVISTANDARD001" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg text-xs font-black tracking-wide uppercase transition-all hover:opacity-80" style={{ background: '#003087', color: '#fff' }}>
+                PS Store
               </a>
-              <a href="#" className="px-4 py-2 rounded-lg text-xs font-black tracking-wide uppercase transition-all hover:opacity-80" style={{ background: '#107C10', color: '#fff' }}>
-                Xbox S
+              <a href="https://www.xbox.com/fr-fr/games/store/grand-theft-auto-vi/9nl3wwnzlzzn" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg text-xs font-black tracking-wide uppercase transition-all hover:opacity-80" style={{ background: '#107C10', color: '#fff' }}>
+                Xbox Store
               </a>
             </div>
           </div>
@@ -234,10 +234,10 @@ export default function AcheterPage() {
                 Rockstar Games est sans aucun doute soucieux de fournir le meilleur jeu possible et on peut s'attendre à une véritable expérience vidéoludique.
               </p>
               <p>
-                Premièrement annoncé aux alentours de 100 dollars à sa sortie, le prix de GTA VI devrait finalement être conforme aux standards actuels de l'industrie, à savoir aux alentours de 70 à 80 euros, pour le plus grand plaisir des joueurs, impatients de pouvoir se le procurer.
+                Les précommandes sont désormais ouvertes depuis le 25 juin 2026. GTA VI sort en deux éditions officielles : la Standard à 79,99€ (numérique et code in-box) et l'Ultime à 99,99€ (numérique uniquement), avec un pack de contenu exclusif.
               </p>
               <p>
-                Mettez cette page en favori pour pouvoir précommander le jeu dès que cela sera possible (début 2026 probablement) ou pour l'acheter auprès de votre boutique favorite.
+                Toute précommande passée avant le 20 novembre 2026 inclut le Pack Vintage Vice City : une berline Vapid Stanier 1955, un garage privé à Ocean Beach, des costumes années 80 et des skins d'armes Tommy Vercetti — ainsi qu'un mois d'abonnement GTA+ pour les achats numériques.
               </p>
             </div>
 
