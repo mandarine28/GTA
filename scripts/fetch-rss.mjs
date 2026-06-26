@@ -3,6 +3,7 @@
 // Requires env: NEXT_PUBLIC_SANITY_PROJECT_ID, NEXT_PUBLIC_SANITY_DATASET, SANITY_API_TOKEN
 
 import { createClient } from '@sanity/client'
+import { fileURLToPath } from 'url'
 
 const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
@@ -173,7 +174,7 @@ function parseRSS(xml) {
   while ((m = itemRe.exec(xml)) !== null) {
     const itemXml = m[1]
     items.push({
-      title: extractXmlTag(itemXml, 'title'),
+      title: decodeHtmlEntities(extractXmlTag(itemXml, 'title')),
       link: extractLink(itemXml),
       description: extractContentRss(itemXml),
       pubDate: extractXmlTag(itemXml, 'pubDate') || extractXmlTag(itemXml, 'dc:date'),
@@ -314,7 +315,6 @@ async function translateToFr(texts) {
       body: JSON.stringify({
         text: texts,
         target_lang: 'FR',
-        source_lang: 'EN',
       }),
       signal: AbortSignal.timeout(15_000),
     })
@@ -374,7 +374,7 @@ async function fetchSource(source) {
 
 // ── Main ──────────────────────────────────────────────────────────
 
-async function main() {
+export async function runPipeline() {
   if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || !process.env.SANITY_API_TOKEN) {
     console.error('Missing NEXT_PUBLIC_SANITY_PROJECT_ID or SANITY_API_TOKEN')
     process.exit(1)
@@ -480,4 +480,7 @@ async function main() {
   console.log('Done.')
 }
 
-main()
+// Run directly when called as CLI script
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  runPipeline()
+}
