@@ -212,6 +212,25 @@ function extractBodyImages(html) {
   return [...new Set(imgs)]
 }
 
+function ensureReadableParagraphs(text, sentencesPerPara = 3) {
+  return text
+    .split('\n\n')
+    .flatMap(block => {
+      const trimmed = block.trim()
+      if (!trimmed || trimmed.startsWith('[IMAGE:') || trimmed.length < 350) return [trimmed]
+      // Découper au bout de sentencesPerPara phrases
+      const sentences = trimmed.match(/[^.!?…]+[.!?…]+(?:\s|$)/g) || [trimmed]
+      const chunks = []
+      for (let i = 0; i < sentences.length; i += sentencesPerPara) {
+        const chunk = sentences.slice(i, i + sentencesPerPara).join('').trim()
+        if (chunk) chunks.push(chunk)
+      }
+      return chunks.length > 1 ? chunks : [trimmed]
+    })
+    .filter(Boolean)
+    .join('\n\n')
+}
+
 function weaveImages(text, images) {
   if (images.length === 0) return text
   const paragraphs = text.split('\n\n').filter(p => p.trim())
@@ -406,7 +425,8 @@ async function main() {
       const imagesToWeave = allBodyImages.length > 0
         ? allBodyImages
         : (cover_image ? [cover_image] : [])
-      const contentWithImages = weaveImages(rawContent, imagesToWeave)
+      const readableContent = ensureReadableParagraphs(rawContent)
+      const contentWithImages = weaveImages(readableContent, imagesToWeave)
 
       // Traduire titre + contenu en français via DeepL
       const [translatedTitle, translatedContent] = await translateToFr([
