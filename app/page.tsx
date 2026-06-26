@@ -20,7 +20,7 @@ export default async function HomePage() {
   return (
     <div>
       {/* HERO */}
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden rounded-3xl mx-4 mt-4">
+      <section className="relative min-h-[100vh] w-full flex items-center overflow-hidden">
         <Image src="/images/hero-bg.jpg" alt="GTA 6 Hero" fill className="object-cover object-center" priority />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(11,10,8,0.92) 0%, rgba(11,10,8,0.6) 50%, rgba(11,10,8,0.2) 100%)' }} />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(0deg, rgba(11,10,8,1) 0%, transparent 40%)' }} />
