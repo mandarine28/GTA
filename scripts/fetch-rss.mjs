@@ -201,7 +201,33 @@ function weaveImages(text, images) {
   ].join('\n\n')
 }
 
-// ── Article page scraper (og:image + body images) ────────────────
+// ── Article text extractor ────────────────────────────────────────
+
+function extractArticleText(html) {
+  // Isoler le conteneur principal de l'article
+  let scope = html
+  const containers = [
+    /<article[^>]*>([\s\S]*?)<\/article>/i,
+    /class=["'][^"']*(?:article-body|post-body|entry-content|article-content|post-content|story-body|content-body)[^"']*["'][^>]*>([\s\S]*?)(?=<\/(?:div|section|article|main)>)/i,
+    /<main[^>]*>([\s\S]*?)<\/main>/i,
+  ]
+  for (const re of containers) {
+    const m = html.match(re)
+    if (m) { scope = m[1]; break }
+  }
+
+  // Extraire les paragraphes
+  const paragraphs = []
+  const pRe = /<p[^>]*>([\s\S]*?)<\/p>/gi
+  let m
+  while ((m = pRe.exec(scope)) !== null) {
+    const text = stripHtml(m[1]).trim()
+    if (text.length > 40) paragraphs.push(text)
+  }
+  return paragraphs.join('\n\n')
+}
+
+// ── Article page scraper (og:image + body images + body text) ────
 
 async function fetchArticleMeta(url) {
   try {
@@ -209,7 +235,7 @@ async function fetchArticleMeta(url) {
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; GrandTheftInfo-Bot/1.0)' },
       signal: AbortSignal.timeout(10_000),
     })
-    if (!res.ok) return { ogImage: null, bodyImages: [] }
+    if (!res.ok) return { ogImage: null, bodyImages: [], bodyText: '' }
     const html = await res.text()
 
     const ogMatch =
@@ -217,12 +243,13 @@ async function fetchArticleMeta(url) {
       html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/)
     const ogImage = ogMatch ? ogMatch[1] : null
     const bodyImages = extractBodyImages(html).filter(src => src !== ogImage).slice(0, 5)
+    const bodyText = extractArticleText(html)
 
-    console.log(`    og:image: ${ogImage ? 'found' : 'none'}, body images: ${bodyImages.length}`)
-    return { ogImage, bodyImages }
+    console.log(`    og:image: ${ogImage ? 'found' : 'none'}, body images: ${bodyImages.length}, text: ${bodyText.length} chars`)
+    return { ogImage, bodyImages, bodyText }
   } catch (err) {
     console.warn(`    fetchArticleMeta failed: ${err.message}`)
-    return { ogImage: null, bodyImages: [] }
+    return { ogImage: null, bodyImages: [], bodyText: '' }
   }
 }
 
@@ -300,7 +327,7 @@ async function main() {
         : new Date().toISOString()
       const rawHtml = item.description || item.title
       const rssBodyImages = extractBodyImages(rawHtml)
-      const rawContent = stripHtml(rawHtml)
+      let rawContent = stripHtml(rawHtml)
         .replace(/^listen to this\s*/i, '')
         .replace(/listenbutton\w*\s*/gi, '')
         .trim()
@@ -311,6 +338,10 @@ async function main() {
         const meta = await fetchArticleMeta(item.link)
         if (!cover_image) cover_image = meta.ogImage
         pageBodyImages = meta.bodyImages
+        // Si le RSS ne donne qu'un court extrait, utiliser le texte scrapé de la page
+        if (rawContent.length < 500 && meta.bodyText.length > rawContent.length) {
+          rawContent = meta.bodyText.slice(0, 8000)
+        }
       }
 
       const allBodyImages = [...new Set([...rssBodyImages, ...pageBodyImages])]
