@@ -135,7 +135,6 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="rounded-2xl border flex flex-col items-center justify-center py-16 px-6 text-center gap-4" style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'var(--bg-card)' }}>
-            <span className="text-4xl">🎮</span>
             <p className="text-lg font-black text-white">Disponible dès la sortie de GTA VI</p>
             <p className="text-sm max-w-md" style={{ color: 'var(--text-muted)' }}>
               Les mises à jour hebdomadaires GTA Online seront publiées ici chaque semaine après le lancement du jeu. Bonus, nouveaux véhicules, réductions et événements en temps réel.
