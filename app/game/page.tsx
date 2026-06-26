@@ -125,17 +125,29 @@ export default async function GamePage() {
                 <Link
                   key={char.slug}
                   href={`/characters/${char.slug}`}
-                  className="group rounded-xl p-4 flex items-center gap-3 transition-all hover:-translate-y-0.5"
-                  style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}
+                  className="group relative rounded-2xl overflow-hidden block transition-transform hover:-translate-y-1"
+                  style={{ minHeight: 200 }}
                 >
-                  <div className="flex-1 min-w-0">
-                    <span className="inline-block text-[8px] font-black tracking-widest uppercase px-1.5 py-0.5 rounded-full mb-1" style={{ background: ls.bg, color: ls.color, border: `1px solid ${ls.border}` }}>{char.roleLabel}</span>
-                    <p className="text-sm font-black text-white truncate">{char.name}</p>
-                    <p className="text-xs truncate" style={{ color: 'var(--text-muted)' }}>{char.role}</p>
+                  <Image
+                    src={char.coverImage}
+                    alt={char.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div
+                    className="absolute inset-0"
+                    style={{ background: 'linear-gradient(0deg, rgba(6,15,28,0.98) 0%, rgba(6,15,28,0.55) 55%, rgba(6,15,28,0.1) 100%)' }}
+                  />
+                  <div className="absolute inset-x-0 bottom-0 p-3">
+                    <span
+                      className="inline-block text-[8px] font-black tracking-widest uppercase px-2 py-0.5 rounded-full mb-1.5"
+                      style={{ background: ls.bg, color: ls.color, border: `1px solid ${ls.border}` }}
+                    >
+                      {char.roleLabel}
+                    </span>
+                    <p className="text-sm font-black text-white uppercase leading-tight">{char.name}</p>
+                    <p className="text-[10px] mt-0.5 leading-snug" style={{ color: 'rgba(255,255,255,0.45)' }}>{char.role}</p>
                   </div>
-                  <svg className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ color: 'var(--accent-gold)' }}>
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
                 </Link>
               )
             })}
