@@ -114,8 +114,7 @@ export default async function HomePage() {
                 <div className="p-5">
                   <h3 className="font-bold text-white mb-2 group-hover:opacity-80 transition-opacity leading-snug">{article.title}</h3>
                   <p className="text-sm line-clamp-2 mb-4" style={{ color: 'var(--text-muted)' }}>{article.summary}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs" style={{ color: 'var(--text-muted)' }}>{article.source_name}</span>
+                  <div className="flex items-center justify-end">
                     <span className="text-xs" style={{ color: 'var(--text-muted)' }}>{new Date(article.published_at).toLocaleDateString('fr-FR')}</span>
                   </div>
                 </div>

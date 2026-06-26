@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import Image from 'next/image'
 import PageNextSteps from '@/components/ui/PageNextSteps'
 
@@ -20,6 +19,7 @@ interface WeeklyItem {
 interface WeekSection {
   id: string
   title: string
+  subtitle: string
   icon: SectionIcon
   layout: 'list' | 'grid'
   items: WeeklyItem[]
@@ -46,10 +46,10 @@ interface WeekData {
 const weeks: WeekData[] = [
   {
     id: 'w-jun17',
-    label: 'Semaine du 17 juin',
-    dateRange: '17 — 23 juin 2027',
+    label: 'Bonus & événements de la semaine',
+    dateRange: 'Mis à jour chaque semaine',
     isCurrent: true,
-    summary: 'Double argent sur les courses, la Grotti Turismo Omnis débarque en concession et l\'aviation est à l\'honneur.',
+    summary: 'Tu trouveras ici les bonus actifs, les événements en cours, les nouvelles sorties de véhicules et tout le contenu ajouté chaque semaine dans GTA Online.',
     spotlights: [
       { category: 'Événement', title: 'Double Argent — Courses de Rue', image: '/images/gameplay2.jpg' },
       { category: 'Nouveau Véhicule', title: 'Grotti Turismo Omnis', image: '/images/gameplay1.jpg' },
@@ -57,7 +57,8 @@ const weeks: WeekData[] = [
     sections: [
       {
         id: 'bonus',
-        title: 'Bonus Actifs',
+        title: 'Les bonus actifs de la semaine',
+        subtitle: 'Vous retrouverez ici tous les multiplicateurs d\'argent et d\'XP actifs chaque semaine.',
         icon: 'bonus',
         layout: 'list',
         items: [
@@ -68,7 +69,8 @@ const weeks: WeekData[] = [
       },
       {
         id: 'events',
-        title: 'Événements',
+        title: 'Les événements actifs',
+        subtitle: 'Les événements actifs, tournois et défis du moment seront affichés ici chaque semaine.',
         icon: 'event',
         layout: 'list',
         items: [
@@ -79,7 +81,8 @@ const weeks: WeekData[] = [
       },
       {
         id: 'vehicles',
-        title: 'Véhicules',
+        title: 'Nouvelles sorties & promos véhicules',
+        subtitle: 'Toutes les nouvelles sorties de véhicules et les promos de la semaine seront listées ici.',
         icon: 'vehicle',
         layout: 'grid',
         items: [
@@ -90,109 +93,13 @@ const weeks: WeekData[] = [
       },
       {
         id: 'content',
-        title: 'Nouveau Contenu',
+        title: 'Les nouvelles sorties de contenu',
+        subtitle: 'Les nouvelles tenues, propriétés et ajouts de contenu de chaque semaine seront ici.',
         icon: 'content',
         layout: 'list',
         items: [
           { badge: 'new', title: 'Appartement Oceanview Premium', desc: 'Appartement de luxe avec vue sur l\'océan, garage 10 places. Ocean Drive, Vice City.', value: '4 200 000 $' },
           { badge: 'new', title: '5 tenues exclusives Aviation', desc: 'Collection capsule liée à la Semaine Aviation, disponible via Rockstar Rewards.', value: 'Gratuit' },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'w-jun10',
-    label: 'Semaine du 10 juin',
-    dateRange: '10 — 16 juin 2027',
-    summary: 'Semaine des braquages avec double argent, et l\'ouverture du Benny\'s Custom Motors.',
-    spotlights: [
-      { category: 'Événement', title: 'Semaine des Braquages', image: '/images/gameplay5.jpg' },
-      { category: 'Nouveau Lieu', title: 'Benny\'s Custom Motors', image: '/images/gameplay4.jpg' },
-    ],
-    sections: [
-      {
-        id: 'bonus',
-        title: 'Bonus Actifs',
-        icon: 'bonus',
-        layout: 'list',
-        items: [
-          { badge: 'bonus', title: 'Braquages Online', desc: 'Toutes les missions de braquage coopératives.', value: '2x' },
-          { badge: 'bonus', title: 'Contrats de fuite', desc: 'Missions d\'extraction post-braquage.', value: '1.5x' },
-          { badge: 'bonus', title: 'Missions CEO', desc: 'Contrats et livraisons CEO/VIP.', value: '1.25x' },
-        ],
-      },
-      {
-        id: 'events',
-        title: 'Événements',
-        icon: 'event',
-        layout: 'list',
-        items: [
-          { badge: 'event', title: 'Tournoi Braquage Elite', desc: 'Classement basé sur le total d\'argent volé en session publique. Récompense : Pegassi Torero XO.', endDate: '16 juin' },
-          { badge: 'event', title: 'Semaine Casino VIP', desc: 'Accès au salon VIP et gains doublés sur le blackjack et la roulette.', endDate: '16 juin' },
-        ],
-      },
-      {
-        id: 'vehicles',
-        title: 'Véhicules',
-        icon: 'vehicle',
-        layout: 'grid',
-        items: [
-          { badge: 'new', title: 'Pegassi Torero XO', desc: 'Décapotable exclusive chez Benny\'s Custom Motors. Options de personnalisation illimitées.', value: '2 150 000 $' },
-          { badge: 'discount', title: 'Karin Sultan RS', desc: 'Rally car modifiable, promo hebdo chez Benny\'s.', value: '-35%' },
-          { badge: 'discount', title: 'Ocelot Swinger', desc: 'Coupé sport classique, remise exclusive cette semaine.', value: '-20%' },
-        ],
-      },
-      {
-        id: 'content',
-        title: 'Nouveau Contenu',
-        icon: 'content',
-        layout: 'list',
-        items: [
-          { badge: 'new', title: 'Benny\'s Custom Motors — Vice City', desc: 'Nouveau garage de personnalisation dédié aux low-riders et muscles cars, Port Gellhorn.', value: 'Gratuit' },
-          { badge: 'new', title: 'Pack tenues "Heist Crew"', desc: '8 nouvelles tenues thématiques pour la semaine braquage.', value: 'Rockstar Rewards' },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'w-jun03',
-    label: 'Semaine du 3 juin',
-    dateRange: '3 — 9 juin 2027',
-    summary: 'Semaine maritime : courses nautiques, double argent sur le port et nouveau yacht disponible.',
-    spotlights: [
-      { category: 'Événement', title: 'Championnat Nautique', image: '/images/gameplay6.jpg' },
-      { category: 'Nouveau', title: 'Yacht de Luxe — Port de Gellhorn', image: '/images/gameplay3.jpg' },
-    ],
-    sections: [
-      {
-        id: 'bonus',
-        title: 'Bonus Actifs',
-        icon: 'bonus',
-        layout: 'list',
-        items: [
-          { badge: 'bonus', title: 'Courses nautiques', desc: 'Toutes les courses de jet-ski et hors-bord.', value: '2x' },
-          { badge: 'bonus', title: 'Missions port', desc: 'Livraisons et contrats liés aux docks de Gellhorn.', value: '1.5x' },
-        ],
-      },
-      {
-        id: 'vehicles',
-        title: 'Véhicules',
-        icon: 'vehicle',
-        layout: 'grid',
-        items: [
-          { badge: 'new', title: 'Shitzu Squalo', desc: 'Hors-bord rapide disponible chez Docktease. Le plus rapide de la catégorie.', value: '980 000 $' },
-          { badge: 'discount', title: 'Dinghy Maritime', desc: 'Bateau discret idéal pour les missions de port.', value: '-50%' },
-          { badge: 'discount', title: 'Jetmax', desc: 'Yacht compact, parfait pour la traversée côtière.', value: '-30%' },
-        ],
-      },
-      {
-        id: 'content',
-        title: 'Nouveau Contenu',
-        icon: 'content',
-        layout: 'list',
-        items: [
-          { badge: 'new', title: 'Yacht "Vice Wave" achetable', desc: 'Propriété flottante avec hélipad, spa et 4 chambres. Ancré au Port de Gellhorn.', value: '7 500 000 $' },
-          { badge: 'new', title: 'Pack tenues "Sailor"', desc: '6 tenues marines et 2 accessoires exclusifs.', value: 'Rockstar Rewards' },
         ],
       },
     ],
@@ -283,7 +190,7 @@ function SectionIco({ icon }: { icon: SectionIcon }) {
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 export default function WeeklyClient() {
-  const [active, setActive] = useState(weeks[0])
+  const active = weeks[0]
 
   return (
     <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
@@ -303,50 +210,7 @@ export default function WeeklyClient() {
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-[272px_1fr] gap-10 items-start">
-
-        {/* Sidebar */}
-        <aside className="hidden lg:block sticky top-24">
-          <p className="text-xs font-bold tracking-[0.25em] uppercase mb-3 flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
-            Aperçu du format
-            <span className="text-[9px] px-1.5 py-0.5 rounded font-black tracking-wider" style={{ background: 'rgba(240,192,64,0.15)', color: 'var(--accent-gold)', border: '1px solid rgba(240,192,64,0.2)' }}>EXEMPLE</span>
-          </p>
-          <div className="space-y-2 mb-6">
-            {weeks.map((w) => {
-              const isActive = w.id === active.id
-              return (
-                <button
-                  key={w.id}
-                  onClick={() => setActive(w)}
-                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-left transition-all"
-                  style={{
-                    background: isActive ? 'var(--accent-gold)' : 'var(--bg-card)',
-                    border: `1px solid ${isActive ? 'var(--accent-gold)' : 'var(--border)'}`,
-                    color: isActive ? '#081E36' : 'var(--text-warm)',
-                  }}
-                >
-                  <div>
-                    <p className="font-black text-sm">{w.label}</p>
-                    {w.isCurrent && (
-                      <p className="text-xs font-semibold mt-0.5" style={{ color: isActive ? 'rgba(8,30,54,0.65)' : 'var(--accent-gold)' }}>
-                        En cours
-                      </p>
-                    )}
-                  </div>
-                  {isActive ? <IcoCheck /> : <IcoHistory />}
-                </button>
-              )
-            })}
-          </div>
-
-          {/* Active week summary card */}
-          <div className="rounded-xl p-4" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-gold)' }}>
-            <p className="text-xs font-bold tracking-[0.2em] uppercase mb-2" style={{ color: 'var(--accent-gold)' }}>
-              Semaine active
-            </p>
-            <p className="text-sm text-white font-semibold leading-snug">{active.dateRange}</p>
-          </div>
-        </aside>
+      <div>
 
         {/* Main content */}
         <div>
@@ -361,16 +225,28 @@ export default function WeeklyClient() {
             <div className="grid md:grid-cols-2 gap-4 mb-10">
               {active.spotlights.map((spot, i) => (
                 <div key={i} className="relative rounded-2xl overflow-hidden" style={{ height: 200 }}>
-                  <Image src={spot.image} alt="" fill className="object-cover" aria-hidden />
-                  <div
-                    className="absolute inset-0"
-                    style={{ background: 'linear-gradient(0deg, rgba(8,20,40,0.94) 0%, rgba(8,20,40,0.28) 60%, transparent 100%)' }}
-                  />
-                  <div className="absolute bottom-0 left-0 p-5">
-                    <p className="text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'var(--accent-gold)' }}>
-                      {spot.category}
-                    </p>
-                    <p className="text-xl font-black text-white uppercase leading-tight">{spot.title}</p>
+                  <div style={{ opacity: 0.3, position: 'absolute', inset: 0 }}>
+                    <Image src={spot.image} alt="" fill className="object-cover" aria-hidden />
+                    <div
+                      className="absolute inset-0"
+                      style={{ background: 'linear-gradient(0deg, rgba(8,20,40,0.94) 0%, rgba(8,20,40,0.28) 60%, transparent 100%)' }}
+                    />
+                    <div className="absolute bottom-0 left-0 p-5">
+                      <p className="text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'var(--accent-gold)' }}>
+                        {spot.category}
+                      </p>
+                      <p className="text-xl font-black text-white uppercase leading-tight">{spot.title}</p>
+                    </div>
+                  </div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: 'rgba(8,20,40,0.82)', border: '1px solid rgba(240,192,64,0.3)', backdropFilter: 'blur(6px)' }}>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--accent-gold)', flexShrink: 0 }}>
+                        <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+                      </svg>
+                      <span className="text-xs font-black tracking-widest uppercase" style={{ color: 'var(--accent-gold)' }}>
+                        Disponible à la sortie du jeu
+                      </span>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -382,64 +258,83 @@ export default function WeeklyClient() {
             {active.sections.map((section) => (
               <div key={section.id}>
                 {/* Section heading */}
-                <div className="flex items-center gap-3 mb-5" style={{ color: 'var(--accent-gold)' }}>
-                  <SectionIco icon={section.icon} />
-                  <h3 className="text-2xl font-black text-white uppercase">{section.title}</h3>
+                <div className="mb-5">
+                  <div className="flex items-center gap-3" style={{ color: 'var(--accent-gold)' }}>
+                    <SectionIco icon={section.icon} />
+                    <h3 className="text-2xl font-black text-white uppercase">{section.title}</h3>
+                  </div>
+                  <p className="text-sm mt-1 ml-[34px]" style={{ color: 'var(--text-muted)' }}>{section.subtitle}</p>
                 </div>
 
-                {section.layout === 'list' ? (
-                  <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
-                    {section.items.map((item, i) => (
-                      <div
-                        key={i}
-                        className="flex gap-3 items-start px-5 py-4"
-                        style={{ borderBottom: i < section.items.length - 1 ? '1px solid var(--border)' : 'none' }}
-                      >
-                        <Badge type={item.badge} />
-                        <div className="flex-1 min-w-0">
-                          <p className="font-bold text-white text-sm">{item.title}</p>
-                          <p className="text-sm mt-0.5 leading-relaxed" style={{ color: 'var(--text-muted)' }}>{item.desc}</p>
-                          {item.endDate && (
-                            <p className="text-xs mt-1 font-semibold" style={{ color: 'rgba(255,255,255,0.28)' }}>
-                              Jusqu'au {item.endDate}
-                            </p>
-                          )}
-                        </div>
-                        {item.value && (
-                          <span
-                            className="flex-shrink-0 font-black text-sm px-2.5 py-1 rounded-lg"
-                            style={{ background: 'rgba(240,192,64,0.1)', color: 'var(--accent-gold)', whiteSpace: 'nowrap' }}
+                <div className="relative">
+                  <div style={{ opacity: 0.3, pointerEvents: 'none', userSelect: 'none' }}>
+                    {section.layout === 'list' ? (
+                      <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
+                        {section.items.map((item, i) => (
+                          <div
+                            key={i}
+                            className="flex gap-3 items-start px-5 py-4"
+                            style={{ borderBottom: i < section.items.length - 1 ? '1px solid var(--border)' : 'none' }}
                           >
-                            {item.value}
-                          </span>
-                        )}
+                            <Badge type={item.badge} />
+                            <div className="flex-1 min-w-0">
+                              <p className="font-bold text-white text-sm">{item.title}</p>
+                              <p className="text-sm mt-0.5 leading-relaxed" style={{ color: 'var(--text-muted)' }}>{item.desc}</p>
+                              {item.endDate && (
+                                <p className="text-xs mt-1 font-semibold" style={{ color: 'rgba(255,255,255,0.28)' }}>
+                                  Jusqu'au {item.endDate}
+                                </p>
+                              )}
+                            </div>
+                            {item.value && (
+                              <span
+                                className="flex-shrink-0 font-black text-sm px-2.5 py-1 rounded-lg"
+                                style={{ background: 'rgba(240,192,64,0.1)', color: 'var(--accent-gold)', whiteSpace: 'nowrap' }}
+                              >
+                                {item.value}
+                              </span>
+                            )}
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="grid md:grid-cols-3 gap-4">
-                    {section.items.map((item, i) => (
-                      <div
-                        key={i}
-                        className="rounded-2xl p-5 flex flex-col gap-3"
-                        style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}
-                      >
-                        <div className="flex items-start justify-between gap-2">
-                          <Badge type={item.badge} />
-                          {item.value && (
-                            <span className="font-black text-sm flex-shrink-0" style={{ color: item.badge === 'discount' ? '#EF4444' : 'var(--accent-gold)' }}>
-                              {item.value}
-                            </span>
-                          )}
-                        </div>
-                        <div>
-                          <p className="font-bold text-white text-sm mb-1">{item.title}</p>
-                          <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>{item.desc}</p>
-                        </div>
+                    ) : (
+                      <div className="grid md:grid-cols-3 gap-4">
+                        {section.items.map((item, i) => (
+                          <div
+                            key={i}
+                            className="rounded-2xl p-5 flex flex-col gap-3"
+                            style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}
+                          >
+                            <div className="flex items-start justify-between gap-2">
+                              <Badge type={item.badge} />
+                              {item.value && (
+                                <span className="font-black text-sm flex-shrink-0" style={{ color: item.badge === 'discount' ? '#EF4444' : 'var(--accent-gold)' }}>
+                                  {item.value}
+                                </span>
+                              )}
+                            </div>
+                            <div>
+                              <p className="font-bold text-white text-sm mb-1">{item.title}</p>
+                              <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>{item.desc}</p>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
+                    )}
                   </div>
-                )}
+
+                  {/* Overlay label */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: 'rgba(8,20,40,0.82)', border: '1px solid rgba(240,192,64,0.3)', backdropFilter: 'blur(6px)' }}>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--accent-gold)', flexShrink: 0 }}>
+                        <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+                      </svg>
+                      <span className="text-xs font-black tracking-widest uppercase" style={{ color: 'var(--accent-gold)' }}>
+                        Disponible à la sortie du jeu
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             ))}
           </div>

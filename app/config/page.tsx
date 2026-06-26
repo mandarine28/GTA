@@ -110,7 +110,7 @@ export default function ConfigPage() {
 
               <Link
                 href={edition.ctaHref}
-                className="w-full py-4 rounded-md font-semibold uppercase tracking-wide transition-opacity hover:opacity-90 text-center block"
+                className={`w-full py-4 rounded-md font-semibold uppercase tracking-wide text-center block transition-all duration-200 hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100 ${edition.featured ? 'hover:brightness-110 hover:shadow-[0_8px_32px_rgba(255,171,0,0.45)]' : 'hover:shadow-[0_8px_24px_rgba(188,0,130,0.35)]'}`}
                 style={
                   edition.featured
                     ? { background: '#ffab00', color: '#3d013d', fontSize: 16, boxShadow: '2.1px 2.1px 0px 0px #bc0082, 0px 4px 24px 0px rgba(0,0,0,0.15)' }

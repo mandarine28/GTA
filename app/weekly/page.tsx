@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function WeeklyPage() {
   return (
     <>
-      <PageHero title="MÀJ HEBDOMADAIRE" label="Actualités" image="/images/gameplay2.jpg" />
+      <PageHero title="BONUS & ÉVÉNEMENTS DE LA SEMAINE" label="Actualités" image="/images/gameplay2.jpg" />
       <WeeklyClient />
     </>
   )

@@ -172,10 +172,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                 className="flex items-center gap-3 flex-wrap pb-6 text-sm"
                 style={{ borderBottom: '1px solid var(--border)', color: 'var(--text-muted)' }}
               >
-                <span className="font-semibold" style={{ color: 'var(--accent-gold)' }}>
-                  {article.source_name}
-                </span>
-                <span aria-hidden="true">·</span>
                 <time dateTime={article.published_at}>
                   {new Date(article.published_at).toLocaleDateString('fr-FR', {
                     day: 'numeric', month: 'long', year: 'numeric',
