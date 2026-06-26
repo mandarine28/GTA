@@ -30,13 +30,13 @@ const trailers = [
     title: 'Bande-annonce 2 de\nGrand Theft Auto VI',
     date: '6 mai 2025',
     img: '/images/gameplay2.jpg',
-    href: '/media/trailers',
+    href: 'https://www.youtube.com/watch?v=fyRD7JTzRaI',
   },
   {
     title: 'Bande-annonce 1 de\nGrand Theft Auto VI',
-    date: '4 Décembre 2023',
+    date: '4 décembre 2023',
     img: '/images/gameplay4.jpg',
-    href: '/media/trailers',
+    href: 'https://www.youtube.com/watch?v=QdBZpzeXZXU',
   },
 ]
 
@@ -172,7 +172,7 @@ export default function AcheterPage() {
           </h2>
           <div className="grid md:grid-cols-2 gap-5">
             {trailers.map((t) => (
-              <Link key={t.title} href={t.href} className="group flex gap-4 rounded-2xl overflow-hidden transition-all hover:opacity-90" style={{ background: 'var(--bg-card, #0F2840)', border: '1px solid rgba(255,255,255,0.06)' }}>
+              <a key={t.title} href={t.href} target="_blank" rel="noopener noreferrer" className="group flex gap-4 rounded-2xl overflow-hidden transition-all hover:opacity-90" style={{ background: 'var(--bg-card, #0F2840)', border: '1px solid rgba(255,255,255,0.06)' }}>
                 <div className="relative w-36 flex-shrink-0">
                   <Image src={t.img} alt={t.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 flex items-center justify-center">
@@ -187,7 +187,7 @@ export default function AcheterPage() {
                   <p className="font-bold text-sm leading-snug text-white mb-2 whitespace-pre-line">{t.title}</p>
                   <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{t.date}</p>
                 </div>
-              </Link>
+              </a>
             ))}
           </div>
         </div>
