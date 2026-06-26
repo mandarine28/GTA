@@ -30,13 +30,13 @@ const trailers = [
     title: 'Bande-annonce 2 de\nGrand Theft Auto VI',
     date: '6 mai 2025',
     img: '/images/gameplay2.jpg',
-    href: 'https://www.youtube.com/watch?v=fyRD7JTzRaI',
+    href: 'https://www.youtube.com/watch?v=VQRLujxTm3c',
   },
   {
     title: 'Bande-annonce 1 de\nGrand Theft Auto VI',
     date: '4 décembre 2023',
     img: '/images/gameplay4.jpg',
-    href: 'https://www.youtube.com/watch?v=QdBZpzeXZXU',
+    href: 'https://www.youtube.com/watch?v=QdBZY2fkU-0',
   },
 ]
 

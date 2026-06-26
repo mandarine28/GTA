@@ -27,7 +27,7 @@ const menu: NavSection[] = [
       { href: '/game', label: 'Histoire & Synopsis', desc: 'Scénario, univers, infos clés' },
       { href: '/characters', label: 'Personnages', desc: 'Jason, Lucia et le cast complet' },
       { href: '/config', label: 'Éditions', desc: 'Standard & Ultime' },
-      { href: '/map', label: 'Carte de Vice City', desc: 'Explorez le monde' },
+      { href: '/map', label: 'Régions de Leonida', desc: 'Vice City, Keys, Grassrivers…' },
     ],
   },
   {

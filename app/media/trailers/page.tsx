@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 const trailers = [
   {
-    id: 'QdBZpzeXZXU',
+    id: 'QdBZY2fkU-0',
     title: 'GTA VI -Trailer Officiel #1',
     date: '5 décembre 2023',
     views: '200M+ vues',
@@ -17,7 +17,7 @@ const trailers = [
     duration: '1:31',
   },
   {
-    id: 'fyRD7JTzRaI',
+    id: 'VQRLujxTm3c',
     title: 'GTA VI -Trailer Officiel #2',
     date: 'Mai 2024',
     views: '180M+ vues',

@@ -3,14 +3,14 @@ import PageHero from '@/components/ui/PageHero'
 import MapClient from './MapClient'
 
 export const metadata: Metadata = {
-  title: 'Carte de Vice City - Grand Theft Info',
-  description: 'Explorez les 6 districts du comté de Leonida : Vice City Downtown, Neon Coast, Port Gellhorn et plus encore. Infos et leaks par zone.',
+  title: 'Régions de Leonida - Grand Theft Info',
+  description: 'Explorez les 6 régions confirmées de GTA VI : Vice City, Leonida Keys, Grassrivers, Port Gellhorn, Ambrosia, Mont Kalaga.',
 }
 
 export default function MapPage() {
   return (
     <>
-      <PageHero title="CARTE DE VICE CITY" label="Jeu" image="/images/gameplay3.jpg" />
+      <PageHero title="RÉGIONS DE LEONIDA" label="Jeu" image="/images/regions/vice-city/montage.jpg" />
       <MapClient />
     </>
   )
