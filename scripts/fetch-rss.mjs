@@ -310,6 +310,32 @@ function weaveImages(text, images) {
 
 // ── Article text extractor ────────────────────────────────────────
 
+// Patterns qui indiquent un paragraphe parasite (bio journaliste, RGPD, cookies, newsletter…)
+const NOISE_PATTERNS = [
+  /journaliste|rédact(?:eur|rice)|chef de rubrique|correspondant/i,
+  /newsletter|abonnez-vous|inscrivez-vous|boîte aux lettres|vous allez entendre parler/i,
+  /données (?:personnelles|transmises)|politique de confidentialité|responsable de traitement/i,
+  /vous pouvez vous opposer|droit d['']accès|droit de rectification|portabilité|exercer.*droits/i,
+  /ce contenu est bloqué|n['']avez pas accepté|consentez aux finalités|traceurs/i,
+  /humanoid|éditeur du site|société éditrice/i,
+  /suivez-nous|profil google|ne rien manquer/i,
+  /publicité personnalisée|profil publicitaire|mesurer la performance/i,
+  /cliquez sur.*désinscription|formulaire de demande|exercer.*droit/i,
+  /tous nos articles sont aussi/i,
+  /surveillez votre boîte/i,
+  /les données transmises/i,
+  /en cliquant sur.*j['']accepte/i,
+  /vous disposez d['']un droit/i,
+  /pour plus d['']informations.*politique/i,
+]
+
+function isNoiseParagraph(text) {
+  if (NOISE_PATTERNS.some(p => p.test(text))) return true
+  // Blocs de texte légal très longs sans ponctuation de fin de phrase normale → probablement du bruit
+  if (text.length > 600 && !/[.!?]$/.test(text.trim())) return true
+  return false
+}
+
 function extractArticleText(html) {
   let scope = html
   const containers = [
@@ -327,7 +353,7 @@ function extractArticleText(html) {
   let m
   while ((m = pRe.exec(scope)) !== null) {
     const text = stripHtml(m[1]).trim()
-    if (text.length > 40) paragraphs.push(text)
+    if (text.length > 40 && !isNoiseParagraph(text)) paragraphs.push(text)
   }
   return paragraphs.join('\n\n')
 }
@@ -469,6 +495,8 @@ export async function runPipeline() {
     console.error('Missing NEXT_PUBLIC_SANITY_PROJECT_ID or SANITY_API_TOKEN')
     process.exit(1)
   }
+
+  console.log(`DeepL: ${DEEPL_KEY ? `clé présente (${DEEPL_URL.includes('free') ? 'plan gratuit' : 'plan pro'})` : '⚠ DEEPL_API_KEY absente — articles non traduits'}`)
 
   // 1. Charger les URLs déjà en Sanity pour dédupliquer
   const existing = await sanity.fetch(
