@@ -204,27 +204,6 @@ export default function MapClient() {
         </div>
       </div>
 
-      {/* Region nav */}
-      <div className="mt-12 pt-10" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-        <p className="text-[10px] font-black tracking-[0.25em] uppercase mb-4" style={{ color: 'var(--text-muted)' }}>Toutes les régions</p>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
-          {regions.map(r => (
-            <button
-              key={r.id}
-              onClick={() => { setActive(r.id); setActiveImg(0); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
-              className="group relative rounded-xl overflow-hidden text-left transition-transform hover:-translate-y-0.5"
-              style={{ aspectRatio: '3/2' }}
-            >
-              <Image src={r.postcard} alt={r.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
-              <div className="absolute inset-0" style={{ background: active === r.id ? 'rgba(240,192,64,0.3)' : 'rgba(6,15,28,0.55)' }} />
-              {active === r.id && (
-                <div className="absolute inset-0 rounded-xl" style={{ border: '2px solid var(--accent-gold)' }} />
-              )}
-              <p className="absolute bottom-0 inset-x-0 px-2 pb-2 text-[10px] font-black text-white uppercase leading-tight">{r.name}</p>
-            </button>
-          ))}
-        </div>
-      </div>
     </div>
   )
 }

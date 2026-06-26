@@ -287,12 +287,29 @@ export default function WeeklyClient() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
+
+      {/* Notice — coming soon */}
+      <div className="flex items-start gap-4 rounded-2xl p-5 mb-10" style={{ background: 'rgba(240,192,64,0.06)', border: '1px solid rgba(240,192,64,0.2)' }}>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--accent-gold)', flexShrink: 0, marginTop: 2 }}>
+          <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+        </svg>
+        <div>
+          <p className="font-black text-white mb-1" style={{ fontSize: '0.95rem' }}>
+            Disponible dès la sortie de GTA VI — 19 novembre 2026
+          </p>
+          <p className="text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}>
+            Cette page sera mise à jour chaque semaine avec les vrais bonus, événements, véhicules et promotions actifs dans GTA Online. Le format ci-dessous est un aperçu de ce que tu trouveras ici.
+          </p>
+        </div>
+      </div>
+
       <div className="grid lg:grid-cols-[272px_1fr] gap-10 items-start">
 
         {/* Sidebar */}
         <aside className="hidden lg:block sticky top-24">
-          <p className="text-xs font-bold tracking-[0.25em] uppercase mb-3" style={{ color: 'var(--text-muted)' }}>
-            Historique
+          <p className="text-xs font-bold tracking-[0.25em] uppercase mb-3 flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
+            Aperçu du format
+            <span className="text-[9px] px-1.5 py-0.5 rounded font-black tracking-wider" style={{ background: 'rgba(240,192,64,0.15)', color: 'var(--accent-gold)', border: '1px solid rgba(240,192,64,0.2)' }}>EXEMPLE</span>
           </p>
           <div className="space-y-2 mb-6">
             {weeks.map((w) => {
