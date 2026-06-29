@@ -63,6 +63,25 @@ export const articleType = defineType({
       title: 'Date de publication',
       type: 'datetime',
     }),
+    defineField({
+      name: 'verdict',
+      title: 'Ce qu\'on en pense',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
+      name: 'fiabilite',
+      title: 'Fiabilité',
+      type: 'string',
+      options: {
+        list: [
+          { title: '🟢 Officiel', value: 'officiel' },
+          { title: '🟡 Solide', value: 'solide' },
+          { title: '🟠 À suivre', value: 'a-suivre' },
+          { title: '🔴 Spéculatif', value: 'speculatif' },
+        ],
+      },
+    }),
   ],
   orderings: [
     {

@@ -56,14 +56,16 @@ const SOURCES = [
   // ── Communauté & agrégateurs ──────────────────────────────────────
   {
     name: 'Reddit r/GTA6',
-    url: 'https://www.reddit.com/r/GTA6/new.json?limit=25',
-    type: 'reddit-json',
+    url: 'https://old.reddit.com/r/GTA6/.rss',
+    type: 'rss',
     skipGTA6Filter: true,
+    skipArticleScrape: true,
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
   },
   // ── Médias gaming francophones (supplémentaires) ──────────────────
   {
     name: 'Gamergen',
-    url: 'https://www.gamergen.com/rss.xml',
+    url: 'https://www.gamergen.com/rss',
     type: 'rss',
   },
   {
@@ -249,18 +251,23 @@ function parseRSS(xml) {
   return items
 }
 
-// ── Reddit JSON parser ────────────────────────────────────────────
+// ── Atom feed parser (old.reddit.com, etc.) ──────────────────────
 
-function parseRedditJson(json) {
-  return json.data.children
-    .filter((c) => !c.data.stickied)
-    .map((c) => ({
-      title: c.data.title,
-      link: `https://www.reddit.com${c.data.permalink}`,
-      description: c.data.selftext || c.data.title,
-      pubDate: new Date(c.data.created_utc * 1000).toISOString(),
-      image: c.data.thumbnail?.startsWith('http') ? c.data.thumbnail : null,
-    }))
+function parseAtom(xml) {
+  const items = []
+  const entryRe = /<entry[^>]*>([\s\S]*?)<\/entry>/gi
+  let m
+  while ((m = entryRe.exec(xml)) !== null) {
+    const entry = m[1]
+    const title = decodeHtmlEntities(extractXmlTag(entry, 'title'))
+    const linkMatch = entry.match(/<link[^>]+href=["']([^"']+)["']/)
+    const link = linkMatch ? linkMatch[1] : ''
+    const pubDate = extractXmlTag(entry, 'published') || extractXmlTag(entry, 'updated')
+    const description = extractXmlTag(entry, 'content') || extractXmlTag(entry, 'summary')
+    const image = extractImageRss(description)
+    if (title && link) items.push({ title, link, description, pubDate, image })
+  }
+  return items
 }
 
 // ── Body image extractor ──────────────────────────────────────────
@@ -327,6 +334,11 @@ const NOISE_PATTERNS = [
   /en cliquant sur.*j['']accepte/i,
   /vous disposez d['']un droit/i,
   /pour plus d['']informations.*politique/i,
+  // CTAs "suivre sur Google News" (GTA BOOM et similaires)
+  /votre source préférée|faites de .{0,60} votre source/i,
+  /google donne la priorité|top stories|résumés générés par l['']ia/i,
+  /pas d['']inscription[.\s]*pas d['']e.?mail|juste une préférence dans la recherche/i,
+  /follow us on google|set as your preferred source/i,
 ]
 
 function isNoiseParagraph(text) {
@@ -384,7 +396,7 @@ async function fetchArticleMeta(url) {
   }
 }
 
-// ── DeepL translation ─────────────────────────────────────────────
+// ── DeepL translation (fallback) ──────────────────────────────────
 
 const DEEPL_KEY = process.env.DEEPL_API_KEY
 const DEEPL_URL = DEEPL_KEY?.endsWith(':fx')
@@ -400,16 +412,10 @@ async function translateChunk(texts) {
         'Authorization': `DeepL-Auth-Key ${DEEPL_KEY}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        text: texts,
-        target_lang: 'FR',
-      }),
+      body: JSON.stringify({ text: texts, target_lang: 'FR' }),
       signal: AbortSignal.timeout(30_000),
     })
-    if (!res.ok) {
-      console.warn(`  ⚠ DeepL HTTP ${res.status}`)
-      return texts
-    }
+    if (!res.ok) { console.warn(`  ⚠ DeepL HTTP ${res.status}`); return texts }
     const data = await res.json()
     return data.translations.map(t => t.text)
   } catch (err) {
@@ -418,7 +424,6 @@ async function translateChunk(texts) {
   }
 }
 
-// Traduit un tableau plat de textes en batch (max 50 par requête DeepL)
 async function translateAllToFr(texts) {
   if (!DEEPL_KEY || texts.length === 0) return texts
   const results = []
@@ -428,6 +433,86 @@ async function translateAllToFr(texts) {
     const translated = await translateChunk(chunk)
     results.push(...translated)
     if (i + 50 < texts.length) await new Promise(r => setTimeout(r, 300))
+  }
+  return results
+}
+
+// ── Gemini editorial rewriting ────────────────────────────────────
+
+const GEMINI_KEY = process.env.GEMINI_API_KEY
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`
+
+const EDITORIAL_SYSTEM = `Tu es le rédacteur de GTA 6 Hub, média communautaire francophone dédié à GTA VI.
+Voix : insider passionné qui parle au nom de la communauté ("on", "nous"). Ton direct, calibré, jamais naïf.
+Règles :
+- Bannir : "incroyable", "révolutionnaire", superlatifs creux
+- Utiliser si pertinent : "Rockstar ne fait rien par hasard", "à lire entre les lignes", "on reste prudents mais"
+- Si rumeur : le dire clairement
+- Hype assumée mais justifiée par les faits`
+
+const EDITORIAL_PROMPT = (rawTitle, rawContent) =>
+  `ARTICLE SOURCE (langue originale) :
+Titre : ${rawTitle}
+Contenu : ${rawContent.slice(0, 6000)}
+
+MISSION :
+1. Traduis en français si nécessaire
+2. Réécris avec notre voix éditoriale en suivant cette structure :
+   - Accroche (1 phrase qui pose l'enjeu)
+   - Corps (faits + ce que ça implique pour le joueur)
+   - Verdict "Ce qu'on en pense" (2-3 lignes, notre angle — stocké séparément)
+
+3. Évalue la fiabilité :
+   - "officiel" → confirmé par Rockstar
+   - "solide" → source crédible ou leak fiable
+   - "a-suivre" → rumeur intéressante
+   - "speculatif" → théorie communautaire
+
+Retourne UNIQUEMENT ce JSON sans markdown :
+{"title":"...","content":"...","verdict":"...","fiabilite":"..."}`
+
+async function rewriteArticle(rawTitle, rawContent) {
+  try {
+    const res = await fetch(GEMINI_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: EDITORIAL_SYSTEM }] },
+        contents: [{ parts: [{ text: EDITORIAL_PROMPT(rawTitle, rawContent) }] }],
+        generationConfig: { temperature: 0.7, maxOutputTokens: 1024 },
+      }),
+      signal: AbortSignal.timeout(30_000),
+    })
+    if (!res.ok) {
+      const err = await res.text()
+      console.warn(`  ⚠ Gemini HTTP ${res.status}: ${err.slice(0, 100)}`)
+      return null
+    }
+    const data = await res.json()
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text ?? ''
+    const clean = text.replace(/^```json\s*/i, '').replace(/```\s*$/, '').trim()
+    return JSON.parse(clean)
+  } catch (err) {
+    console.warn(`  ⚠ Gemini rewrite failed: ${err.message}`)
+    return null
+  }
+}
+
+async function rewriteAllWithGemini(candidates) {
+  console.log(`Réécriture éditoriale avec Gemini (${candidates.length} articles)...`)
+  const results = []
+  for (let i = 0; i < candidates.length; i++) {
+    const a = candidates[i]
+    process.stdout.write(`  [${i + 1}/${candidates.length}] ${a._rawTitle.slice(0, 50)}... `)
+    const rewritten = await rewriteArticle(a._rawTitle, a._rawContent)
+    if (rewritten?.title && rewritten?.content) {
+      console.log('✓')
+      results.push({ ...rewritten, _ok: true })
+    } else {
+      console.log('⚠ fallback DeepL')
+      results.push({ _ok: false })
+    }
+    if (i < candidates.length - 1) await new Promise(r => setTimeout(r, 200))
   }
   return results
 }
@@ -470,17 +555,15 @@ async function fetchSource(source) {
   try {
     const res = await fetch(source.url, {
       headers: {
-        'User-Agent': 'GrandTheftInfo-RSS/1.0 (+https://gta6-hub-tawny.vercel.app)',
-        Accept: source.type === 'reddit-json' ? 'application/json' : 'application/rss+xml, application/xml, text/xml',
+        'User-Agent': source.userAgent ?? 'GrandTheftInfo-RSS/1.0 (+https://gta6-hub-tawny.vercel.app)',
+        Accept: 'application/rss+xml, application/atom+xml, application/xml, text/xml, */*',
       },
       signal: AbortSignal.timeout(12_000),
     })
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    if (source.type === 'reddit-json') {
-      const json = await res.json()
-      return parseRedditJson(json)
-    }
     const xml = await res.text()
+    // Atom feeds use <entry> elements; RSS 2.0 uses <item>
+    if (xml.includes('<feed') && xml.includes('<entry')) return parseAtom(xml)
     return parseRSS(xml)
   } catch (err) {
     console.warn(`  ⚠ ${source.name}: ${err.message}`)
@@ -496,7 +579,8 @@ export async function runPipeline() {
     process.exit(1)
   }
 
-  console.log(`DeepL: ${DEEPL_KEY ? `clé présente (${DEEPL_URL.includes('free') ? 'plan gratuit' : 'plan pro'})` : '⚠ DEEPL_API_KEY absente — articles non traduits'}`)
+  console.log(`Gemini: ${GEMINI_KEY ? '✓ clé présente — réécriture éditoriale activée' : '⚠ GEMINI_API_KEY absente — fallback DeepL'}`)
+  console.log(`DeepL: ${DEEPL_KEY ? `clé présente (${DEEPL_URL.includes('free') ? 'plan gratuit' : 'plan pro'})` : '⚠ DEEPL_API_KEY absente'}${!GEMINI_KEY && !DEEPL_KEY ? ' — articles non traduits' : ''}`)
 
   // 1. Charger les URLs déjà en Sanity pour dédupliquer
   const existing = await sanity.fetch(
@@ -541,7 +625,7 @@ export async function runPipeline() {
 
       let cover_image = item.image || null
       let pageBodyImages = []
-      if (source.type !== 'reddit-json') {
+      if (!source.skipArticleScrape) {
         const meta = await fetchArticleMeta(item.link)
         if (!cover_image) cover_image = meta.ogImage
         pageBodyImages = meta.bodyImages
@@ -583,23 +667,48 @@ export async function runPipeline() {
 
   console.log(`${candidates.length} new articles to process`)
 
-  // 3. Batch translation : un seul appel DeepL pour tous les titres + contenus
-  if (DEEPL_KEY) {
-    console.log('Translating all articles with DeepL...')
-    const allTexts = candidates.flatMap(a => [a._rawTitle, a._rawContent])
-    const translated = await translateAllToFr(allTexts)
+  // 3. Réécriture éditoriale : Claude-first, DeepL en fallback
+  const claudeResults = GEMINI_KEY
+    ? await rewriteAllWithGemini(candidates)
+    : candidates.map(() => ({ _ok: false }))
 
-    candidates.forEach((a, i) => {
-      a.title = translated[i * 2] ?? a._rawTitle
-      a.content = translated[i * 2 + 1] ?? a._rawContent
+  // Identifier les articles qui nécessitent un fallback DeepL
+  const needsDeepL = candidates.filter((_, i) => !claudeResults[i]._ok)
+  let deepLMap = {}
+
+  if (needsDeepL.length > 0 && DEEPL_KEY) {
+    console.log(`Traduction DeepL pour ${needsDeepL.length} articles (fallback)...`)
+    const allTexts = needsDeepL.flatMap(a => [a._rawTitle, a._rawContent])
+    const translated = await translateAllToFr(allTexts)
+    needsDeepL.forEach((a, i) => {
+      deepLMap[a._id] = {
+        title: translated[i * 2] ?? a._rawTitle,
+        content: translated[i * 2 + 1] ?? a._rawContent,
+      }
     })
-  } else {
-    console.warn('DEEPL_API_KEY not set — articles stored in original language')
-    candidates.forEach(a => {
-      a.title = a._rawTitle
-      a.content = a._rawContent
+  } else if (needsDeepL.length > 0) {
+    console.warn('Aucune clé de traduction — articles conservés en langue originale')
+    needsDeepL.forEach(a => {
+      deepLMap[a._id] = { title: a._rawTitle, content: a._rawContent }
     })
   }
+
+  // Fusionner les résultats
+  candidates.forEach((a, i) => {
+    const r = claudeResults[i]
+    if (r._ok) {
+      a.title = r.title
+      a.content = r.content
+      a.verdict = r.verdict ?? ''
+      a.fiabilite = r.fiabilite ?? 'a-suivre'
+    } else {
+      const fb = deepLMap[a._id] ?? { title: a._rawTitle, content: a._rawContent }
+      a.title = fb.title
+      a.content = fb.content
+      a.verdict = ''
+      a.fiabilite = 'a-suivre'
+    }
+  })
 
   // Finaliser les articles (summary, nettoyage champs temporaires)
   const toInsert = candidates.map(({ _rawTitle, _rawContent, ...a }) => ({
