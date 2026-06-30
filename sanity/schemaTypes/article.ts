@@ -69,19 +69,6 @@ export const articleType = defineType({
       type: 'text',
       rows: 3,
     }),
-    defineField({
-      name: 'fiabilite',
-      title: 'Fiabilité',
-      type: 'string',
-      options: {
-        list: [
-          { title: '🟢 Officiel', value: 'officiel' },
-          { title: '🟡 Solide', value: 'solide' },
-          { title: '🟠 À suivre', value: 'a-suivre' },
-          { title: '🔴 Spéculatif', value: 'speculatif' },
-        ],
-      },
-    }),
   ],
   orderings: [
     {

@@ -462,14 +462,8 @@ MISSION :
    - Corps (faits + ce que ça implique pour le joueur)
    - Verdict "Ce qu'on en pense" (2-3 lignes, notre angle — stocké séparément)
 
-3. Évalue la fiabilité :
-   - "officiel" → confirmé par Rockstar
-   - "solide" → source crédible ou leak fiable
-   - "a-suivre" → rumeur intéressante
-   - "speculatif" → théorie communautaire
-
 Retourne UNIQUEMENT ce JSON sans markdown :
-{"title":"...","content":"...","verdict":"...","fiabilite":"..."}`
+{"title":"...","content":"...","verdict":"..."}`
 
 async function rewriteArticle(rawTitle, rawContent) {
   try {
@@ -700,13 +694,11 @@ export async function runPipeline() {
       a.title = r.title
       a.content = r.content
       a.verdict = r.verdict ?? ''
-      a.fiabilite = r.fiabilite ?? 'a-suivre'
     } else {
       const fb = deepLMap[a._id] ?? { title: a._rawTitle, content: a._rawContent }
       a.title = fb.title
       a.content = fb.content
       a.verdict = ''
-      a.fiabilite = 'a-suivre'
     }
   })
 
