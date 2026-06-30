@@ -33,9 +33,23 @@ export async function generateMetadata(
   const { slug } = await params
   const article = await getArticleBySlug(slug)
   if (!article) return {}
+  const image = article.cover_image || stableFallback(slug)
   return {
-    title: `${article.title} - Grand Theft Info`,
+    title: article.title,
     description: article.summary,
+    openGraph: {
+      title: article.title,
+      description: article.summary ?? undefined,
+      type: 'article',
+      publishedTime: article.published_at,
+      images: [{ url: image, width: 1280, height: 720, alt: article.title }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: article.title,
+      description: article.summary ?? undefined,
+      images: [image],
+    },
   }
 }
 

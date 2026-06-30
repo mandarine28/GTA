@@ -18,8 +18,19 @@ export async function generateMetadata(
   const char = await getCharacterBySlug(slug)
   if (!char) return {}
   return {
-    title: `${char.name} - Personnage GTA VI - Grand Theft Info`,
+    title: `${char.name} — Personnage GTA 6`,
     description: char.lead,
+    openGraph: {
+      title: `${char.name} — Personnage GTA 6`,
+      description: char.lead ?? undefined,
+      images: [{ url: char.coverImage, width: 800, height: 800, alt: char.name }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${char.name} — Personnage GTA 6`,
+      description: char.lead ?? undefined,
+      images: [char.coverImage],
+    },
   }
 }
 

@@ -19,8 +19,33 @@ const barlow = Barlow({
 });
 
 export const metadata: Metadata = {
-  title: "Grand Theft Info - La référence GTA 6",
-  description: "News, mises à jour hebdomadaires, base de données véhicules et armes, guides et outils pour GTA 6.",
+  metadataBase: new URL('https://www.gta6zone.fr'),
+  title: {
+    default: 'GTA6Zone — La référence GTA 6 en français',
+    template: '%s | GTA6Zone',
+  },
+  description: 'News, personnages, véhicules, armes, guides et outils pour GTA 6. Le site de référence francophone mis à jour quotidiennement.',
+  openGraph: {
+    type: 'website',
+    locale: 'fr_FR',
+    siteName: 'GTA6Zone',
+    images: [
+      {
+        url: '/images/gameplay1.jpg',
+        width: 1280,
+        height: 720,
+        alt: 'GTA6Zone — La référence GTA 6 en français',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@gta6zone',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
