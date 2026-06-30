@@ -15,6 +15,7 @@ export interface Article {
   category: Category
   cover_image?: string
   published_at: string
+  verdict?: string
 }
 
 export interface WeeklyUpdate {

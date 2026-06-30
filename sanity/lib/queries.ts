@@ -15,7 +15,8 @@ const articleFields = groq`
   source_name,
   category,
   cover_image,
-  "published_at": coalesce(published_at, _createdAt)
+  "published_at": coalesce(published_at, _createdAt),
+  verdict
 `
 
 export async function getArticles(): Promise<Article[]> {

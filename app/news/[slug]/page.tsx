@@ -187,6 +187,27 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               {renderContent(article.content)}
             </div>
 
+            {/* Verdict */}
+            {article.verdict && (
+              <aside
+                className="mt-10 rounded-2xl px-6 py-5"
+                style={{
+                  background: 'var(--bg-card)',
+                  borderLeft: '3px solid var(--accent-gold)',
+                }}
+              >
+                <p
+                  className="text-xs font-black tracking-[0.2em] uppercase mb-3"
+                  style={{ color: 'var(--accent-gold)' }}
+                >
+                  Ce qu'on en pense
+                </p>
+                <p className="text-base leading-relaxed" style={{ color: 'var(--text-warm)' }}>
+                  {article.verdict}
+                </p>
+              </aside>
+            )}
+
             {/* Source link */}
             {article.source_url && (
               <div
