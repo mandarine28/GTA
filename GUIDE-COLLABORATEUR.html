@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide Collaborateur — GTA 6 Hub</title>
+  <style>
+    :root {
+      --gold: #F0C040;
+      --gold-dim: rgba(240,192,64,0.12);
+      --blue-dark: #081E36;
+      --blue-mid: #0E3D55;
+      --blue-card: #0F2840;
+      --blue-card-light: #162F4A;
+      --text: #ECE2D0;
+      --text-muted: rgba(236,226,208,0.55);
+      --border: rgba(255,255,255,0.08);
+      --green: #22c55e;
+      --red: #ef4444;
+      --orange: #f97316;
+      --purple: #a855f7;
+      --nav-width: 260px;
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--blue-dark);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+
+    /* ── LAYOUT ─────────────────────────────────── */
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ─────────────────────────────────────── */
+    nav {
+      width: var(--nav-width);
+      flex-shrink: 0;
+      position: fixed;
+      top: 0; left: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: var(--blue-card);
+      border-right: 1px solid var(--border);
+      padding: 0 0 2rem;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      padding: 1.5rem 1.25rem 1rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+
+    .nav-logo .badge {
+      display: inline-block;
+      background: var(--gold);
+      color: #000;
+      font-size: 0.6rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+
+    .nav-logo h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .nav-logo p {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .nav-section-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      padding: 0.75rem 1.25rem 0.25rem;
+    }
+
+    nav a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 1.25rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: all 0.15s;
+    }
+
+    nav a:hover, nav a.active {
+      color: var(--text);
+      background: rgba(255,255,255,0.04);
+      border-left-color: var(--gold);
+    }
+
+    nav a .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    nav a:hover .dot, nav a.active .dot { background: var(--gold); }
+
+    /* ── MAIN ────────────────────────────────────── */
+    main {
+      margin-left: var(--nav-width);
+      flex: 1;
+      max-width: 860px;
+      padding: 3rem 3rem 6rem;
+    }
+
+    /* ── SECTIONS ────────────────────────────────── */
+    section {
+      margin-bottom: 4rem;
+      scroll-margin-top: 2rem;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 1.75rem 0 0.5rem;
+    }
+
+    p { margin-bottom: 0.9rem; color: var(--text); }
+    p:last-child { margin-bottom: 0; }
+
+    strong { color: #fff; font-weight: 600; }
+
+    ul, ol {
+      padding-left: 1.5rem;
+      margin-bottom: 0.9rem;
+    }
+
+    li { margin-bottom: 0.3rem; color: var(--text); }
+
+    a { color: var(--gold); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── HERO ────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, var(--blue-card-light) 0%, var(--blue-card) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero .meta {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 1rem;
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .hero .meta span { display: flex; align-items: center; gap: 0.35rem; }
+
+    /* ── TECH CARDS ──────────────────────────────── */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+      margin: 1.25rem 0;
+    }
+
+    .tech-card {
+      background: var(--blue-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      transition: border-color 0.2s;
+    }
+
+    .tech-card:hover { border-color: rgba(240,192,64,0.3); }
+
+    .tech-card .icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.6rem;
+      display: block;
+    }
+
+    .tech-card h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.25rem;
+    }
+
+    .tech-card p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .tech-card .role-badge {
+      display: inline-block;
+      margin-top: 0.6rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 2px 8px;
+      border-radius: 20px;
+      border: 1px solid;
+    }
+
+    .role-badge.hosting { color: #60a5fa; border-color: rgba(96,165,250,0.3); background: rgba(96,165,250,0.08); }
+    .role-badge.cms { color: #f97316; border-color: rgba(249,115,22,0.3); background: rgba(249,115,22,0.08); }
+    .role-badge.code { color: #a855f7; border-color: rgba(168,85,247,0.3); background: rgba(168,85,247,0.08); }
+    .role-badge.versioning { color: var(--green); border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.08); }
+    .role-badge.translation { color: #38bdf8; border-color: rgba(56,189,248,0.3); background: rgba(56,189,248,0.08); }
+    .role-badge.style { color: #e879f9; border-color: rgba(232,121,249,0.3); background: rgba(232,121,249,0.08); }
+
+    /* ── CALLOUTS ────────────────────────────────── */
+    .callout {
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0;
+      border-left: 3px solid;
+      font-size: 0.88rem;
+    }
+
+    .callout p { margin: 0; font-size: 0.88rem; }
+
+    .callout.tip {
+      background: rgba(34,197,94,0.07);
+      border-color: var(--green);
+      color: #bbf7d0;
+    }
+
+    .callout.warning {
+      background: rgba(249,115,22,0.07);
+      border-color: var(--orange);
+      color: #fed7aa;
+    }
+
+    .callout.info {
+      background: rgba(96,165,250,0.07);
+      border-color: #60a5fa;
+      color: #bfdbfe;
+    }
+
+    .callout.important {
+      background: rgba(240,192,64,0.07);
+      border-color: var(--gold);
+      color: #fde68a;
+    }
+
+    .callout-title {
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.3rem;
+    }
+
+    /* ── CODE ────────────────────────────────────── */
+    code {
+      font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+      font-size: 0.82em;
+      background: rgba(255,255,255,0.07);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--gold);
+    }
+
+    pre {
+      background: #060e1a;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      font-size: 0.82rem;
+      color: #e2e8f0;
+      line-height: 1.8;
+    }
+
+    .code-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+
+    /* ── STEPS ───────────────────────────────────── */
+    .steps {
+      counter-reset: step;
+      margin: 1.25rem 0;
+    }
+
+    .step {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      counter-increment: step;
+    }
+
+    .step-number {
+      flex-shrink: 0;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--gold-dim);
+      border: 1.5px solid var(--gold);
+      color: var(--gold);
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    .step-content h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.25rem;
+    }
+
+    .step-content p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    /* ── FLOW DIAGRAM ────────────────────────────── */
+    .flow {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.25rem 0;
+    }
+
+    .flow-node {
+      background: var(--blue-card-light);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.6rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text);
+      text-align: center;
+    }
+
+    .flow-node.highlight {
+      border-color: rgba(240,192,64,0.4);
+      background: var(--gold-dim);
+      color: var(--gold);
+    }
+
+    .flow-arrow {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    /* ── TABLE ───────────────────────────────────── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.85rem;
+    }
+
+    th {
+      text-align: left;
+      padding: 0.6rem 1rem;
+      background: var(--blue-card-light);
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 0.7rem 1rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+
+    /* ── DIVIDER ─────────────────────────────────── */
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2.5rem 0;
+    }
+
+    /* ── DIFFICULTY BADGE ────────────────────────── */
+    .difficulty {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
+
+    .difficulty.easy { background: rgba(34,197,94,0.12); color: var(--green); }
+    .difficulty.medium { background: rgba(249,115,22,0.12); color: var(--orange); }
+    .difficulty.hard { background: rgba(239,68,68,0.12); color: var(--red); }
+
+    /* ── FOOTER ──────────────────────────────────── */
+    .doc-footer {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    /* ── SCROLLBAR ───────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--blue-dark); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
+
+    @media (max-width: 768px) {
+      nav { display: none; }
+      main { margin-left: 0; padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ── NAVIGATION ── -->
+  <nav>
+    <div class="nav-logo">
+      <span class="badge">Guide</span>
+      <h2>GTA 6 Hub</h2>
+      <p>Documentation collaborateur</p>
+    </div>
+
+    <div class="nav-section-label">Introduction</div>
+    <a href="#apercu"><span class="dot"></span> Aperçu du projet</a>
+    <a href="#architecture"><span class="dot"></span> Architecture globale</a>
+
+    <div class="nav-section-label">Les outils</div>
+    <a href="#github"><span class="dot"></span> GitHub — le code</a>
+    <a href="#vercel"><span class="dot"></span> Vercel — l'hébergement</a>
+    <a href="#sanity"><span class="dot"></span> Sanity — le contenu</a>
+    <a href="#nextjs"><span class="dot"></span> Next.js — le site</a>
+    <a href="#deepl"><span class="dot"></span> DeepL — la traduction</a>
+
+    <div class="nav-section-label">Opérations</div>
+    <a href="#pipeline"><span class="dot"></span> Pipeline d'articles</a>
+    <a href="#contenu"><span class="dot"></span> Gérer le contenu</a>
+    <a href="#deploiement"><span class="dot"></span> Déploiement</a>
+    <a href="#maintenance"><span class="dot"></span> Maintenance</a>
+
+    <div class="nav-section-label">SEO technique</div>
+    <a href="#seo-intro"><span class="dot"></span> Comprendre le SEO</a>
+    <a href="#seo-meta"><span class="dot"></span> Balises meta</a>
+    <a href="#seo-og"><span class="dot"></span> Open Graph</a>
+    <a href="#seo-schema"><span class="dot"></span> Données structurées</a>
+    <a href="#seo-sitemap"><span class="dot"></span> Sitemap & robots.txt</a>
+    <a href="#seo-perf"><span class="dot"></span> Performance</a>
+
+    <div class="nav-section-label">Évolution</div>
+    <a href="#nouvelles-pages"><span class="dot"></span> Nouvelles pages</a>
+    <a href="#nouvelles-sources"><span class="dot"></span> Nouvelles sources RSS</a>
+    <a href="#scaler"><span class="dot"></span> Scaler le projet</a>
+  </nav>
+
+  <!-- ── MAIN CONTENT ── -->
+  <main>
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="section-label">📄 Documentation interne</div>
+      <h1>Guide collaborateur<br>GTA 6 Hub</h1>
+      <p style="color:var(--text-muted); max-width:600px;">Ce guide explique le fonctionnement complet du projet — des outils utilisés jusqu'aux opérations courantes — pour qu'un nouveau collaborateur puisse comprendre, maintenir et faire évoluer le site de façon autonome.</p>
+      <div class="meta">
+        <span>📅 Juin 2026</span>
+        <span>🌐 <a href="https://gta6-hub-tawny.vercel.app" target="_blank">gta6-hub-tawny.vercel.app</a></span>
+        <span>📦 <a href="https://github.com/mandarine28/GTA" target="_blank">github.com/mandarine28/GTA</a></span>
+        <span>🟠 <a href="https://gta6-hub.sanity.studio" target="_blank">Studio Sanity</a></span>
+      </div>
+    </div>
+
+    <!-- ───────────────────────────────────────────── -->
+    <section id="apercu">
+      <div class="section-label">01 — Introduction</div>
+      <h2>Aperçu du projet</h2>
+
+      <p><strong>GTA 6 Hub</strong> est un fansite francophone dédié à Grand Theft Auto VI, prévu pour le 19 novembre 2026. Le site agrège automatiquement des actualités anglophones, les traduit en français, et les publie. Il propose également des pages de contenu fixe : personnages, map, config PC, trailers, etc.</p>
+
+      <p>Le site est entièrement <strong>en production</strong> — il est live, indexé par Google, et alimenté automatiquement chaque jour à 8h UTC par un pipeline de collecte d'articles.</p>
+
+      <div class="callout info">
+        <div class="callout-title">💡 Pour qui est ce guide ?</div>
+        <p>Pour toute personne amenée à travailler sur le projet : ajout de contenu, amélioration SEO, nouvelles fonctionnalités. Aucune connaissance préalable en développement n'est requise pour les sections contenu et SEO éditorial. Les sections techniques sont marquées avec un niveau de difficulté.</p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────────────────────── -->
+    <section id="architecture">
+      <div class="section-label">02 — Vue d'ensemble</div>
+      <h2>Architecture globale</h2>
+
+      <p>Le projet repose sur <strong>4 outils principaux</strong> qui communiquent entre eux. Voici comment ils s'articulent :</p>
+
+      <div class="flow">
+        <div class="flow-node">Sources RSS<br><small>8 sites gaming</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node highlight">Pipeline automatique<br><small>tous les jours 8h</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">DeepL<br><small>traduction EN→FR</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Sanity<br><small>base de contenu</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Site web<br><small>Vercel</small></div>
+      </div>
+
+      <p>En parallèle, le <strong>code source</strong> du site vit sur GitHub. Chaque modification du code est automatiquement redéployée sur Vercel en quelques minutes.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <span class="icon">🐙</span>
+          <h4>GitHub</h4>
+          <p>Stocke et versionne tout le code du site. C'est la source de vérité du projet.</p>
+          <span class="role-badge versioning">Versioning</span>
+        </div>
+        <div class="tech-card">
+          <span class="icon">▲</span>
+          <h4>Vercel</h4>
+          <p>Héberge le site, le déploie automatiquement et exécute le pipeline d'articles chaque jour.</p>
+          <span class="role-badge hosting">Hébergement</span>
+        </div>
+        <div class="tech-card">
+          <span class="icon">🟠</span>
+          <h4>Sanity</h4>
+          <p>Base de données de contenu : articles, personnages, véhicules. Interface admin visuelle.</p>
+          <span class="role-badge cms">CMS</span>
+        </div>
+        <div class="tech-card">
+          <span class="icon">⚛️</span>
+          <h4>Next.js</h4>
+          <p>Le framework qui construit les pages du site à partir du code et du contenu Sanity.</p>
+          <span class="role-badge code">Framework</span>
+        </div>
+        <div class="tech-card">
+          <span class="icon">🎨</span>
+          <h4>Tailwind CSS</h4>
+          <p>Gère le style visuel du site (couleurs, espacements, typographie).</p>
+          <span class="role-badge style">Style</span>
+        </div>
+        <div class="tech-card">
+          <span class="icon">🌐</span>
+          <h4>DeepL</h4>
+          <p>Traduit automatiquement les articles anglais en français avant publication.</p>
+          <span class="role-badge translation">Traduction</span>
+        </div>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- ───────────────────────────────────────────── -->
+    <section id="github">
+      <div class="section-label">03 — Les outils</div>
+      <h2>GitHub — le code source</h2>
+
+      <p><strong>GitHub</strong> est une plateforme qui stocke le code du site comme un historique complet de toutes les modifications. Imaginez-le comme un Google Docs avec un historique infini, mais pour du code.</p>
+
+      <h3>Pourquoi c'est important</h3>
+      <p>Toute modification du site passe par GitHub. Si quelque chose casse après une modification, on peut revenir à une version précédente en quelques secondes. C'est le filet de sécurité du projet.</p>
+
+      <h3>Accès</h3>
+      <p>Le code est accessible à : <a href="https://github.com/mandarine28/GTA" target="_blank">github.com/mandarine28/GTA</a><br>
+      Branche principale : <code>master</code></p>
+
+      <div class="callout tip">
+        <div class="callout-title">✅ Ce qu'il faut retenir</div>
+        <p>GitHub = le code. Sanity = le contenu. Ces deux choses sont séparées. Vous n'avez <strong>pas besoin de toucher à GitHub</strong> pour ajouter des articles ou modifier du contenu — tout ça se fait dans Sanity.</p>
+      </div>
+
+      <h3>Structure des dossiers principaux</h3>
+      <table>
+        <thead>
+          <tr><th>Dossier / fichier</th><th>Rôle</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>app/</code></td><td>Toutes les pages du site (une page = un sous-dossier)</td></tr>
+          <tr><td><code>components/</code></td><td>Éléments réutilisables : navbar, footer, cartes…</td></tr>
+          <tr><td><code>sanity/</code></td><td>Configuration de la connexion à Sanity</td></tr>
+          <tr><td><code>scripts/</code></td><td>Pipeline RSS automatique (<code>fetch-rss.mjs</code>)</td></tr>
+          <tr><td><code>public/</code></td><td>Images, icônes, assets statiques</td></tr>
+          <tr><td><code>app/globals.css</code></td><td>Couleurs et styles globaux du site</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ───────────────────────────────────────────── -->
+    <section id="vercel">
+      <h2>Vercel — l'hébergement</h2>
+
+      <p><strong>Vercel</strong> est la plateforme qui rend le site accessible sur Internet. Elle fait deux choses essentielles :</p>
+      <ol>
+        <li><strong>Déployer automatiquement</strong> le site à chaque modification du code sur GitHub</li>
+        <li><strong>Exécuter le pipeline d'articles</strong> chaque jour à 8h UTC</li>
+      </ol>
+
+      <h3>Accès au dashboard</h3>
+      <p>Connectez-vous sur <a href="https://vercel.com" target="_blank">vercel.com</a> → projet <code>gta6-hub</code>.</p>
+
+      <h3>Ce que vous pouvez faire dans Vercel</h3>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4>Voir les logs d'exécution</h4>
+            <p>Dashboard → Logs. Vous voyez en temps réel ce qui se passe sur le site : articles insérés, erreurs, traductions.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4>Déclencher le pipeline manuellement</h4>
+            <p>Settings → Cron Jobs → bouton "Run" à côté de <code>/api/cron/rss</code>. Utile pour forcer une mise à jour sans attendre 8h.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4>Gérer les variables d'environnement</h4>
+            <p>Settings → Environment Variables. C'est là que sont stockées les clés API (Sanity, DeepL). Ne jamais partager ces valeurs.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4>Voir l'historique des déploiements</h4>
+            <p>Deployments → liste de tous les déploiements avec possibilité de revenir à un précédent en cas de problème.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠️ Variables d'environnement</div>
+        <p>Les clés API (Sanity, DeepL) sont stockées dans Vercel → Settings → Environment Variables. Ne jamais les mettre dans le code directement. Si une clé est compromise, la régénérer immédiatement dans le service concerné et la mettre à jour dans Vercel.</p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────────────────────── -->
+    <section id="sanity">
+      <h2>Sanity — la base de contenu</h2>
+
+      <p><strong>Sanity</strong> est le CMS (système de gestion de contenu) du projet. C'est ici que vivent tous les articles, personnages et autres données affichées sur le site. Pensez-y comme à une base de données avec une interface visuelle.</p>
+
+      <h3>Accès au Studio Sanity</h3>
+      <p>Le studio est accessible directement sur le site : <a href="https://gta6-hub-tawny.vercel.app/studio" target="_blank">gta6-hub-tawny.vercel.app/studio</a><br>
+      Connectez-vous avec le compte Sanity du projet.</p>
+
+      <h3>Ce que contient Sanity</h3>
+      <table>
+        <thead>
+          <tr><th>Type de contenu</th><th>Description</th><th>Alimenté par</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Articles</strong></td><td>News, patch notes, weekly updates</td><td>Pipeline automatique + manuellement</td></tr>
+          <tr><td><strong>Personnages</strong></td><td>Fiches des personnages GTA 6</td><td>Manuel</td></tr>
+          <tr><td><strong>Véhicules</strong></td><td>Base de données véhicules</td><td>Manuel (à venir)</td></tr>
+          <tr><td><strong>Armes</strong></td><td>Base de données armes</td><td>Manuel (à venir)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Ajouter un article manuellement <span class="difficulty easy">Facile</span></h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4>Ouvrir le Studio</h4>
+            <p>Aller sur <code>/studio</code> et se connecter.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4>Créer un document</h4>
+            <p>Cliquer sur "Article" dans le menu de gauche → bouton "+" pour créer.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4>Remplir les champs</h4>
+            <p>Titre, contenu, résumé (summary), catégorie (news / patch / weekly_update / easter_egg), image de couverture.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4>Publier</h4>
+            <p>Bouton "Publish" en haut à droite. L'article apparaît immédiatement sur le site.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-title">✅ Champ "slug" (identifiant URL)</div>
+        <p>Le slug est l'URL de l'article : <code>gta6-hub.vercel.app/news/mon-article</code>. Sanity le génère automatiquement depuis le titre — cliquer sur "Generate" à côté du champ slug. Éviter les caractères spéciaux et accents.</p>
+      </div>
+
+      <h3>Modifier un article existant <span class="difficulty easy">Facile</span></h3>
+      <p>Studio → Articles → cliquer sur l'article → modifier les champs → Publish. Les modifications sont en ligne immédiatement.</p>
+
+      <h3>Supprimer un article <span class="difficulty easy">Facile</span></h3>
+      <p>Ouvrir l'article → menu "..." en haut à droite → "Delete". <strong>Attention, irréversible.</strong></p>
+    </section>
+
+    <!-- ───────────────────────────────────────────── -->
+    <section id="nextjs">
+      <h2>Next.js — le site web</h2>
+
+      <p><strong>Next.js</strong> est le framework qui construit les pages HTML du site. Il lit le contenu depuis Sanity et génère les pages que les visiteurs voient. Vous n'avez généralement pas besoin d'y toucher pour du contenu — seulement pour créer de nouvelles pages ou modifier le design.</p>
+
+      <h3>Pages existantes</h3>
+      <table>
+        <thead>
+          <tr><th>URL</th><th>Page</th><th>État</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>/</code></td><td>Accueil</td><td>✅ Live</td></tr>
+          <tr><td><code>/news</code></td><td>Liste des articles</td><td>✅ Live</td></tr>
+          <tr><td><code>/news/[slug]</code></td><td>Article détail</td><td>✅ Live</td></tr>
+          <tr><td><code>/characters</code></td><td>Personnages</td><td>✅ Live</td></tr>
+          <tr><td><code>/game</code></td><td>Histoire & Synopsis</td><td>✅ Live</td></tr>
+          <tr><td><code>/media/trailers</code></td><td>Trailers vidéo</td><td>✅ Live</td></tr>
+          <tr><td><code>/config</code></td><td>Config PC / Éditions</td><td>✅ Live</td></tr>
+          <tr><td><code>/map</code></td><td>Carte interactive</td><td>✅ Live</td></tr>
+          <tr><td><code>/database/vehicles</code></td><td>Véhicules</td><td>🔒 Masqué (lancement)</td></tr>
+          <tr><td><code>/cheats</code></td><td>Codes de triche</td><td>🔒 Masqué (lancement)</td></tr>
+          <tr><td><code>/missions</code></td><td>Missions</td><td>🔒 Masqué (lancement)</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout info">
+        <div class="callout-title">🔒 Pages masquées</div>
+        <p>Les pages "Masqué (lancement)" existent mais affichent un message "Bientôt disponible". Elles seront ouvertes au lancement de GTA 6 le 19 novembre 2026 en changeant un simple flag dans le code.</p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────────────────────── -->
+    <section id="deepl">
+      <h2>DeepL — la traduction automatique</h2>
+
+      <p><strong>DeepL</strong> est l'API de traduction utilisée par le pipeline pour convertir les articles anglais en français. C'est l'une des meilleures IA de traduction disponibles — bien supérieure à Google Translate pour le français.</p>
+
+      <h3>Comment ça fonctionne</h3>
+      <p>Chaque nuit à 8h UTC, le pipeline récupère les articles des sources anglaises, les envoie à DeepL, et stocke les versions françaises dans Sanity. Les articles francophones (ActuGaming, JeuxVideo.com…) ne sont pas traduits.</p>
+
+      <h3>Limites du plan gratuit</h3>
+      <p>Le plan Developer gratuit de DeepL permet <strong>500 000 caractères par mois</strong>. Avec ~10 articles/jour de ~3 000 caractères, ça représente ~900 000 caractères/mois. Si la limite est atteinte, les articles seront stockés en anglais jusqu'au mois suivant.</p>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠️ Surveiller la consommation</div>
+        <p>Consulter le dashboard DeepL (<a href="https://www.deepl.com/fr/pro-api" target="_blank">deepl.com</a>) une fois par mois pour vérifier la consommation. Si on approche des 500k caractères, réduire le nombre de sources anglophones temporairement.</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- ───────────────────────────────────────────── -->
+    <section id="pipeline">
+      <div class="section-label">04 — Opérations</div>
+      <h2>Le pipeline d'articles automatique</h2>
+
+      <p>Le pipeline est le cœur du site. Il s'exécute <strong>chaque jour à 8h UTC (10h Paris)</strong> et effectue les opérations suivantes :</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4>Collecte</h4>
+            <p>Interroge 8 sources RSS (Rockstar Intel, GTA BOOM, Push Square, Kotaku, Reddit r/GTA6, Google News GTA 6, ActuGaming, JeuxVideo.com…)</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4>Filtre</h4>
+            <p>Ne garde que les articles liés à GTA 6 (détection automatique par mots-clés). Élimine les doublons déjà présents en base.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4>Nettoyage</h4>
+            <p>Supprime le HTML, les bios de journalistes, les mentions RGPD, les bandeaux cookies — ne garde que le texte de l'article.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4>Traduction</h4>
+            <p>Envoie tous les nouveaux articles à DeepL en une seule requête pour traduction EN→FR.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <h4>Publication</h4>
+            <p>Insère les articles traduits dans Sanity. Ils apparaissent immédiatement sur le site.</p>
+          </div>
+        </div>
+      </div>
+
+      <h3>Déclencher le pipeline manuellement</h3>
+      <p>Si vous souhaitez forcer une mise à jour sans attendre 8h :</p>
+      <div class="code-label">Via Vercel (recommandé)</div>
+      <p style="font-size:0.85rem; color:var(--text-muted);">Dashboard Vercel → Settings → Cron Jobs → Run à côté de <code>/api/cron/rss</code></p>
+
+      <h3>Sources actuelles</h3>
+      <table>
+        <thead>
+          <tr><th>Source</th><th>Langue</th><th>Filtre GTA 6</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Rockstar Intel</td><td>🇬🇧 EN</td><td>Oui</td></tr>
+          <tr><td>GTA BOOM</td><td>🇬🇧 EN</td><td>Non (100% GTA)</td></tr>
+          <tr><td>Push Square</td><td>🇬🇧 EN</td><td>Oui</td></tr>
+          <tr><td>Video Games Chronicle</td><td>🇬🇧 EN</td><td>Oui</td></tr>
+          <tr><td>Kotaku</td><td>🇬🇧 EN</td><td>Oui</td></tr>
+          <tr><td>ActuGaming</td><td>🇫🇷 FR</td><td>Oui</td></tr>
+          <tr><td>JeuxVideo.com</td><td>🇫🇷 FR</td><td>Oui</td></tr>
+          <tr><td>Gamergen</td><td>🇫🇷 FR</td><td>Oui</td></tr>
+          <tr><td>Frandroid</td><td>🇫🇷 FR</td><td>Oui</td></tr>
+          <tr><td>Tom's Guide FR</td><td>🇫🇷 FR</td><td>Oui</td></tr>
+          <tr><td>Reddit r/GTA6</td><td>🇬🇧 EN</td><td>Non (subreddit dédié)</td></tr>
+          <tr><td>Google News GTA 6</td><td>🇫🇷 FR</td><td>Non (query ciblée)</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ───────────────────────────────────────────── -->
+    <section id="contenu">
+      <h2>Gérer le contenu</h2>
+
+      <h3>Modifier un article existant <span class="difficulty easy">Facile</span></h3>
+      <p>Tout se passe dans le Studio Sanity. Ouvrir l'article, modifier le titre ou le contenu, cliquer Publish. Le site se met à jour immédiatement.</p>
+
+      <h3>Modifier un personnage <span class="difficulty easy">Facile</span></h3>
+      <p>Studio Sanity → Characters → sélectionner le personnage → modifier les champs (bio, citations, traits) → Publish.</p>
+
+      <div class="callout important">
+        <div class="callout-title">⭐ Règle éditoriale</div>
+        <p>Toutes les informations sur les personnages doivent provenir de sources officielles Rockstar Games (<a href="https://www.rockstargames.com/VI/only-in-leonida" target="_blank">rockstargames.com/VI/only-in-leonida</a>). Ne pas inventer ou spéculer sur les fiches personnages.</p>
+      </div>
+
+      <h3>Catégories d'articles</h3>
+      <table>
+        <thead>
+          <tr><th>Catégorie</th><th>Utilisation</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>news</code></td><td>Actualités générales GTA 6</td></tr>
+          <tr><td><code>patch</code></td><td>Notes de mise à jour, hotfixes</td></tr>
+          <tr><td><code>weekly_update</code></td><td>Récapitulatifs hebdomadaires</td></tr>
+          <tr><td><code>easter_egg</code></td><td>Secrets et easter eggs découverts</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ───────────────────────────────────────────── -->
+    <section id="deploiement">
+      <h2>Déploiement</h2>
+
+      <p>Le déploiement est <strong>entièrement automatique</strong>. Dès qu'une modification est poussée sur GitHub (branche <code>master</code>), Vercel détecte le changement et redéploie le site en 2-3 minutes.</p>
+
+      <h3>Vérifier qu'un déploiement s'est bien passé</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4>Ouvrir le dashboard Vercel</h4>
+            <p>vercel.com → projet gta6-hub</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4>Vérifier le statut</h4>
+            <p>Deployments → le dernier déploiement doit être "Ready" (vert). S'il est "Error" (rouge), cliquer dessus pour voir les logs d'erreur.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4>Tester en live</h4>
+            <p>Visiter le site et vérifier que les modifications sont visibles.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-title">✅ Rollback rapide</div>
+        <p>Si un déploiement casse quelque chose, aller dans Deployments → cliquer sur un déploiement précédent qui fonctionnait → "Promote to Production". Le site revient à l'état précédent en 30 secondes.</p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────────────────────── -->
+    <section id="maintenance">
+      <h2>Maintenance courante</h2>
+
+      <table>
+        <thead>
+          <tr><th>Tâche</th><th>Fréquence</th><th>Où</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Vérifier les logs du pipeline RSS</td><td>Hebdomadaire</td><td>Vercel → Logs</td></tr>
+          <tr><td>Contrôler la consommation DeepL</td><td>Mensuelle</td><td>deepl.com → Dashboard</td></tr>
+          <tr><td>Modérer les articles automatiques</td><td>Hebdomadaire</td><td>Studio Sanity → Articles</td></tr>
+          <tr><td>Vérifier les déploiements</td><td>Après chaque modif code</td><td>Vercel → Deployments</td></tr>
+          <tr><td>Mettre à jour les fiches personnages</td><td>À chaque annonce Rockstar</td><td>Studio Sanity → Characters</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 19 novembre 2026 — Lancement GTA 6</div>
+        <p>Au lancement du jeu, 11 pages actuellement masquées devront être activées. Cela nécessite une modification dans le code (changer <code>LIVE = false</code> → <code>LIVE = true</code> dans chaque fichier de page). À prévoir avec un développeur le jour J.</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- ───────────────────────────────────────────── -->
+    <section id="seo-intro">
+      <div class="section-label">05 — SEO Technique</div>
+      <h2>Comprendre le SEO du projet</h2>
+
+      <p>Le <strong>SEO technique</strong> concerne tout ce qui aide Google à comprendre et référencer le site correctement — indépendamment du contenu lui-même. Il s'agit de balises HTML, de données structurées, et de performance.</p>
+
+      <p>Le site est construit avec Next.js, qui offre des outils natifs pour le SEO. La configuration SEO se trouve dans les fichiers <code>app/*/page.tsx</code> de chaque page.</p>
+
+      <div class="callout info">
+        <div class="callout-title">📍 Où se trouve le SEO dans le code ?</div>
+        <p>Chaque page du site a une fonction <code>generateMetadata()</code> ou une constante <code>metadata</code> en haut du fichier qui définit le titre, la description et les balises Open Graph. C'est là qu'interviennent la majorité des modifications SEO.</p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────────────────────── -->
+    <section id="seo-meta">
+      <h2>Balises meta — titre et description <span class="difficulty medium">Intermédiaire</span></h2>
+
+      <p>Les balises meta sont les informations que Google affiche dans ses résultats de recherche : le titre bleu et la description grise sous le lien.</p>
+
+      <h3>Où les modifier</h3>
+      <p>Dans le fichier de chaque page, en haut du fichier <code>app/[page]/page.tsx</code>. Exemple pour la page personnages :</p>
+
+      <div class="code-label">app/characters/page.tsx</div>
+      <pre><code>export const metadata = {
+  title: 'Personnages GTA 6 — Jason, Lucia et le cast complet | GTA 6 Hub',
+  description: 'Découvrez tous les personnages confirmés de GTA VI : ...',
+}</code></pre>
+
+      <h3>Bonnes pratiques</h3>
+      <ul>
+        <li>Titre : <strong>50-60 caractères max</strong>, inclure le mot-clé principal au début</li>
+        <li>Description : <strong>150-160 caractères max</strong>, phrase d'accroche avec appel à l'action</li>
+        <li>Inclure "GTA 6" ou "GTA VI" dans chaque titre de page</li>
+        <li>Chaque page doit avoir un titre et une description <strong>uniques</strong></li>
+      </ul>
+
+      <h3>Pour les articles (dynamique)</h3>
+      <p>Les articles ont une fonction <code>generateMetadata</code> qui récupère le titre et le résumé depuis Sanity automatiquement. Pas besoin de les modifier manuellement — améliorer le titre/résumé de l'article dans Sanity suffit.</p>
+
+      <div class="code-label">app/news/[slug]/page.tsx — exemple</div>
+      <pre><code>export async function generateMetadata({ params }) {
+  const article = await getArticleBySlug(params.slug)
+  return {
+    title: `${article.title} | GTA 6 Hub`,
+    description: article.summary,
+  }
+}</code></pre>
+    </section>
+
+    <!-- ───────────────────────────────────────────── -->
+    <section id="seo-og">
+      <h2>Open Graph & réseaux sociaux <span class="difficulty medium">Intermédiaire</span></h2>
+
+      <p>L'<strong>Open Graph</strong> contrôle l'aperçu du site quand un lien est partagé sur Twitter/X, Facebook, Discord, WhatsApp — le titre, la description et l'image qui s'affichent.</p>
+
+      <div class="code-label">Exemple de configuration Open Graph</div>
+      <pre><code>export const metadata = {
+  title: 'Personnages GTA 6 | GTA 6 Hub',
+  description: 'Tous les personnages confirmés de Grand Theft Auto VI.',
+  openGraph: {
+    title: 'Personnages GTA 6 | GTA 6 Hub',
+    description: 'Tous les personnages confirmés de Grand Theft Auto VI.',
+    images: ['/images/og/characters.jpg'],  // Image 1200x630px recommandée
+    url: 'https://gta6-hub-tawny.vercel.app/characters',
+    siteName: 'GTA 6 Hub',
+    locale: 'fr_FR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Personnages GTA 6 | GTA 6 Hub',
+    description: 'Tous les personnages confirmés de Grand Theft Auto VI.',
+    images: ['/images/og/characters.jpg'],
+  },
+}</code></pre>
+
+      <h3>Images Open Graph</h3>
+      <ul>
+        <li>Format recommandé : <strong>1200×630 pixels</strong>, JPEG ou PNG</li>
+        <li>Placer les images dans <code>public/images/og/</code></li>
+        <li>Pour les articles, l'image de couverture Sanity est utilisée automatiquement</li>
+      </ul>
+
+      <div class="callout tip">
+        <div class="callout-title">✅ Tester les aperçus</div>
+        <p>Utiliser <a href="https://www.opengraph.xyz" target="_blank">opengraph.xyz</a> ou l'outil de débogage de Facebook pour vérifier l'aperçu d'une URL avant publication.</p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────────────────────── -->
+    <section id="seo-schema">
+      <h2>Données structurées (Schema.org) <span class="difficulty hard">Avancé</span></h2>
+
+      <p>Les <strong>données structurées</strong> sont des informations supplémentaires cachées dans le code HTML qui aident Google à comprendre le type de contenu d'une page. Elles peuvent générer des résultats enrichis dans Google (étoiles, dates, images).</p>
+
+      <h3>Types pertinents pour ce projet</h3>
+      <table>
+        <thead>
+          <tr><th>Type Schema</th><th>Page concernée</th><th>Bénéfice</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>NewsArticle</code></td><td>/news/[slug]</td><td>Article dans Google Actualités</td></tr>
+          <tr><td><code>VideoObject</code></td><td>/media/trailers</td><td>Prévisualisation vidéo dans Google</td></tr>
+          <tr><td><code>BreadcrumbList</code></td><td>Toutes les pages</td><td>Fil d'Ariane dans les résultats</td></tr>
+          <tr><td><code>WebSite</code></td><td>Accueil</td><td>Sitelinks Search Box</td></tr>
+          <tr><td><code>FAQPage</code></td><td>Pages config, cheats</td><td>Questions/réponses dans Google</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Ajouter un schema NewsArticle sur les articles <span class="difficulty hard">Avancé</span></h3>
+      <div class="code-label">app/news/[slug]/page.tsx — à ajouter dans le composant</div>
+      <pre><code>const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'NewsArticle',
+  headline: article.title,
+  description: article.summary,
+  image: article.cover_image,
+  datePublished: article.published_at,
+  dateModified: article._updatedAt,
+  author: { '@type': 'Organization', name: 'GTA 6 Hub' },
+  publisher: {
+    '@type': 'Organization',
+    name: 'GTA 6 Hub',
+    logo: { '@type': 'ImageObject', url: 'https://gta6-hub-tawny.vercel.app/logo.svg' }
+  },
+}
+
+// Dans le JSX de la page :
+&lt;script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+/&gt;</code></pre>
+
+      <div class="callout tip">
+        <div class="callout-title">✅ Valider les données structurées</div>
+        <p>Utiliser le <a href="https://search.google.com/test/rich-results" target="_blank">Google Rich Results Test</a> pour vérifier que les données structurées sont correctement reconnues.</p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────────────────────── -->
+    <section id="seo-sitemap">
+      <h2>Sitemap & robots.txt <span class="difficulty medium">Intermédiaire</span></h2>
+
+      <h3>Sitemap</h3>
+      <p>Le sitemap liste toutes les URLs du site pour que Google les découvre facilement. Avec Next.js, il se génère automatiquement via le fichier <code>app/sitemap.ts</code>.</p>
+
+      <div class="code-label">app/sitemap.ts — exemple à créer si absent</div>
+      <pre><code>import { getArticles } from '@/lib/db'
+
+export default async function sitemap() {
+  const articles = await getArticles()
+  const staticPages = ['/', '/news', '/characters', '/game', '/map', '/config']
+
+  return [
+    ...staticPages.map(url => ({
+      url: `https://gta6-hub-tawny.vercel.app${url}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: url === '/' ? 1 : 0.8,
+    })),
+    ...articles.map(a => ({
+      url: `https://gta6-hub-tawny.vercel.app/news/${a.slug.current}`,
+      lastModified: new Date(a._updatedAt),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    })),
+  ]
+}</code></pre>
+
+      <p>Le sitemap sera accessible à <code>/sitemap.xml</code> et doit être soumis dans <a href="https://search.google.com/search-console" target="_blank">Google Search Console</a>.</p>
+
+      <h3>robots.txt</h3>
+      <div class="code-label">app/robots.ts</div>
+      <pre><code>export default function robots() {
+  return {
+    rules: { userAgent: '*', allow: '/', disallow: '/studio/' },
+    sitemap: 'https://gta6-hub-tawny.vercel.app/sitemap.xml',
+  }
+}</code></pre>
+
+      <div class="callout important">
+        <div class="callout-title">⭐ Google Search Console</div>
+        <p>Créer un compte sur <a href="https://search.google.com/search-console" target="_blank">search.google.com/search-console</a> et ajouter le site. C'est l'outil indispensable pour suivre le référencement, détecter les erreurs d'indexation et surveiller les performances dans Google.</p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────────────────────── -->
+    <section id="seo-perf">
+      <h2>Performance & Core Web Vitals <span class="difficulty medium">Intermédiaire</span></h2>
+
+      <p>Google intègre la vitesse du site dans son algorithme de classement. Les <strong>Core Web Vitals</strong> sont les 3 métriques clés :</p>
+
+      <table>
+        <thead>
+          <tr><th>Métrique</th><th>Description</th><th>Cible</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>LCP</strong></td><td>Temps d'affichage de l'élément principal</td><td>&lt; 2.5s</td></tr>
+          <tr><td><strong>INP</strong></td><td>Réactivité aux interactions</td><td>&lt; 200ms</td></tr>
+          <tr><td><strong>CLS</strong></td><td>Stabilité visuelle (pas de sauts)</td><td>&lt; 0.1</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Comment mesurer</h3>
+      <ul>
+        <li><a href="https://pagespeed.web.dev" target="_blank">PageSpeed Insights</a> — analyse immédiate de n'importe quelle URL</li>
+        <li>Google Search Console → Core Web Vitals — données réelles des visiteurs</li>
+      </ul>
+
+      <h3>Bonnes pratiques images</h3>
+      <ul>
+        <li>Toujours utiliser le composant <code>&lt;Image&gt;</code> de Next.js (optimisation automatique)</li>
+        <li>Spécifier <code>width</code> et <code>height</code> pour éviter les CLS</li>
+        <li>Ajouter <code>priority</code> uniquement sur l'image hero de chaque page</li>
+        <li>Format WebP ou AVIF quand possible</li>
+      </ul>
+    </section>
+
+    <hr>
+
+    <!-- ───────────────────────────────────────────── -->
+    <section id="nouvelles-pages">
+      <div class="section-label">06 — Faire évoluer le projet</div>
+      <h2>Ajouter une nouvelle page <span class="difficulty hard">Avancé</span></h2>
+
+      <p>Chaque page du site correspond à un dossier dans <code>app/</code>. Pour créer la page <code>/guides</code> :</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4>Créer le dossier</h4>
+            <p><code>app/guides/</code> avec un fichier <code>page.tsx</code> à l'intérieur.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4>Ajouter les métadonnées SEO</h4>
+            <p>Exporter une constante <code>metadata</code> avec <code>title</code> et <code>description</code>.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4>Utiliser le composant PageHero</h4>
+            <p>Toutes les pages internes utilisent <code>&lt;PageHero title="..." /&gt;</code> en haut de page.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4>Ajouter dans la Navbar</h4>
+            <p>Modifier <code>components/layout/Navbar.tsx</code> pour ajouter le lien dans le menu.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────────────────────── -->
+    <section id="nouvelles-sources">
+      <h2>Ajouter une source RSS <span class="difficulty medium">Intermédiaire</span></h2>
+
+      <p>Pour ajouter une nouvelle source d'articles automatiques, modifier le tableau <code>SOURCES</code> dans <code>scripts/fetch-rss.mjs</code> :</p>
+
+      <div class="code-label">scripts/fetch-rss.mjs</div>
+      <pre><code>const SOURCES = [
+  // ... sources existantes ...
+  {
+    name: 'Nom du site',
+    url: 'https://exemple.com/feed/',  // URL du flux RSS
+    type: 'rss',
+    // skipGTA6Filter: true  // Décommenter si le site est 100% GTA
+  },
+]</code></pre>
+
+      <div class="callout tip">
+        <div class="callout-title">✅ Trouver l'URL RSS d'un site</div>
+        <p>L'URL RSS d'un site WordPress se termine généralement par <code>/feed/</code>. Pour les autres CMS, chercher le logo RSS sur le site ou ajouter <code>?rss=1</code> à l'URL. Si le site n'a pas de RSS, il n'est pas compatible avec ce pipeline.</p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────────────────────── -->
+    <section id="scaler">
+      <h2>Scaler le projet</h2>
+
+      <h3>Limites actuelles</h3>
+      <table>
+        <thead>
+          <tr><th>Limite</th><th>Valeur</th><th>Solution si atteinte</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>DeepL (gratuit)</td><td>500k caractères/mois</td><td>Passer au plan Pro (25$/mois)</td></tr>
+          <tr><td>Vercel (gratuit)</td><td>100GB bande passante</td><td>Passer au plan Pro (20$/mois)</td></tr>
+          <tr><td>Sanity (gratuit)</td><td>10k documents, 5 users</td><td>Passer au plan Growth (15$/mois)</td></tr>
+          <tr><td>Articles par jour</td><td>~15 articles filtrés</td><td>Ajouter des sources RSS</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Pistes d'évolution</h3>
+      <ul>
+        <li><strong>Réécriture éditoriale IA</strong> — Après traduction DeepL, passer les articles par Claude API pour les réécrire avec un angle éditorial "Grand Theft Info"</li>
+        <li><strong>Newsletter automatique</strong> — Envoyer un email hebdomadaire avec les meilleures actu GTA 6 (Mailchimp ou Resend)</li>
+        <li><strong>Commentaires</strong> — Intégrer un système de commentaires (Disqus ou natif Sanity)</li>
+        <li><strong>Recherche</strong> — Ajouter Algolia pour la recherche full-text dans les articles</li>
+        <li><strong>Notifications push</strong> — Alertes navigateur à chaque nouvel article (via web-push)</li>
+        <li><strong>Internationalisation</strong> — Version anglaise du site pour toucher la communauté internationale</li>
+      </ul>
+
+      <div class="callout tip">
+        <div class="callout-title">✅ Priorité SEO avant le lancement</div>
+        <p>Avant le 19 novembre 2026, s'assurer que : sitemap soumis dans Google Search Console, données structurées NewsArticle sur les articles, balises Open Graph sur toutes les pages, et les Core Web Vitals dans le vert sur PageSpeed Insights.</p>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <div class="doc-footer">
+      <span>Guide GTA 6 Hub — Version juin 2026</span>
+      <span>Armand Legros · <a href="https://gta6-hub-tawny.vercel.app" target="_blank">gta6-hub-tawny.vercel.app</a></span>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // Navigation active state
+  const sections = document.querySelectorAll('section[id]')
+  const navLinks = document.querySelectorAll('nav a[href^="#"]')
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'))
+        const active = document.querySelector(`nav a[href="#${entry.target.id}"]`)
+        if (active) active.classList.add('active')
+      }
+    })
+  }, { rootMargin: '-20% 0px -70% 0px' })
+
+  sections.forEach(s => observer.observe(s))
+</script>
+
+</body>
+</html>
