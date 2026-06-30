@@ -1,6 +1,9 @@
 export {
   getArticles,
   getArticleBySlug,
+  getCharacters,
+  getCharacterBySlug,
+  getCharacterSlugs,
   getVehicles,
   getVehicleBySlug,
   getWeapons,

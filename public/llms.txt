@@ -1,0 +1,30 @@
+# GTA6Zone
+
+> Le site de référence francophone sur GTA 6 — news, personnages, véhicules, armes, guides et outils.
+
+## Pages principales
+
+- `Accueil -> https://www.gta6zone.fr`: Hub central avec dernières news et accès rapide à toutes les sections
+- `News -> https://www.gta6zone.fr/news`: Actualités GTA 6 mises à jour quotidiennement
+- `Personnages -> https://www.gta6zone.fr/characters`: Fiches complètes des personnages confirmés par Rockstar
+- `Histoire & Synopsis -> https://www.gta6zone.fr/game`: Résumé de l'histoire, univers et protagonistes de GTA 6
+- `Éditions -> https://www.gta6zone.fr/config`: Comparatif des éditions et configurations disponibles
+- `Carte -> https://www.gta6zone.fr/map`: Carte interactive de Leonida (Vice City et les Keys)
+- `Trailers -> https://www.gta6zone.fr/media/trailers`: Tous les trailers officiels Rockstar Games
+- `Screenshots -> https://www.gta6zone.fr/media/screenshots`: Captures officielles du jeu
+- `Patch Notes -> https://www.gta6zone.fr/patch-notes`: Notes de mise à jour GTA 6
+- `Weekly -> https://www.gta6zone.fr/weekly`: Résumé hebdomadaire de l'actualité GTA 6
+- `Acheter -> https://www.gta6zone.fr/acheter`: Où acheter GTA 6 au meilleur prix
+
+## Informations clés
+
+- GTA 6 (Grand Theft Auto VI) est développé par Rockstar Games, sortie prévue le 19 novembre 2026
+- Le jeu se déroule à Leonida, un état fictif inspiré de la Floride (Vice City + Florida Keys)
+- Deux protagonistes jouables : Jason Duval et Lucia Caminos
+- Premier GTA avec une protagoniste féminine jouable
+- Personnages confirmés : Jason Duval, Lucia Caminos, Brian Heder, Cal Hampton, Boobie Ike, Dre'Quan Priest, Bae-Luxe, Roxy, Raul Bautista
+
+## À propos
+
+GTA6Zone est un fansite indépendant non affilié à Rockstar Games ou Take-Two Interactive.
+Contenu en français, mis à jour quotidiennement via un pipeline de veille automatisé.
