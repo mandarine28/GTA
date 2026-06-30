@@ -77,8 +77,8 @@ function Logo({ onClick }: { onClick?: () => void }) {
         className="text-xl leading-none"
         style={{ fontFamily: "'Pricedown', var(--font-barlow)", letterSpacing: '0.01em' }}
       >
-        <span className="text-white">grand theft </span>
-        <span style={{ color: 'var(--accent-gold)' }}>info</span>
+        <span className="text-white">GTA6</span>
+        <span style={{ color: 'var(--accent-gold)' }}>Zone</span>
       </span>
     </Link>
   )

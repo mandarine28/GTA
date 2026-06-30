@@ -176,12 +176,12 @@ export default function Footer() {
               Disclaimer
             </p>
             <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>
-              Grand Theft Info est un site non officiel, créé par des fans et non affilié à Rockstar Games, Take-Two Interactive ou leurs partenaires. GTA, Grand Theft Auto et tous les logos associés sont des marques déposées de Take-Two Interactive Software, Inc. Toutes les images, noms et contenus appartenant à Rockstar Games sont utilisés à des fins informationnelles uniquement dans le cadre du fair use.
+              GTA6Zone est un site non officiel, créé par des fans et non affilié à Rockstar Games, Take-Two Interactive ou leurs partenaires. GTA, Grand Theft Auto et tous les logos associés sont des marques déposées de Take-Two Interactive Software, Inc. Toutes les images, noms et contenus appartenant à Rockstar Games sont utilisés à des fins informationnelles uniquement dans le cadre du fair use.
             </p>
           </div>
           <div className="flex flex-col md:flex-row items-center justify-between gap-3">
             <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-              © 2026 Grand Theft Info. Tous droits réservés.
+              © 2026 GTA6Zone. Tous droits réservés.
             </p>
             <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
               Site non officiel — non affilié à Rockstar Games

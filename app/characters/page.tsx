@@ -7,8 +7,8 @@ import PageHero from '@/components/ui/PageHero'
 import PageNextSteps from '@/components/ui/PageNextSteps'
 
 export const metadata: Metadata = {
-  title: 'Personnages GTA VI - Grand Theft Info',
-  description: 'Protagonistes jouables, alliés et antagonistes de GTA VI. Fiches complètes : Jason Duval, Lucia Caminos, Brian Heder, et tout le cast confirmé.',
+  title: 'Personnages GTA VI - GTA6Zone',
+  description: 'Protagonistes jouables, alliÃ©s et antagonistes de GTA VI. Fiches complÃ¨tes : Jason Duval, Lucia Caminos, Brian Heder, et tout le cast confirmÃ©.',
 }
 
 export default async function CharactersPage() {
@@ -21,7 +21,7 @@ export default async function CharactersPage() {
       <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
 
         <p className="text-sm mb-10 max-w-2xl" style={{ color: 'var(--text-muted)', lineHeight: 1.7 }}>
-          GTA VI introduit pour la première fois un duo de protagonistes jouables : Jason Duval et Lucia Caminos. Autour d'eux gravitent alliés, patrons criminels, agents fédéraux et figures de la pègre de Leonida — un cast dense au cœur d'un récit criminel dans l'État de Leonida.
+          GTA VI introduit pour la premiÃ¨re fois un duo de protagonistes jouables : Jason Duval et Lucia Caminos. Autour d'eux gravitent alliÃ©s, patrons criminels, agents fÃ©dÃ©raux et figures de la pÃ¨gre de Leonida â€” un cast dense au cÅ“ur d'un rÃ©cit criminel dans l'Ã‰tat de Leonida.
         </p>
 
         {/* Protagonistes jouables */}
@@ -138,9 +138,9 @@ export default async function CharactersPage() {
         </div>
 
         <PageNextSteps steps={[
-          { href: '/game', label: 'Jeu', title: 'Histoire & Univers', desc: 'Leonida, Vice City et le scénario principal', image: '/images/gameplay2.jpg' },
-          { href: '/media/trailers', label: 'Médias', title: 'Trailers officiels', desc: 'Toutes les vidéos Rockstar Games', image: '/images/gameplay3.jpg' },
-          { href: '/news', label: 'Actualités', title: 'Dernières news', desc: 'Leaks, confirmations et mises à jour', image: '/images/gameplay4.jpg' },
+          { href: '/game', label: 'Jeu', title: 'Histoire & Univers', desc: 'Leonida, Vice City et le scÃ©nario principal', image: '/images/gameplay2.jpg' },
+          { href: '/media/trailers', label: 'MÃ©dias', title: 'Trailers officiels', desc: 'Toutes les vidÃ©os Rockstar Games', image: '/images/gameplay3.jpg' },
+          { href: '/news', label: 'ActualitÃ©s', title: 'DerniÃ¨res news', desc: 'Leaks, confirmations et mises Ã  jour', image: '/images/gameplay4.jpg' },
         ]} />
       </div>
     </>

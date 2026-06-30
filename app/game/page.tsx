@@ -8,7 +8,7 @@ import { roleLabelStyle } from '@/lib/characters'
 import { getCharacters } from '@/sanity/lib/queries'
 
 export const metadata: Metadata = {
-  title: 'Grand Theft Info - Histoire & Personnages',
+  title: 'GTA6Zone - Histoire & Personnages',
 }
 
 const sidebarSections = [
@@ -17,18 +17,18 @@ const sidebarSections = [
     items: [
       { label: 'Synopsis', anchor: 'synopsis' },
       { label: 'Personnages', anchor: 'personnages' },
-      { label: 'Informations clés', anchor: 'infos' },
+      { label: 'Informations clÃ©s', anchor: 'infos' },
     ],
   },
 ]
 
 const facts = [
-  { label: 'Lieu', value: 'Comté de Leonida, État fictif inspiré de la Floride' },
+  { label: 'Lieu', value: 'ComtÃ© de Leonida, Ã‰tat fictif inspirÃ© de la Floride' },
   { label: 'Ville principale', value: 'Vice City, plus grande et plus dense que GTA V' },
-  { label: 'Époque', value: 'Années 2020 contemporaines' },
-  { label: 'Modes de jeu', value: 'Histoire solo + GTA Online intégré' },
+  { label: 'Ã‰poque', value: 'AnnÃ©es 2020 contemporaines' },
+  { label: 'Modes de jeu', value: 'Histoire solo + GTA Online intÃ©grÃ©' },
   { label: 'Inspiration', value: '"Natural Born Killers", "Bonnie & Clyde"' },
-  { label: 'Développement', value: 'Rockstar North, 12 ans de développement' },
+  { label: 'DÃ©veloppement', value: 'Rockstar North, 12 ans de dÃ©veloppement' },
 ]
 
 export default async function GamePage() {
@@ -50,10 +50,10 @@ export default async function GamePage() {
                 Synopsis
               </p>
               <h2 className="text-3xl font-black leading-tight text-white mb-5">
-                Deux criminels.<br />Un seul comté.
+                Deux criminels.<br />Un seul comtÃ©.
               </h2>
               <p className="text-base leading-relaxed" style={{ color: 'var(--text-warm)' }}>
-                GTA 6 suit <strong className="text-white">Jason et Lucia</strong>, deux criminels en couple pris dans une spirale d'arnaques et de braquages à travers le comté de Leonida. Face à des dettes impayées, des ennemis puissants et un État corrompu, ils doivent naviguer entre loyauté, survie et ambition dans la version la plus grande et la plus vivante de Vice City jamais créée.
+                GTA 6 suit <strong className="text-white">Jason et Lucia</strong>, deux criminels en couple pris dans une spirale d'arnaques et de braquages Ã  travers le comtÃ© de Leonida. Face Ã  des dettes impayÃ©es, des ennemis puissants et un Ã‰tat corrompu, ils doivent naviguer entre loyautÃ©, survie et ambition dans la version la plus grande et la plus vivante de Vice City jamais crÃ©Ã©e.
               </p>
             </div>
             <div className="relative min-h-[260px] lg:min-h-0" style={{ background: '#081E36' }}>
@@ -76,7 +76,7 @@ export default async function GamePage() {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-black">Personnages</h2>
             <Link href="/characters" className="text-xs font-bold tracking-wider uppercase hover:opacity-70 transition-opacity" style={{ color: 'var(--accent-gold)' }}>
-              Voir tout le cast →
+              Voir tout le cast â†’
             </Link>
           </div>
 
@@ -116,7 +116,7 @@ export default async function GamePage() {
             })}
           </div>
 
-          {/* Cast secondaire aperçu */}
+          {/* Cast secondaire aperÃ§u */}
           <p className="text-[10px] font-black tracking-[0.25em] uppercase mb-3" style={{ color: 'var(--text-muted)' }}>Cast secondaire</p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-5">
             {characters.filter(c => c.roleLabel !== 'JOUABLE').map((char) => {
@@ -154,13 +154,13 @@ export default async function GamePage() {
           </div>
 
           <Link href="/characters" className="inline-flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(240,192,64,0.1)', color: 'var(--accent-gold)', border: '1px solid rgba(240,192,64,0.25)' }}>
-            Fiches complètes de tous les personnages →
+            Fiches complÃ¨tes de tous les personnages â†’
           </Link>
         </section>
 
         {/* Key facts */}
         <section id="infos">
-          <h2 className="text-2xl font-black mb-6">Informations clés</h2>
+          <h2 className="text-2xl font-black mb-6">Informations clÃ©s</h2>
           <div className="grid md:grid-cols-2 gap-4">
             {facts.map(fact => (
               <div key={fact.label} className="rounded-2xl p-4" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>

@@ -4,24 +4,24 @@ import Link from 'next/link'
 import Countdown from '@/components/ui/Countdown'
 
 export const metadata: Metadata = {
-  title: 'Précommander GTA VI - Grand Theft Info',
-  description: 'Précommandez Grand Theft Auto VI dès maintenant. Disponible le 19 novembre 2026 sur PS5 et Xbox Series.',
+  title: 'PrÃ©commander GTA VI - GTA6Zone',
+  description: 'PrÃ©commandez Grand Theft Auto VI dÃ¨s maintenant. Disponible le 19 novembre 2026 sur PS5 et Xbox Series.',
 }
 
 const retailers = [
   { name: 'amazon', display: 'amazon', href: 'https://www.amazon.fr/dp/B0GZW5D8YF', style: { fontFamily: 'Arial, sans-serif', fontSize: '1.5rem', fontWeight: 700, letterSpacing: '-0.02em' } },
   { name: 'fnac', display: 'fnac', href: 'https://www.fnac.com/a23085276/Grand-Theft-Auto-GTA-VI-PS5-Jeu-video-Playstation-5', style: { fontFamily: 'Arial, sans-serif', fontSize: '1.5rem', fontWeight: 900, letterSpacing: '-0.02em' } },
   { name: 'micromania', display: 'Micromania', href: 'https://www.micromania.fr/p/grand-theft-auto-vi-code-de-telechargement-161836.html', style: { fontSize: '1.1rem', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase' as const } },
-  { name: 'leclerc', display: 'E.Leclerc ®', href: 'https://www.e.leclerc/fp/grand-theft-auto-vi-code-in-a-box-ps5-5026555439824', style: { fontSize: '1.1rem', fontWeight: 600 } },
+  { name: 'leclerc', display: 'E.Leclerc Â®', href: 'https://www.e.leclerc/fp/grand-theft-auto-vi-code-in-a-box-ps5-5026555439824', style: { fontSize: '1.1rem', fontWeight: 600 } },
   { name: 'carrefour', display: 'Carrefour', href: 'https://www.carrefour.fr/jeux-consoles/gta-6', style: { fontSize: '1.1rem', fontWeight: 700 } },
-  { name: 'cdiscount', display: 'Cdiscount®', href: 'https://www.cdiscount.com/search/#q=grand+theft+auto+6', style: { fontSize: '1.15rem', fontWeight: 700 } },
-  { name: 'cultura', display: 'Cultura®', href: 'https://www.cultura.com/recherche?q=grand+theft+auto+6', style: { fontSize: '1.25rem', fontWeight: 600 } },
+  { name: 'cdiscount', display: 'CdiscountÂ®', href: 'https://www.cdiscount.com/search/#q=grand+theft+auto+6', style: { fontSize: '1.15rem', fontWeight: 700 } },
+  { name: 'cultura', display: 'CulturaÂ®', href: 'https://www.cultura.com/recherche?q=grand+theft+auto+6', style: { fontSize: '1.25rem', fontWeight: 600 } },
   { name: 'psstore', display: 'PlayStation\nStore', href: 'https://store.playstation.com/fr-fr/product/EP1004-PPSA01547_00-GTAVISTANDARD001', style: { fontSize: '1rem', fontWeight: 700, lineHeight: 1.2, textAlign: 'center' as const } },
 ]
 
 const infoLinks = [
   { label: 'HISTOIRE', href: '/characters', img: '/images/gameplay1.jpg' },
-  { label: 'ÉDITIONS', href: '/config', img: '/images/gameplay3.jpg' },
+  { label: 'Ã‰DITIONS', href: '/config', img: '/images/gameplay3.jpg' },
   { label: 'SORTIE', href: '/news', img: '/images/gameplay5.jpg' },
 ]
 
@@ -34,7 +34,7 @@ const trailers = [
   },
   {
     title: 'Bande-annonce 1 de\nGrand Theft Auto VI',
-    date: '4 décembre 2023',
+    date: '4 dÃ©cembre 2023',
     img: '/images/gameplay4.jpg',
     href: 'https://www.youtube.com/watch?v=QdBZY2fkU-0',
   },
@@ -44,7 +44,7 @@ export default function AcheterPage() {
   return (
     <div>
 
-      {/* ── HERO ── */}
+      {/* â”€â”€ HERO â”€â”€ */}
       <section className="relative min-h-screen flex items-center justify-center text-center overflow-hidden">
         <Image src="/images/hero-bg.jpg" alt="GTA VI" fill className="object-cover object-center" priority />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(6,15,28,0.55) 0%, rgba(6,15,28,0.7) 60%, rgba(6,15,28,1) 100%)' }} />
@@ -54,7 +54,7 @@ export default function AcheterPage() {
           <img src="/images/gta6-logo.svg" alt="Grand Theft Auto VI" className="w-28 h-auto mx-auto mb-6" />
 
           <h1 className="text-4xl md:text-5xl font-black tracking-tight leading-tight mb-4">
-            PRÉCOMMANDER<br />
+            PRÃ‰COMMANDER<br />
             <span>GRAND THEFT AUTO VI</span>
           </h1>
 
@@ -62,7 +62,7 @@ export default function AcheterPage() {
             Disponible le 19 novembre 2026
           </p>
           <p className="text-xs mb-8" style={{ color: 'rgba(255,255,255,0.5)' }}>
-            Précommandes ouvertes — Standard 79,99€ · Ultime 99,99€
+            PrÃ©commandes ouvertes â€” Standard 79,99â‚¬ Â· Ultime 99,99â‚¬
           </p>
 
           <div className="flex justify-center mb-8">
@@ -74,7 +74,7 @@ export default function AcheterPage() {
             className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full font-medium text-sm transition-all hover:opacity-90"
             style={{ background: '#E8376A', color: '#fff' }}
           >
-            Précommander
+            PrÃ©commander
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path d="M12 5v14M5 12l7 7 7-7" />
             </svg>
@@ -82,11 +82,11 @@ export default function AcheterPage() {
         </div>
       </section>
 
-      {/* ── OÙ PRÉCOMMANDER ── */}
+      {/* â”€â”€ OÃ™ PRÃ‰COMMANDER â”€â”€ */}
       <section id="retailers" className="py-14 px-4" style={{ background: 'var(--bg-deep, #060f1c)' }}>
         <div className="max-w-5xl mx-auto">
           <h2 className="text-xs font-black tracking-[0.25em] uppercase mb-8" style={{ color: 'var(--text-muted)' }}>
-            Où précommander ?
+            OÃ¹ prÃ©commander ?
           </h2>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
@@ -108,7 +108,7 @@ export default function AcheterPage() {
         </div>
       </section>
 
-      {/* ── FICHE JEU ── */}
+      {/* â”€â”€ FICHE JEU â”€â”€ */}
       <section className="py-14 px-4" style={{ background: 'rgba(8,20,40,0.6)' }}>
         <div className="max-w-5xl mx-auto grid md:grid-cols-[280px_1fr] gap-10 items-start">
 
@@ -133,8 +133,8 @@ export default function AcheterPage() {
                 {[
                   { key: 'Sortie', val: '19 novembre 2026' },
                   { key: 'Plateforme', val: 'PS5, Xbox Series' },
-                  { key: 'Développeur', val: 'Rockstar Games' },
-                  { key: 'Éditeur', val: 'Rockstar Games' },
+                  { key: 'DÃ©veloppeur', val: 'Rockstar Games' },
+                  { key: 'Ã‰diteur', val: 'Rockstar Games' },
                   { key: 'Distributeur', val: 'Take-Two Interactive' },
                 ].map((row) => (
                   <tr key={row.key} style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
@@ -146,11 +146,11 @@ export default function AcheterPage() {
             </table>
 
             <p className="text-sm leading-relaxed mb-6" style={{ color: 'rgba(255,255,255,0.65)' }}>
-              Jason et Lucia ont toujours su que la vie ne leur ferait pas de cadeau. Mais lorsque les choses tournent mal, ils découvrent le côté obscur de la région la plus ensoleillée d'Amérique, et se retrouvent au cœur d'un complot criminel qui s'étend dans tout l'État de Leonida. Ils devront plus que jamais compter l'un sur l'autre pour espérer s'en sortir.
+              Jason et Lucia ont toujours su que la vie ne leur ferait pas de cadeau. Mais lorsque les choses tournent mal, ils dÃ©couvrent le cÃ´tÃ© obscur de la rÃ©gion la plus ensoleillÃ©e d'AmÃ©rique, et se retrouvent au cÅ“ur d'un complot criminel qui s'Ã©tend dans tout l'Ã‰tat de Leonida. Ils devront plus que jamais compter l'un sur l'autre pour espÃ©rer s'en sortir.
             </p>
 
             <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: 'var(--text-muted)' }}>
-              Précommander en numérique :
+              PrÃ©commander en numÃ©rique :
             </p>
             <div className="flex gap-3">
               <a href="https://store.playstation.com/fr-fr/product/EP1004-PPSA01547_00-GTAVISTANDARD001" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg text-xs font-black tracking-wide uppercase transition-all hover:opacity-80" style={{ background: '#003087', color: '#fff' }}>
@@ -164,7 +164,7 @@ export default function AcheterPage() {
         </div>
       </section>
 
-      {/* ── TRAILERS ── */}
+      {/* â”€â”€ TRAILERS â”€â”€ */}
       <section className="py-14 px-4">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-xs font-black tracking-[0.25em] uppercase mb-8" style={{ color: 'var(--text-muted)' }}>
@@ -193,7 +193,7 @@ export default function AcheterPage() {
         </div>
       </section>
 
-      {/* ── PLUS D'INFORMATIONS ── */}
+      {/* â”€â”€ PLUS D'INFORMATIONS â”€â”€ */}
       <section className="py-14 px-4" style={{ background: 'rgba(8,20,40,0.6)' }}>
         <div className="max-w-5xl mx-auto">
           <h2 className="text-xs font-black tracking-[0.25em] uppercase mb-8" style={{ color: 'var(--text-muted)' }}>
@@ -216,7 +216,7 @@ export default function AcheterPage() {
         </div>
       </section>
 
-      {/* ── SECTION EDITO ── */}
+      {/* â”€â”€ SECTION EDITO â”€â”€ */}
       <section className="py-14 px-4">
         <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-10 items-center">
           <div className="relative rounded-3xl overflow-hidden aspect-[4/5]">
@@ -228,16 +228,16 @@ export default function AcheterPage() {
             </h2>
             <div className="space-y-4 text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>
               <p>
-                GTA VI sortira en novembre 2026, + de 13 ans après la sortie de GTA V, la version précédente de la série Grand Theft Auto.
+                GTA VI sortira en novembre 2026, + de 13 ans aprÃ¨s la sortie de GTA V, la version prÃ©cÃ©dente de la sÃ©rie Grand Theft Auto.
               </p>
               <p>
-                Rockstar Games est sans aucun doute soucieux de fournir le meilleur jeu possible et on peut s'attendre à une véritable expérience vidéoludique.
+                Rockstar Games est sans aucun doute soucieux de fournir le meilleur jeu possible et on peut s'attendre Ã  une vÃ©ritable expÃ©rience vidÃ©oludique.
               </p>
               <p>
-                Les précommandes sont désormais ouvertes depuis le 25 juin 2026. GTA VI sort en deux éditions officielles : la Standard à 79,99€ (numérique et code in-box) et l'Ultime à 99,99€ (numérique uniquement), avec un pack de contenu exclusif.
+                Les prÃ©commandes sont dÃ©sormais ouvertes depuis le 25 juin 2026. GTA VI sort en deux Ã©ditions officielles : la Standard Ã  79,99â‚¬ (numÃ©rique et code in-box) et l'Ultime Ã  99,99â‚¬ (numÃ©rique uniquement), avec un pack de contenu exclusif.
               </p>
               <p>
-                Toute précommande passée avant le 20 novembre 2026 inclut le Pack Vintage Vice City : une berline Vapid Stanier 1955, un garage privé à Ocean Beach, des costumes années 80 et des skins d'armes Tommy Vercetti — ainsi qu'un mois d'abonnement GTA+ pour les achats numériques.
+                Toute prÃ©commande passÃ©e avant le 20 novembre 2026 inclut le Pack Vintage Vice City : une berline Vapid Stanier 1955, un garage privÃ© Ã  Ocean Beach, des costumes annÃ©es 80 et des skins d'armes Tommy Vercetti â€” ainsi qu'un mois d'abonnement GTA+ pour les achats numÃ©riques.
               </p>
             </div>
 
@@ -247,7 +247,7 @@ export default function AcheterPage() {
                 className="inline-flex px-6 py-3 rounded-xl font-medium text-sm transition-all hover:opacity-90"
                 style={{ background: '#E8376A', color: '#fff' }}
               >
-                Voir où précommander
+                Voir oÃ¹ prÃ©commander
               </a>
             </div>
           </div>
